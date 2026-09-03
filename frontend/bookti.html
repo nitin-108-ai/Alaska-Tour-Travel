@@ -19,6 +19,7 @@
     >
 
 <script src="api.js"></script>
+<script src="profile.js"></script>
 </head>
 
 <body>
@@ -45,22 +46,15 @@
 
     <nav>
 
-        <a href="index.htmll">Home</a>
-        <a href="index.htmll">Destinations</a>
-        <a href="index.htmll">Packages</a>
-        <a href="index.htmll">About</a>
-        <a href="index.htmll">Contact</a>
+        <a href="index.html">Home</a>
+        <a href="index.html#tours">Tours</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
 
     </nav>
 
-
-    <a href="index.htmll" class="nav-btn">
-
-        <i class="fa-solid fa-arrow-left"></i>
-
-        Back Home
-
-    </a>
+    <!-- Profile Avatar -->
+    <div id="profile-slot"></div>
 
 </header>
 
@@ -793,7 +787,8 @@ tripLabels.forEach(function (label) {
 
 
 /* =========================================
-   FORM SUBMIT → SAVE pendingBooking → paymen.html
+/* =========================================
+   FORM SUBMIT → SAVE pendingBooking → seacht.html
 ========================================= */
 
 document.getElementById("flight").addEventListener("submit", function (e) {
@@ -812,15 +807,19 @@ document.getElementById("flight").addEventListener("submit", function (e) {
     const flightClass = fd.get("class") || "economy";
     const basePrice   = classPriceMap[flightClass] || 62500;
     const totalPrice  = basePrice * travelers;
+    const fromCity    = fd.get("from") || "";
+    const toCity      = fd.get("to") || "";
+    const depDate     = fd.get("departure") || "";
+    const retDate     = fd.get("return") || null;
 
     const booking = {
-        from          : fd.get("from"),
-        to            : fd.get("to"),
-        travelDate    : fd.get("departure"),
-        returnDate    : fd.get("return")    || null,
+        from          : fromCity,
+        to            : toCity,
+        travelDate    : depDate,
+        returnDate    : retDate,
         travelers,
         flightClass,
-        tripType      : fd.get("trip"),
+        tripType      : fd.get("trip") || "one-way",
         passengerName : localStorage.getItem("alaskaUserName") || "Traveler",
         totalPrice,
         price         : totalPrice,
@@ -828,7 +827,17 @@ document.getElementById("flight").addEventListener("submit", function (e) {
     };
 
     localStorage.setItem("pendingBooking", JSON.stringify(booking));
-    window.location.href = "paymen.html";
+
+    // Redirect to Search Flights page with search parameters
+    const params = new URLSearchParams({
+        from: fromCity,
+        to: toCity,
+        date: depDate,
+        class: flightClass,
+        travelers: travelers
+    });
+
+    window.location.href = "seacht.html?" + params.toString();
 });
 
 

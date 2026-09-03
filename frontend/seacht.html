@@ -15,6 +15,8 @@
     <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="api.js"></script>
+    <script src="profile.js"></script>
 
     <style>
 
@@ -729,7 +731,7 @@
 
 <header class="navbar">
 
-    <a href="#" class="logo">
+    <a href="index.html" class="logo">
 
         <div class="logo-icon">
             <i class="fa-solid fa-plane"></i>
@@ -737,25 +739,22 @@
 
         <div class="logo-text">
             <strong>ALASKA</strong>
-            <span>TOUR & TRAVEL</span>
+            <span>TOUR &amp; TRAVEL</span>
         </div>
 
     </a>
 
     <nav class="nav-links">
 
-        <a href="#">Home</a>
+        <a href="index.html">Home</a>
         <a href="#">Flights</a>
-        <a href="#">Hotels</a>
-        <a href="#">Packages</a>
-        <a href="#">Contact</a>
-
-        <a href="#" class="login-btn">
-            <i class="fa-regular fa-user"></i>
-            Login
-        </a>
+        <a href="index.html#tours">Tours</a>
+        <a href="index.html#contact">Contact</a>
 
     </nav>
+
+    <!-- Profile Avatar -->
+    <div id="profile-slot"></div>
 
 </header>
 
@@ -3090,6 +3089,59 @@
 
 <script>
 
+    /* ================= AUTO-INITIALIZE FROM SEARCH PARAMS ================= */
+
+    (function initSearchCriteria() {
+        const urlParams = new URLSearchParams(window.location.search);
+        let fromVal = urlParams.get("from");
+        let toVal   = urlParams.get("to");
+        const dateVal  = urlParams.get("date");
+        const classVal = urlParams.get("class");
+
+        if (!fromVal && !toVal) {
+            const saved = JSON.parse(localStorage.getItem("pendingBooking") || "{}");
+            fromVal = saved.from;
+            toVal   = saved.to;
+        }
+
+        const fromSelect = document.getElementById("from");
+        const toSelect   = document.getElementById("to");
+
+        function selectMatch(selectEl, searchStr) {
+            if (!searchStr || !selectEl) return;
+            const target = searchStr.trim().toLowerCase();
+            for (let i = 0; i < selectEl.options.length; i++) {
+                const optText = selectEl.options[i].text.toLowerCase();
+                const optVal  = selectEl.options[i].value.toLowerCase();
+                if (optText.includes(target) || optVal.includes(target) || target.includes(optText.split(" ")[0])) {
+                    selectEl.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        if (fromVal) selectMatch(fromSelect, fromVal);
+        if (toVal)   selectMatch(toSelect, toVal);
+
+        if (fromVal || toVal) {
+            const displayFrom = fromSelect ? fromSelect.value : (fromVal || "Departure");
+            const displayTo   = toSelect ? toSelect.value : (toVal || "Alaska");
+            const routeTitle  = document.getElementById("routeTitle");
+            if (routeTitle) {
+                routeTitle.innerHTML = `${displayFrom} <span>→</span> ${displayTo}`;
+            }
+
+            // Scroll to flight list smoothly
+            setTimeout(function() {
+                window.scrollTo({
+                    top: 380,
+                    behavior: "smooth"
+                });
+            }, 300);
+        }
+    })();
+
+
     /* ================= SEARCH ================= */
 
     document
@@ -3143,7 +3195,7 @@ document
 
         button.addEventListener("click", function(event) {
 
-            
+            event.preventDefault();
 
             const card =
                 this.closest(".flight-card");
@@ -3194,8 +3246,8 @@ document
                     .textContent
                     .trim();
 
-            const price =
-                priceText.replace(/[₹,]/g, "");
+            const unitPrice =
+                Number(priceText.replace(/[₹,]/g, "")) || 68999;
 
             /* CITY NAME */
 
@@ -3215,15 +3267,45 @@ document
             const to =
                 cityNames[toCode] || toCode;
 
-            /* DATE */
+            /* DATE & CLASS from search or pendingBooking or defaults */
+
+            const urlP = new URLSearchParams(window.location.search);
+            const saved = JSON.parse(localStorage.getItem("pendingBooking") || "{}");
 
             const date =
-                "15-Sep-2026";
-
-            /* CLASS */
+                urlP.get("date") || saved.travelDate || "15-Sep-2026";
 
             const flightClass =
-                "Economy";
+                urlP.get("class") || saved.flightClass || "Economy";
+
+            const travelers =
+                Number(urlP.get("travelers")) || Number(saved.travelers) || 1;
+
+            const totalPrice = unitPrice * travelers;
+
+            /* SAVE PENDING BOOKING IN LOCALSTORAGE */
+
+            const currentBooking = {
+                ...saved,
+                from: from,
+                fromCode: fromCode,
+                to: to,
+                toCode: toCode,
+                travelDate: date,
+                departure: departure,
+                arrival: arrival,
+                flight: flightNumber,
+                airline: airline,
+                flightClass: flightClass,
+                travelers: travelers,
+                unitPrice: unitPrice,
+                totalPrice: totalPrice,
+                price: totalPrice,
+                passengerName: localStorage.getItem("alaskaUserName") || "Traveler",
+                status: "pending"
+            };
+
+            localStorage.setItem("pendingBooking", JSON.stringify(currentBooking));
 
             /* CREATE BOOKING URL */
 
@@ -3237,8 +3319,10 @@ document
                 "&departure=" + encodeURIComponent(departure) +
                 "&arrival=" + encodeURIComponent(arrival) +
                 "&flight=" + encodeURIComponent(flightNumber) +
+                "&airline=" + encodeURIComponent(airline) +
                 "&class=" + encodeURIComponent(flightClass) +
-                "&price=" + encodeURIComponent(price);
+                "&travelers=" + encodeURIComponent(travelers) +
+                "&price=" + encodeURIComponent(totalPrice);
 
             /* GO TO BOOKING DETAILS */
 

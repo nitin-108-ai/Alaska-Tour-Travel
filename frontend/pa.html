@@ -12,6 +12,9 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <script src="api.js"></script>
+    <script src="profile.js"></script>
+
     <style>
 
         * {
@@ -31,7 +34,10 @@
         header {
             background: linear-gradient(135deg, #041a32, #075b9d);
             color: white;
-            padding: 25px 8%;
+            padding: 22px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         header h1 {
@@ -298,14 +304,19 @@
 
 <header>
 
-    <h1>
-        <i class="fa-solid fa-plane-departure"></i>
-        Alaska Tour & Travel
-    </h1>
+    <div>
+        <h1>
+            <i class="fa-solid fa-plane-departure"></i>
+            Alaska Tour &amp; Travel
+        </h1>
 
-    <p>
-        Complete your booking
-    </p>
+        <p>
+            Complete your booking
+        </p>
+    </div>
+
+    <!-- Profile Avatar -->
+    <div id="profile-slot"></div>
 
 </header>
 
@@ -507,21 +518,12 @@
 
 
         <button
+            type="button"
             class="btn payment"
+            id="btnPayment"
             onclick="goPayment()">
-			 <span>
-                 	<a href="paymen.html" class="button order-now">
-                     Continue to Payment
-				
-            
-            </a>
-
-                </span>
-
-           
-
+            <span>Continue to Payment</span>
             <i class="fa-solid fa-arrow-right"></i>
-
         </button>
 
     </div>
@@ -532,59 +534,97 @@
 
 <script>
 
-    /* GET FLIGHT DETAILS FROM URL */
+    /* GET FLIGHT DETAILS FROM URL OR PENDING BOOKING */
 
     const params = new URLSearchParams(window.location.search);
-
+    const savedBooking = JSON.parse(localStorage.getItem("pendingBooking") || "{}");
 
     document.getElementById("from").textContent =
-        params.get("from") || "---";
+        params.get("from") || savedBooking.from || "Mumbai";
 
     document.getElementById("fromCode").textContent =
-        params.get("fromCode") || "---";
+        params.get("fromCode") || savedBooking.fromCode || "BOM";
 
 
     document.getElementById("to").textContent =
-        params.get("to") || "---";
+        params.get("to") || savedBooking.to || "Anchorage";
 
     document.getElementById("toCode").textContent =
-        params.get("toCode") || "---";
+        params.get("toCode") || savedBooking.toCode || "ANC";
 
 
     document.getElementById("date").textContent =
-        params.get("date") || "---";
+        params.get("date") || savedBooking.travelDate || "15-Sep-2026";
 
 
     document.getElementById("departure").textContent =
-        params.get("departure") || "---";
+        params.get("departure") || savedBooking.departure || "01:15";
 
 
     document.getElementById("arrival").textContent =
-        params.get("arrival") || "---";
+        params.get("arrival") || savedBooking.arrival || "10:35";
 
 
     document.getElementById("flight").textContent =
-        params.get("flight") || "---";
+        params.get("flight") || savedBooking.flight || "AS101";
 
 
     document.getElementById("class").textContent =
-        params.get("class") || "---";
+        params.get("class") || savedBooking.flightClass || "Economy";
 
 
     const price =
-        Number(params.get("price")) || 0;
+        Number(params.get("price")) || Number(savedBooking.totalPrice) || Number(savedBooking.price) || 68999;
 
 
     document.getElementById("price").textContent =
         "₹" + price.toLocaleString("en-IN");
 
 
+    /* Pre-fill user details if logged in */
+    const storedName  = localStorage.getItem("alaskaUserName");
+    const storedEmail = localStorage.getItem("alaskaUserEmail");
+    const nameInput   = document.querySelector('input[placeholder="Enter full name"]');
+    const emailInput  = document.querySelector('input[placeholder="Enter email address"]');
+    if (storedName && nameInput && !nameInput.value) nameInput.value = storedName;
+    if (storedEmail && emailInput && !emailInput.value) emailInput.value = storedEmail;
+
+
     /* PAYMENT */
 
     async function goPayment() {
-      const q=Object.fromEntries(new URLSearchParams(location.search));
-      try { const b=await API.booking(q); localStorage.setItem("currentBooking",JSON.stringify(b)); location.href="paymen.html"; }
-      catch(e){ if(!API.token()){ alert("Please login before booking."); location.href="logintravel.html"; } else alert(e.message); }
+      const q = Object.fromEntries(new URLSearchParams(location.search));
+
+      const fullName = document.querySelector('input[placeholder="Enter full name"]')?.value?.trim() || localStorage.getItem("alaskaUserName") || "Traveler";
+      const email    = document.querySelector('input[placeholder="Enter email address"]')?.value?.trim() || localStorage.getItem("alaskaUserEmail") || "";
+      const phone    = document.querySelector('input[placeholder="Enter mobile number"]')?.value?.trim() || "";
+
+      const saved = JSON.parse(localStorage.getItem("pendingBooking") || "{}");
+      const currentPrice = Number(q.price) || saved.totalPrice || saved.price || 68999;
+
+      const bookingData = {
+        ...saved,
+        ...q,
+        from: q.from || saved.from || "Mumbai",
+        fromCode: q.fromCode || saved.fromCode || "BOM",
+        to: q.to || saved.to || "Anchorage",
+        toCode: q.toCode || saved.toCode || "ANC",
+        travelDate: q.date || saved.travelDate || "15-Sep-2026",
+        departure: q.departure || saved.departure || "01:15",
+        arrival: q.arrival || saved.arrival || "10:35",
+        flight: q.flight || saved.flight || "AS101",
+        airline: q.airline || saved.airline || "Alaska Airlines",
+        flightClass: q.class || saved.flightClass || "Economy",
+        passengerName: fullName,
+        email: email,
+        phone: phone,
+        totalPrice: currentPrice,
+        price: currentPrice,
+        status: "pending"
+      };
+
+      localStorage.setItem("pendingBooking", JSON.stringify(bookingData));
+      window.location.href = "paymen.html";
     }
 
 </script>
@@ -593,4 +633,3 @@
 </body>
 
 </html>
-```

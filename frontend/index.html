@@ -229,8 +229,7 @@
           <a href="#contact" class="nav-link">Contact</a>
         </li>
 
-        <li class="nav-item" id="auth-nav-item">
-          <!-- dynamically replaced by JS -->
+        <li class="nav-item" id="profile-slot">
           <a href="logintravel.html" class="btn-signin">Sign In</a>
         </li>
 
@@ -906,140 +905,8 @@
 
   </script>
 
-  <!-- ================= PROFILE AUTH LOGIC ================= -->
-  <style>
-    /* ===== BOOKINGS INSIDE DROPDOWN ===== */
-    .dd-bookings-title {
-      font-size:13px; font-weight:800; color:#8a9db5;
-      text-transform:uppercase; letter-spacing:.8px;
-      padding:8px 12px 4px;
-    }
-    .dd-booking-card {
-      background: rgba(19,184,168,0.07);
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin: 4px 0;
-      border: 1px solid rgba(19,184,168,0.15);
-    }
-    .dd-bc-route {
-      font-size:14px; font-weight:700; color:#fff;
-      display:flex; align-items:center; gap:6px;
-      margin-bottom:4px;
-    }
-    .dd-bc-route i { color:#13b8a8; font-size:13px; }
-    .dd-bc-meta {
-      display:flex; justify-content:space-between; align-items:center;
-    }
-    .dd-bc-meta span { font-size:13px; color:#8a9db5; }
-    .dd-bc-amt { font-size:14px; font-weight:700; color:#13b8a8 !important; }
-    .dd-status {
-      display:inline-block; font-size:13px; font-weight:700;
-      padding:2px 8px; border-radius:20px; letter-spacing:.4px;
-      background:rgba(0,200,150,.15); color:#00c896;
-    }
-    .dd-no-bookings {
-      font-size:14px; color:#5a7a82; padding:8px 12px 4px;
-      font-style:italic;
-    }
-    .profile-dropdown { width: 270px !important; }
-  </style>
-
-  <script>
-    (function () {
-      const token   = localStorage.getItem("alaskaToken");
-      const name    = localStorage.getItem("alaskaUserName")  || "";
-      const email   = localStorage.getItem("alaskaUserEmail") || "";
-      const navItem = document.getElementById("auth-nav-item");
-
-      if (!token || !name) return;
-
-      const initials = name.trim().split(" ")
-        .map(w => w[0]).slice(0, 2).join("").toUpperCase();
-
-      // ── Build recent bookings HTML ──
-      const bookings = JSON.parse(localStorage.getItem("alaskaBookings") || "[]");
-      let bookingsHTML = "";
-
-      if (bookings.length === 0) {
-        bookingsHTML = `<div class="dd-no-bookings">No confirmed bookings yet.</div>`;
-      } else {
-        bookings.slice(0, 3).forEach(b => {
-          bookingsHTML += `
-            <div class="dd-booking-card">
-              <div class="dd-bc-route">
-                <i class="fas fa-plane"></i>
-                ${b.from || "—"} → ${b.to || "—"}
-              </div>
-              <div class="dd-bc-meta">
-                <span>${b.date || "—"} · ${b.flightClass || "Economy"}</span>
-                <span class="dd-bc-amt">₹${Number(b.amount||0).toLocaleString("en-IN")}</span>
-              </div>
-              <div style="margin-top:5px;">
-                <span class="dd-status">✅ Confirmed</span>
-              </div>
-            </div>`;
-        });
-      }
-
-      navItem.innerHTML = `
-        <div class="auth-area" id="authArea">
-          <div class="profile-trigger" id="profileTrigger">
-            <div class="profile-avatar">${initials}</div>
-            <span class="profile-name">${name.split(" ")[0]}</span>
-            <i class="fas fa-chevron-down profile-chevron"></i>
-          </div>
-
-          <div class="profile-dropdown" id="profileDropdown">
-
-            <!-- User Header -->
-            <div class="dropdown-header">
-              <div class="dropdown-avatar-lg">${initials}</div>
-              <div class="dropdown-user-info">
-                <div class="dui-name">${name}</div>
-                <div class="dui-email">${email}</div>
-              </div>
-            </div>
-
-            <!-- Recent Bookings -->
-            <div class="dd-bookings-title">✈ Recent Bookings</div>
-            ${bookingsHTML}
-
-            <div class="dropdown-divider"></div>
-
-            <!-- Actions -->
-            <a href="bookti.html" class="dropdown-item">
-              <i class="fas fa-plus-circle"></i> Book New Trip
-            </a>
-            <a href="paymen.html" class="dropdown-item">
-              <i class="fas fa-credit-card"></i> Payments
-            </a>
-            <div class="dropdown-divider"></div>
-            <button class="dropdown-item logout" id="logoutBtn">
-              <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-
-          </div>
-        </div>
-      `;
-
-      // Toggle dropdown
-      const authArea = document.getElementById("authArea");
-      document.getElementById("profileTrigger").addEventListener("click", (e) => {
-        e.stopPropagation();
-        authArea.classList.toggle("open");
-      });
-
-      // Close on outside click
-      document.addEventListener("click", () => authArea.classList.remove("open"));
-      document.getElementById("profileDropdown").addEventListener("click", e => e.stopPropagation());
-
-      // Logout
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        ["alaskaToken", "alaskaUserName", "alaskaUserEmail"].forEach(k => localStorage.removeItem(k));
-        location.href = "logintravel.html";
-      });
-    })();
-  </script>
+  <!-- ================= PROFILE (shared profile.js) ================= -->
+  <script src="profile.js"></script>
 
 </body>
 
