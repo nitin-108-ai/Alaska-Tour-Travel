@@ -927,6 +927,7 @@
     </style>
 
 <script src="api.js"></script>
+<script src="profile.js"></script>
 </head>
 
 
@@ -942,19 +943,26 @@
 
     <div class="payment-header">
 
-        <div class="brand">
+        <div style="display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 5; margin-bottom: 25px;">
 
-            <div class="brand-icon">
-                <i class="fa-solid fa-plane-departure"></i>
-            </div>
+            <a href="index.html" class="brand" style="text-decoration: none; color: inherit; margin-bottom: 0;">
 
-            <div class="brand-text">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-plane-departure"></i>
+                </div>
 
-                <h3>ALASKA TOUR & TRAVEL</h3>
+                <div class="brand-text">
 
-                <span>TRAVEL • EXPLORE • EXPERIENCE</span>
+                    <h3>ALASKA TOUR &amp; TRAVEL</h3>
 
-            </div>
+                    <span>TRAVEL • EXPLORE • EXPERIENCE</span>
+
+                </div>
+
+            </a>
+
+            <!-- Profile Avatar -->
+            <div id="profile-slot"></div>
 
         </div>
 

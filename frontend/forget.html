@@ -1,1 +1,96 @@
-<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>Forgot Password</title></head><body><main style="max-width:500px;margin:15vh auto;font-family:Arial;text-align:center"><h1>Forgot Password?</h1><p>Enter your email. This demo shows the reset flow without sending real email.</p><input id="email" type="email" placeholder="you@example.com" style="padding:12px;width:80%"><button onclick="alert('If an account exists, reset instructions would be sent.');location.href='logintravel.html'" style="padding:12px;margin:15px">Send Reset Link</button><p><a href="logintravel.html">Back to login</a></p></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password | Alaska Tour & Travel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Montserrat", sans-serif; }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #03151f, #064653, #00858b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #17343d;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #064653;
+      margin-bottom: 25px;
+    }
+    .logo-icon {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #008c95, #006d77);
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .logo-text strong { font-size: 15px; font-weight: 800; letter-spacing: 1px; display: block; text-align: left; }
+    .logo-text span { font-size: 9px; opacity: 0.7; letter-spacing: 1.5px; display: block; text-align: left; }
+    h1 { font-size: 24px; font-weight: 800; color: #041a32; margin-bottom: 10px; }
+    p { font-size: 14px; color: #64748b; margin-bottom: 25px; line-height: 1.5; }
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1.5px solid #dce7e9;
+      border-radius: 12px;
+      font-size: 14px;
+      outline: none;
+      margin-bottom: 18px;
+      font-family: inherit;
+    }
+    input:focus { border-color: #008c95; }
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #008c95, #006d77);
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.2s;
+    }
+    button:hover { opacity: 0.9; }
+    .back { display: inline-block; margin-top: 20px; color: #008c95; font-size: 13px; font-weight: 600; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fa-solid fa-plane-departure"></i></div>
+      <div class="logo-text">
+        <strong>ALASKA</strong>
+        <span>TOUR &amp; TRAVEL</span>
+      </div>
+    </a>
+    <h1>Forgot Password</h1>
+    <p>Enter your registered email to receive password reset instructions.</p>
+    <form onsubmit="event.preventDefault(); alert('Password reset instructions sent to your email.'); location.href='logintravel.html';">
+      <input type="email" required placeholder="Enter your email address">
+      <button type="submit">Send Reset Link</button>
+    </form>
+    <a href="logintravel.html" class="back">← Back to Login</a>
+  </div>
+</body>
+</html>

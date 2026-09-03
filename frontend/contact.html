@@ -1,1 +1,138 @@
-<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>Contact | Alaska Tour & Travel</title></head><body><main style="max-width:700px;margin:60px auto;font-family:Arial;padding:20px"><h1>Contact Alaska Tour & Travel</h1><p>We are here to help with flights, bookings and travel support.</p><form onsubmit="event.preventDefault();alert('Message received! Our support team will contact you.');this.reset()"><input required placeholder="Name" style="display:block;width:100%;padding:12px;margin:10px 0"><input required type="email" placeholder="Email" style="display:block;width:100%;padding:12px;margin:10px 0"><textarea required placeholder="Message" style="display:block;width:100%;height:140px;padding:12px;margin:10px 0"></textarea><button style="padding:12px 24px">Send Message</button></form><p><a href="index.html">← Home</a></p></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Alaska Tour & Travel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="api.js"></script>
+  <script src="profile.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Montserrat", sans-serif; }
+    body { background: #f4f7fb; color: #172033; min-height: 100vh; display: flex; flex-direction: column; }
+    
+    /* NAVBAR */
+    .navbar {
+      background: linear-gradient(135deg, #031c29, #064653, #008c95);
+      color: white;
+      padding: 18px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: white;
+    }
+    .logo-icon {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #00a6a6, #006d77);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .logo-text strong { font-size: 16px; font-weight: 800; letter-spacing: 1px; display: block; }
+    .logo-text span { font-size: 10px; opacity: 0.8; letter-spacing: 1.5px; display: block; }
+    
+    .nav-links { display: flex; align-items: center; gap: 20px; }
+    .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+    .nav-links a:hover { color: #56e0df; }
+
+    /* CONTAINER */
+    .container {
+      max-width: 650px;
+      margin: 45px auto 60px;
+      padding: 35px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 45px rgba(0, 50, 60, 0.1);
+      width: 90%;
+    }
+    h1 { font-size: 26px; font-weight: 800; color: #041a32; margin-bottom: 8px; }
+    p.desc { font-size: 14px; color: #64748b; margin-bottom: 25px; }
+
+    .field { margin-bottom: 18px; }
+    label { display: block; font-size: 13px; font-weight: 700; color: #29454e; margin-bottom: 6px; }
+    input, textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #dce7e9;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus { border-color: #008c95; }
+    textarea { height: 120px; resize: vertical; }
+
+    .btn-send {
+      background: linear-gradient(135deg, #008c95, #006d77);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(0,140,149,0.3);
+    }
+    .btn-send:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,140,149,0.4); }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fa-solid fa-plane-departure"></i></div>
+      <div class="logo-text">
+        <strong>ALASKA</strong>
+        <span>TOUR &amp; TRAVEL</span>
+      </div>
+    </a>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="bookti.html">Flights</a>
+      <a href="tour.html">Tours</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <!-- Profile Avatar -->
+    <div id="profile-slot"></div>
+  </header>
+
+  <main class="container">
+    <h1>Contact Us</h1>
+    <p class="desc">We are here to help with flights, bookings and custom Alaska travel support.</p>
+
+    <form onsubmit="event.preventDefault(); alert('Thank you! Your message has been sent to the Alaska Tour & Travel support team.'); this.reset();">
+      <div class="field">
+        <label for="cname">Your Name</label>
+        <input id="cname" required placeholder="Enter your full name">
+      </div>
+      <div class="field">
+        <label for="cemail">Email Address</label>
+        <input id="cemail" type="email" required placeholder="name@example.com">
+      </div>
+      <div class="field">
+        <label for="cmsg">Message</label>
+        <textarea id="cmsg" required placeholder="Tell us about your travel plans or questions..."></textarea>
+      </div>
+      <button type="submit" class="btn-send">
+        <i class="fa-solid fa-paper-plane"></i> Send Message
+      </button>
+    </form>
+  </main>
+
+</body>
+</html>

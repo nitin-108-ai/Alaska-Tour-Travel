@@ -1,1 +1,179 @@
-<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>Tour Packages | Alaska Tour & Travel</title></head><body><main style="max-width:900px;margin:50px auto;font-family:Arial;padding:20px"><h1>Alaska Tour Packages</h1><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px"><article style="padding:20px;border:1px solid #ddd;border-radius:12px"><h2>Anchorage Explorer</h2><p>City, mountains and northern lights.</p><a href="bookti.html">Book Flight</a></article><article style="padding:20px;border:1px solid #ddd;border-radius:12px"><h2>Fairbanks Aurora</h2><p>Winter adventure and aurora viewing.</p><a href="bookti.html">Book Flight</a></article><article style="padding:20px;border:1px solid #ddd;border-radius:12px"><h2>Juneau Escape</h2><p>Glaciers, wildlife and coastal scenery.</p><a href="bookti.html">Book Flight</a></article></div><p><a href="index.html">← Home</a></p></main></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour Packages | Alaska Tour & Travel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="api.js"></script>
+  <script src="profile.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Montserrat", sans-serif; }
+    body { background: #f4f7fb; color: #172033; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* NAVBAR */
+    .navbar {
+      background: linear-gradient(135deg, #031c29, #064653, #008c95);
+      color: white;
+      padding: 18px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: white;
+    }
+    .logo-icon {
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #00a6a6, #006d77);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .logo-text strong { font-size: 16px; font-weight: 800; letter-spacing: 1px; display: block; }
+    .logo-text span { font-size: 10px; opacity: 0.8; letter-spacing: 1.5px; display: block; }
+
+    .nav-links { display: flex; align-items: center; gap: 20px; }
+    .nav-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+    .nav-links a:hover { color: #56e0df; }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1050px;
+      margin: 45px auto 60px;
+      padding: 0 20px;
+      width: 100%;
+    }
+    h1 { font-size: 32px; font-weight: 800; color: #041a32; text-align: center; margin-bottom: 10px; }
+    p.subtitle { text-align: center; color: #64748b; font-size: 15px; margin-bottom: 40px; }
+
+    .tour-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 25px;
+    }
+    .tour-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 50, 60, 0.08);
+      transition: transform 0.25s, box-shadow 0.25s;
+      display: flex;
+      flex-direction: column;
+    }
+    .tour-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0, 50, 60, 0.15); }
+    .tour-img {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .tour-badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(3, 21, 31, 0.75);
+      backdrop-filter: blur(4px);
+      color: #56e0df;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .tour-body { padding: 22px; flex: 1; display: flex; flex-direction: column; }
+    .tour-body h2 { font-size: 20px; font-weight: 800; color: #064653; margin-bottom: 8px; }
+    .tour-body p { font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 18px; flex: 1; }
+    .tour-footer { display: flex; justify-content: space-between; align-items: center; }
+    .tour-price { font-size: 18px; font-weight: 800; color: #008c95; }
+    .btn-book {
+      background: linear-gradient(135deg, #008c95, #006d77);
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+    .btn-book:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fa-solid fa-plane-departure"></i></div>
+      <div class="logo-text">
+        <strong>ALASKA</strong>
+        <span>TOUR &amp; TRAVEL</span>
+      </div>
+    </a>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="bookti.html">Flights</a>
+      <a href="tour.html">Tours</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <!-- Profile Avatar -->
+    <div id="profile-slot"></div>
+  </header>
+
+  <main class="container">
+    <h1>Alaska Tour Packages</h1>
+    <p class="subtitle">Explore hand-picked packages designed for unforgettable adventures in Alaska.</p>
+
+    <div class="tour-grid">
+      <div class="tour-card">
+        <div class="tour-img" style="background-image: url('https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80');">
+          <span class="tour-badge">5 Days</span>
+        </div>
+        <div class="tour-body">
+          <h2>Anchorage Explorer</h2>
+          <p>Majestic glaciers, rugged mountains, coastal railways, and panoramic wildlife viewing.</p>
+          <div class="tour-footer">
+            <div class="tour-price">₹68,999</div>
+            <a href="bookti.html" class="btn-book">Book Flight</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tour-card">
+        <div class="tour-img" style="background-image: url('https://images.unsplash.com/photo-1483347756197-71ef80e95f73?auto=format&fit=crop&w=600&q=80');">
+          <span class="tour-badge">4 Days</span>
+        </div>
+        <div class="tour-body">
+          <h2>Fairbanks Aurora</h2>
+          <p>Winter wilderness adventures, dog sledding, hot springs, and breathtaking Northern Lights.</p>
+          <div class="tour-footer">
+            <div class="tour-price">₹74,500</div>
+            <a href="bookti.html" class="btn-book">Book Flight</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="tour-card">
+        <div class="tour-img" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80');">
+          <span class="tour-badge">6 Days</span>
+        </div>
+        <div class="tour-body">
+          <h2>Juneau Coastal Escape</h2>
+          <p>Mendenhall glacier hikes, whale watching boat safaris, and rainforest wilderness trails.</p>
+          <div class="tour-footer">
+            <div class="tour-price">₹82,000</div>
+            <a href="bookti.html" class="btn-book">Book Flight</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
