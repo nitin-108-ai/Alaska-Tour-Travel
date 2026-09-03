@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UPI Payment | Alaska Tour & Travel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="api.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      font-family: "Montserrat", sans-serif;
+      background:
+        radial-gradient(circle at 10% 15%, rgba(0,166,166,0.20), transparent 30%),
+        radial-gradient(circle at 90% 85%, rgba(0,124,131,0.18), transparent 30%),
+        linear-gradient(135deg, #03151f, #064653, #00858b);
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      width: 100%;
+      max-width: 480px;
+      background: #fff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 35px 80px rgba(0,0,0,0.30);
+      animation: cardIn .6s ease;
+    }
+    @keyframes cardIn {
+      from { opacity:0; transform:translateY(24px) scale(.97); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
+    }
+
+    /* ===== HEADER ===== */
+    .card-header {
+      padding: 32px 36px;
+      background: linear-gradient(135deg, #031c29, #064653, #008c95);
+      color: white;
+    }
+    .brand { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+    .brand-icon {
+      width:40px; height:40px; border-radius:11px;
+      background: linear-gradient(135deg,#00b4b8,#006d77);
+      display:flex; align-items:center; justify-content:center;
+      font-size:16px; box-shadow:0 6px 16px rgba(0,0,0,.25);
+    }
+    .brand-text h3 { font-size:13px; font-weight:800; letter-spacing:1.5px; }
+    .brand-text span { font-size: 13px; letter-spacing:2px; opacity:.6; }
+    .card-header h1 { font-size:26px; font-weight:800; line-height:1.2; }
+    .card-header h1 span {
+      background: linear-gradient(90deg,#56e0df,#fff);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .card-header p { font-size: 14px; color:rgba(255,255,255,.65); margin-top:8px; }
+
+    /* ===== BODY ===== */
+    .card-body { padding: 32px 36px; }
+
+    .amount-box {
+      background: linear-gradient(135deg,#edfafa,#dff3f4);
+      border: 1.5px solid #b2e0e2;
+      border-radius: 14px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .amount-label { font-size: 14px; color:#5a8a90; font-weight:600; }
+    .amount-value { font-size:24px; font-weight:800; color:#064653; }
+
+    label { display:block; font-size: 14px; font-weight:700; color:#5a7a82; margin-bottom:8px; letter-spacing:.4px; }
+
+    .upi-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f1f8fa;
+      border: 1.5px solid #c5dfe3;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      transition: border-color .2s;
+    }
+    .upi-input-wrap:focus-within { border-color: #00a6a6; }
+    .upi-input-wrap i { color: #007c83; font-size:16px; }
+    .upi-input-wrap input {
+      border: none; background: transparent; flex: 1;
+      font-family: inherit; font-size: 14px; font-weight: 600; color: #173943;
+      outline: none;
+    }
+    .upi-input-wrap input::placeholder { color: #9ab4b8; font-weight:500; }
+
+    /* Apps row */
+    .upi-apps { display:flex; gap:10px; margin-bottom:26px; flex-wrap:wrap; }
+    .app-chip {
+      display: flex; align-items:center; gap:6px;
+      padding: 7px 14px;
+      border-radius: 30px;
+      border: 1.5px solid #dde9ec;
+      font-size: 14px; font-weight:600; color:#2d5a64;
+      cursor:pointer; transition:.2s;
+      background:#fff;
+    }
+    .app-chip:hover { border-color:#00a6a6; background:#edfafa; color:#00858b; }
+    .app-chip img { width:18px; height:18px; border-radius:4px; }
+
+    /* Continue button */
+    .btn-pay {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #006d77, #00a6a6);
+      color: white;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 10px 28px rgba(0,130,140,.30);
+      transition: .25s;
+      letter-spacing: .3px;
+    }
+    .btn-pay:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 14px 34px rgba(0,130,140,.38); }
+    .btn-pay:disabled { opacity:.7; cursor:not-allowed; }
+    .btn-pay .spinner {
+      width:18px; height:18px; border:2.5px solid rgba(255,255,255,.4);
+      border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* Error */
+    .err-msg { color:#e53e3e; font-size: 14px; margin-top:10px; display:none; }
+
+    .back-link {
+      display:block; text-align:center; margin-top:20px;
+      color:#007c83; font-size: 14px; font-weight:600;
+      text-decoration:none;
+    }
+    .back-link:hover { text-decoration:underline; }
+
+    /* ===== SUCCESS SCREEN ===== */
+    #successScreen {
+      display: none;
+      padding: 40px 36px;
+      text-align: center;
+    }
+    .success-anim {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00a878, #00c896);
+      display: flex; align-items:center; justify-content:center;
+      margin: 0 auto 22px;
+      font-size: 36px; color: white;
+      box-shadow: 0 12px 32px rgba(0,180,130,.30);
+      animation: popIn .5s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(.4); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    #successScreen h2 { font-size:22px; font-weight:800; color:#064653; margin-bottom:8px; }
+    #successScreen p  { font-size:12px; color:#7a9ea5; margin-bottom:28px; }
+
+    /* Booking detail card */
+    .booking-detail {
+      background: linear-gradient(135deg, #f2fbfb, #e8f7f8);
+      border: 1px solid #b8dfe2;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+    .booking-detail h3 {
+      font-size:12px; font-weight:800; color:#064653;
+      text-transform:uppercase; letter-spacing:.8px;
+      margin-bottom:14px;
+      padding-bottom:10px;
+      border-bottom:1px solid #c8e5e8;
+    }
+    .bd-row {
+      display:flex; justify-content:space-between; align-items:center;
+      padding: 6px 0;
+      font-size: 12px;
+    }
+    .bd-row .key { color:#7a9ea5; font-weight:600; }
+    .bd-row .val { color:#173943; font-weight:700; }
+    .bd-row .val.green { color:#00a878; }
+
+    .confetti-badge {
+      display:inline-block;
+      background: linear-gradient(135deg,#fff3cd,#ffd96a);
+      color:#7a5c00;
+      border-radius:30px;
+      padding:6px 16px;
+      font-size: 14px;
+      font-weight:700;
+      margin-bottom:22px;
+      letter-spacing:.3px;
+    }
+
+    .btn-home {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:14px 30px;
+      background:linear-gradient(135deg,#006d77,#00a6a6);
+      color:white;
+      border-radius:12px;
+      font-family:inherit; font-size:13px; font-weight:700;
+      text-decoration:none;
+      box-shadow:0 10px 26px rgba(0,130,140,.28);
+      transition:.2s;
+    }
+    .btn-home:hover { transform:translateY(-2px); }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- ===== HEADER ===== -->
+  <div class="card-header">
+    <div class="brand">
+      <div class="brand-icon"><i class="fa-solid fa-plane-departure"></i></div>
+      <div class="brand-text">
+        <h3>ALASKA TOUR & TRAVEL</h3>
+        <span>TRAVEL • EXPLORE • EXPERIENCE</span>
+      </div>
+    </div>
+    <h1>UPI <span>Payment</span></h1>
+    <p>Pay securely using your preferred UPI application.</p>
+  </div>
+
+  <!-- ===== PAYMENT FORM ===== -->
+  <div class="card-body" id="paymentForm">
+
+    <!-- Amount -->
+    <div class="amount-box">
+      <div>
+        <div class="amount-label">TOTAL AMOUNT</div>
+        <div class="amount-value" id="displayAmount">₹0</div>
+      </div>
+      <i class="fa-solid fa-indian-rupee-sign" style="font-size:28px;color:#007c83;opacity:.4;"></i>
+    </div>
+
+    <!-- UPI ID -->
+    <label>ENTER YOUR UPI ID</label>
+    <div class="upi-input-wrap">
+      <i class="fa-solid fa-mobile-screen-button"></i>
+      <input type="text" id="upiId" placeholder="yourname@upi" autocomplete="off">
+    </div>
+
+    <!-- Quick app chips -->
+    <div class="upi-apps">
+      <div class="app-chip" onclick="setUpi('gpay')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/512px-Google_Pay_Logo.svg.png" alt="GPay"> GPay
+      </div>
+      <div class="app-chip" onclick="setUpi('phonepe')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/PhonePe_Logo.svg/512px-PhonePe_Logo.svg.png" alt="PhonePe"> PhonePe
+      </div>
+      <div class="app-chip" onclick="setUpi('paytm')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/512px-Paytm_Logo_%28standalone%29.svg.png" alt="Paytm"> Paytm
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div class="err-msg" id="errMsg"><i class="fa-solid fa-circle-exclamation"></i> <span id="errText"></span></div>
+
+    <!-- Pay Now -->
+    <button class="btn-pay" id="payBtn" onclick="doPayment()">
+      <i class="fa-solid fa-lock"></i> Pay Now & Confirm Booking
+    </button>
+
+    <a href="paymen.html" class="back-link">← Back to Payment Methods</a>
+
+  </div>
+
+  <!-- ===== SUCCESS SCREEN ===== -->
+  <div id="successScreen">
+    <div class="success-anim">✓</div>
+    <div class="confetti-badge">🎉 Booking Confirmed!</div>
+    <h2>Payment Successful</h2>
+    <p>Your booking is confirmed. Have a great Alaska adventure!</p>
+
+    <div class="booking-detail" id="bookingDetail">
+      <h3>📋 Booking Summary</h3>
+      <div class="bd-row"><span class="key">Booking ID</span><span class="val" id="bdId">—</span></div>
+      <div class="bd-row"><span class="key">Passenger</span><span class="val" id="bdName">—</span></div>
+      <div class="bd-row"><span class="key">Route</span><span class="val" id="bdRoute">—</span></div>
+      <div class="bd-row"><span class="key">Travel Date</span><span class="val" id="bdDate">—</span></div>
+      <div class="bd-row"><span class="key">Class</span><span class="val" id="bdClass">—</span></div>
+      <div class="bd-row"><span class="key">Amount Paid</span><span class="val green" id="bdAmt">—</span></div>
+      <div class="bd-row"><span class="key">Payment Via</span><span class="val" id="bdUpi">—</span></div>
+      <div class="bd-row"><span class="key">Status</span><span class="val green">✅ Confirmed</span></div>
+    </div>
+
+    <a href="index.html" class="btn-home">
+      <i class="fa-solid fa-house"></i> Back to Home
+    </a>
+  </div>
+
+</div>
+
+<script>
+  // ── Load booking info from localStorage (set by bookti.html) ──
+  const pending = JSON.parse(localStorage.getItem("pendingBooking") || "{}");
+  const amount  = pending.totalPrice || pending.price || 0;
+
+  document.getElementById("displayAmount").textContent =
+    "₹" + Number(amount).toLocaleString("en-IN");
+
+  // Quick-fill UPI suffix
+  function setUpi(app) {
+    const map = { gpay: "@okaxis", phonepe: "@ybl", paytm: "@paytm" };
+    const name = (localStorage.getItem("alaskaUserName") || "user")
+                   .toLowerCase().replace(/\s+/g, "");
+    document.getElementById("upiId").value = name + map[app];
+  }
+
+  // ── Main payment function ──
+  async function doPayment() {
+    const upiId  = document.getElementById("upiId").value.trim();
+    const errEl  = document.getElementById("errMsg");
+    const errTxt = document.getElementById("errText");
+    const btn    = document.getElementById("payBtn");
+
+    // Validate UPI format: something@something
+    errEl.style.display = "none";
+    if (!upiId || !/^[\w.\-+]+@[\w]+$/.test(upiId)) {
+      errTxt.textContent  = "Please enter a valid UPI ID (e.g. name@upi)";
+      errEl.style.display = "block";
+      return;
+    }
+
+    // Check login
+    const token = localStorage.getItem("alaskaToken");
+    if (!token) {
+      errTxt.textContent  = "Please log in to complete payment.";
+      errEl.style.display = "block";
+      return;
+    }
+
+    // Show spinner
+    btn.disabled  = true;
+    btn.innerHTML = '<div class="spinner"></div> Processing…';
+
+    try {
+      // 1. Save booking to backend
+      const bookingPayload = {
+        ...pending,
+        paymentMethod: "UPI",
+        upiId,
+        status: "confirmed"
+      };
+      const bookingRes = await API.booking(bookingPayload);
+
+      // 2. Save payment record
+      const paymentRes = await API.payment({
+        bookingId   : bookingRes.id,
+        method      : "UPI",
+        upiId,
+        amount,
+        status      : "success",
+        tour        : pending.tour || pending.flightId || "Alaska Tour"
+      });
+
+      // 3. Store latest booking in localStorage for profile display
+      const allBookings = JSON.parse(localStorage.getItem("alaskaBookings") || "[]");
+      allBookings.unshift({
+        id          : bookingRes.id,
+        bookingId   : bookingRes.id,
+        passenger   : pending.passengerName || localStorage.getItem("alaskaUserName") || "—",
+        from        : pending.from        || "—",
+        to          : pending.to          || "—",
+        date        : pending.travelDate  || pending.date || "—",
+        flightClass : pending.flightClass || pending.class || "Economy",
+        amount,
+        upiId,
+        paymentId   : paymentRes.id,
+        status      : "confirmed",
+        paidAt      : new Date().toLocaleString("en-IN")
+      });
+      localStorage.setItem("alaskaBookings", JSON.stringify(allBookings));
+      localStorage.removeItem("pendingBooking");
+
+      // 4. Show success screen
+      showSuccess(allBookings[0], bookingRes.id);
+
+    } catch (err) {
+      errTxt.textContent  = err.message || "Payment failed. Please try again.";
+      errEl.style.display = "block";
+      btn.disabled  = false;
+      btn.innerHTML = '<i class="fa-solid fa-lock"></i> Pay Now & Confirm Booking';
+    }
+  }
+
+  function showSuccess(b, bookingId) {
+    document.getElementById("paymentForm").style.display  = "none";
+    document.getElementById("successScreen").style.display = "block";
+
+    document.getElementById("bdId").textContent    = bookingId;
+    document.getElementById("bdName").textContent  = b.passenger;
+    document.getElementById("bdRoute").textContent = `${b.from} → ${b.to}`;
+    document.getElementById("bdDate").textContent  = b.date;
+    document.getElementById("bdClass").textContent = b.flightClass;
+    document.getElementById("bdAmt").textContent   = "₹" + Number(b.amount).toLocaleString("en-IN");
+    document.getElementById("bdUpi").textContent   = b.upiId;
+  }
+</script>
+</body>
+</html>
+

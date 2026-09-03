@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment secrets — NEVER commit
+.env
+.env.local
+.env.production
+
+# Data file (user data — keep out of repo)
+backend/data.json
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/

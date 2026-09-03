@@ -1,0 +1,1229 @@
+/* =====================================================
+   ALASKA TOUR & TRAVEL
+   TERMS & POLICY CSS
+===================================================== */
+
+/* ---------- GOOGLE FONT ---------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+
+/* ---------- ROOT ---------- */
+
+:root {
+    --primary: #087ea4;
+    --primary-dark: #05617e;
+    --secondary: #19b6d2;
+    --accent: #55d6ff;
+
+    --dark: #071923;
+    --dark-2: #0b2532;
+    --dark-3: #103746;
+
+    --white: #ffffff;
+    --text: #263943;
+    --muted: #6d7d85;
+
+    --light-bg: #f3f8fa;
+    --border: #dce8ed;
+
+    --shadow: 0 15px 40px rgba(5, 52, 68, 0.10);
+    --shadow-hover: 0 20px 50px rgba(5, 52, 68, 0.16);
+
+    --radius: 18px;
+}
+
+
+/* ---------- RESET ---------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background: var(--light-bg);
+    color: var(--text);
+    line-height: 1.7;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+
+/* =====================================================
+   NAVBAR
+===================================================== */
+
+.navbar {
+    width: 100%;
+    min-height: 78px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px 7%;
+
+    background: rgba(7, 25, 35, 0.96);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    backdrop-filter: blur(15px);
+}
+
+
+/* ---------- LOGO ---------- */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: linear-gradient(
+        135deg,
+        var(--secondary),
+        var(--primary)
+    );
+
+    color: white;
+    font-size: 20px;
+
+    box-shadow: 0 8px 25px rgba(25, 182, 210, 0.25);
+}
+
+.logo h2 {
+    color: white;
+    font-family: "Outfit", sans-serif;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+.logo span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #8faab5;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+
+/* ---------- NAV LINKS ---------- */
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.navbar nav a {
+    position: relative;
+
+    color: #d5e3e8;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: 0.3s ease;
+}
+
+.navbar nav a::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+
+    width: 0;
+    height: 2px;
+
+    background: var(--accent);
+
+    border-radius: 10px;
+
+    transition: 0.3s ease;
+}
+
+.navbar nav a:hover {
+    color: white;
+}
+
+.navbar nav a:hover::after {
+    width: 100%;
+}
+
+
+/* ---------- BOOK BUTTON ---------- */
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 11px 20px;
+
+    color: white;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    box-shadow: 0 8px 25px rgba(25, 182, 210, 0.22);
+
+    transition: 0.3s ease;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(25, 182, 210, 0.35);
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.policy-hero {
+    position: relative;
+
+    min-height: 390px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 70px 20px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(25, 182, 210, 0.22),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(8, 126, 164, 0.25),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #061822,
+            #0a2c3a,
+            #071923
+        );
+
+    color: white;
+}
+
+
+/* decorative circles */
+
+.policy-hero::before,
+.policy-hero::after {
+    content: "";
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.policy-hero::before {
+    width: 380px;
+    height: 380px;
+
+    top: -200px;
+    left: -120px;
+}
+
+.policy-hero::after {
+    width: 450px;
+    height: 450px;
+
+    right: -180px;
+    bottom: -250px;
+}
+
+
+/* ---------- HERO ICON ---------- */
+
+.hero-icon {
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 18px;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    color: var(--accent);
+
+    font-size: 28px;
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.2);
+
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+
+/* ---------- HERO TEXT ---------- */
+
+.policy-hero > span {
+    color: var(--accent);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 8px;
+}
+
+.policy-hero h1 {
+    position: relative;
+
+    font-family: "Outfit", sans-serif;
+
+    font-size: clamp(38px, 5vw, 58px);
+
+    line-height: 1.1;
+
+    margin-bottom: 16px;
+
+    letter-spacing: -1px;
+}
+
+.policy-hero p {
+    max-width: 650px;
+
+    color: #b7cbd2;
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
+
+.policy-container {
+    width: min(1180px, 90%);
+
+    margin: 60px auto;
+
+    display: grid;
+
+    grid-template-columns: 270px 1fr;
+
+    gap: 35px;
+
+    align-items: start;
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.policy-menu {
+    position: sticky;
+    top: 105px;
+
+    padding: 24px 18px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+}
+
+.policy-menu h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 0 10px 18px;
+
+    color: var(--dark);
+
+    font-family: "Outfit", sans-serif;
+
+    font-size: 16px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.policy-menu h3 i {
+    color: var(--primary);
+}
+
+
+.policy-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 13px 11px;
+
+    margin-top: 5px;
+
+    color: #61727a;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    border-radius: 10px;
+
+    transition: 0.3s ease;
+}
+
+.policy-menu a i {
+    width: 18px;
+
+    color: #7c969f;
+
+    transition: 0.3s ease;
+}
+
+.policy-menu a:hover {
+    color: var(--primary);
+
+    background: #edf8fb;
+
+    transform: translateX(4px);
+}
+
+.policy-menu a:hover i {
+    color: var(--primary);
+}
+
+
+/* =====================================================
+   CONTENT
+===================================================== */
+
+.policy-content {
+    min-width: 0;
+}
+
+
+/* ---------- COMMON CARD ---------- */
+
+.policy-card {
+    position: relative;
+
+    padding: 32px;
+
+    margin-bottom: 24px;
+
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    transition: 0.35s ease;
+}
+
+.policy-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow: var(--shadow-hover);
+
+    border-color: #c5e5ed;
+}
+
+
+/* ---------- INTRO CARD ---------- */
+
+.intro-card {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #f3fbfd
+        );
+}
+
+.card-icon {
+    flex-shrink: 0;
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #e5f7fb;
+
+    color: var(--primary);
+
+    font-size: 19px;
+}
+
+.intro-card h2 {
+    margin-bottom: 8px;
+
+    font-family: "Outfit", sans-serif;
+
+    font-size: 23px;
+
+    color: var(--dark);
+}
+
+
+/* =====================================================
+   SECTION HEADING
+===================================================== */
+
+.section-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    margin-bottom: 22px;
+}
+
+.section-heading > span {
+    flex-shrink: 0;
+
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    color: white;
+
+    font-family: "Outfit", sans-serif;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    box-shadow: 0 8px 20px rgba(8, 126, 164, 0.18);
+}
+
+.section-heading h2 {
+    color: var(--dark);
+
+    font-family: "Outfit", sans-serif;
+
+    font-size: 23px;
+
+    line-height: 1.2;
+
+    margin-bottom: 4px;
+}
+
+.section-heading p {
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   TEXT
+===================================================== */
+
+.policy-card p {
+    color: #61727a;
+
+    font-size: 14px;
+
+    margin-bottom: 14px;
+}
+
+.policy-card p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =====================================================
+   LIST
+===================================================== */
+
+.policy-card ul {
+    list-style: none;
+
+    margin-top: 15px;
+}
+
+.policy-card li {
+    position: relative;
+
+    padding: 10px 0 10px 29px;
+
+    color: #52656d;
+
+    font-size: 13.5px;
+
+    border-bottom: 1px solid #edf2f4;
+}
+
+.policy-card li:last-child {
+    border-bottom: none;
+}
+
+.policy-card li::before {
+    content: "\f058";
+
+    position: absolute;
+
+    left: 0;
+    top: 11px;
+
+    font-family: "Font Awesome 6 Free";
+
+    font-weight: 900;
+
+    color: var(--primary);
+
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   IMPORTANT NOTICE
+===================================================== */
+
+.notice {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 17px;
+
+    padding: 22px 25px;
+
+    margin: 28px 0;
+
+    border-radius: 15px;
+
+    background: #fff9e8;
+
+    border: 1px solid #f3dfaa;
+}
+
+.notice > i {
+    margin-top: 3px;
+
+    color: #d49a17;
+
+    font-size: 23px;
+}
+
+.notice h3 {
+    margin-bottom: 4px;
+
+    color: #795900;
+
+    font-family: "Outfit", sans-serif;
+
+    font-size: 17px;
+}
+
+.notice p {
+    color: #806e42;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   CONTACT CARD
+===================================================== */
+
+.contact-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    padding: 30px;
+
+    margin-top: 28px;
+
+    border-radius: var(--radius);
+
+    background:
+        linear-gradient(
+            135deg,
+            #06202c,
+            #0b4355
+        );
+
+    color: white;
+
+    overflow: hidden;
+
+    position: relative;
+
+    box-shadow: 0 18px 40px rgba(5, 52, 68, 0.18);
+}
+
+.contact-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    right: -90px;
+    top: -100px;
+
+    border-radius: 50%;
+
+    border: 30px solid rgba(255, 255, 255, 0.04);
+}
+
+.contact-card span {
+    color: var(--accent);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.contact-card h2 {
+    position: relative;
+    z-index: 2;
+
+    margin: 5px 0 6px;
+
+    font-family: "Outfit", sans-serif;
+
+    font-size: 22px;
+}
+
+.contact-card p {
+    position: relative;
+    z-index: 2;
+
+    color: #a9c5ce;
+
+    font-size: 13px;
+}
+
+.contact-card a {
+    flex-shrink: 0;
+
+    position: relative;
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 12px 19px;
+
+    border-radius: 10px;
+
+    background: white;
+
+    color: var(--primary-dark);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    transition: 0.3s ease;
+}
+
+.contact-card a:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.contact-card a i {
+    transition: 0.3s ease;
+}
+
+.contact-card a:hover i {
+    transform: translateX(4px);
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    padding: 40px 7%;
+
+    margin-top: 70px;
+
+    background: #06151d;
+
+    color: white;
+}
+
+
+/* ---------- FOOTER BRAND ---------- */
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.footer-logo > i {
+    color: var(--accent);
+
+    font-size: 25px;
+}
+
+.footer-logo strong {
+    display: block;
+
+    font-family: "Outfit", sans-serif;
+
+    font-size: 18px;
+
+    letter-spacing: 1px;
+}
+
+.footer-logo small {
+    display: block;
+
+    color: #75909a;
+
+    font-size: 8px;
+
+    letter-spacing: 2px;
+}
+
+.footer-brand > p {
+    margin-top: 9px;
+
+    color: #718b94;
+
+    font-size: 12px;
+}
+
+
+/* ---------- FOOTER LINKS ---------- */
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.footer-links a {
+    color: #91a8b0;
+
+    font-size: 12px;
+
+    transition: 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--accent);
+}
+
+
+/* ---------- SOCIAL ---------- */
+
+.social {
+    display: flex;
+    gap: 9px;
+}
+
+.social a {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: #9ab2ba;
+
+    font-size: 13px;
+
+    transition: 0.3s ease;
+}
+
+.social a:hover {
+    color: white;
+
+    background: var(--primary);
+
+    transform: translateY(-3px);
+}
+
+
+/* =====================================================
+   SELECTION
+===================================================== */
+
+::selection {
+    background: var(--primary);
+    color: white;
+}
+
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #edf3f5;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #7faeba;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+
+/* =====================================================
+   RESPONSIVE - TABLET
+===================================================== */
+
+@media (max-width: 950px) {
+
+    .navbar {
+        padding: 12px 4%;
+    }
+
+    .navbar nav {
+        gap: 18px;
+    }
+
+    .policy-container {
+        width: 92%;
+
+        grid-template-columns: 220px 1fr;
+
+        gap: 22px;
+    }
+
+    footer {
+        padding: 35px 4%;
+    }
+}
+
+
+/* =====================================================
+   RESPONSIVE - MOBILE
+===================================================== */
+
+@media (max-width: 760px) {
+
+    .navbar {
+        min-height: auto;
+
+        flex-wrap: wrap;
+
+        gap: 15px;
+
+        padding: 14px 5%;
+    }
+
+    .navbar nav {
+        order: 3;
+
+        width: 100%;
+
+        justify-content: center;
+
+        gap: 18px;
+
+        overflow-x: auto;
+
+        padding: 4px 0;
+    }
+
+    .navbar nav a {
+        white-space: nowrap;
+
+        font-size: 12px;
+    }
+
+    .nav-btn {
+        padding: 9px 14px;
+
+        font-size: 11px;
+    }
+
+
+    .policy-hero {
+        min-height: 330px;
+
+        padding: 55px 20px;
+    }
+
+    .policy-hero h1 {
+        font-size: 39px;
+    }
+
+    .policy-hero p {
+        font-size: 13px;
+    }
+
+
+    .policy-container {
+        width: 92%;
+
+        display: block;
+
+        margin: 35px auto;
+    }
+
+
+    .policy-menu {
+        position: relative;
+
+        top: auto;
+
+        margin-bottom: 25px;
+    }
+
+    .policy-menu a {
+        padding: 11px;
+    }
+
+
+    .policy-card {
+        padding: 23px 20px;
+
+        margin-bottom: 18px;
+    }
+
+    .intro-card {
+        flex-direction: column;
+
+        gap: 13px;
+    }
+
+    .section-heading {
+        align-items: flex-start;
+    }
+
+    .section-heading h2 {
+        font-size: 20px;
+    }
+
+    .policy-card p {
+        font-size: 13px;
+    }
+
+    .policy-card li {
+        font-size: 12.5px;
+    }
+
+
+    .notice {
+        padding: 19px;
+
+        gap: 13px;
+    }
+
+
+    .contact-card {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding: 25px;
+    }
+
+    .contact-card a {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+
+    footer {
+        flex-direction: column;
+
+        align-items: center;
+
+        text-align: center;
+
+        padding: 35px 5%;
+
+        margin-top: 50px;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        gap: 17px;
+    }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 430px) {
+
+    .logo h2 {
+        font-size: 18px;
+    }
+
+    .logo span {
+        font-size: 7px;
+    }
+
+    .logo-icon {
+        width: 40px;
+        height: 40px;
+
+        font-size: 17px;
+    }
+
+    .nav-btn {
+        padding: 8px 11px;
+    }
+
+    .policy-hero h1 {
+        font-size: 34px;
+    }
+
+    .hero-icon {
+        width: 60px;
+        height: 60px;
+
+        font-size: 23px;
+    }
+
+    .section-heading > span {
+        width: 40px;
+        height: 40px;
+
+        font-size: 12px;
+    }
+
+    .section-heading {
+        gap: 11px;
+    }
+
+    .section-heading h2 {
+        font-size: 18px;
+    }
+
+    .contact-card h2 {
+        font-size: 19px;
+    }
+}

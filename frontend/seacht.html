@@ -1,0 +1,3445 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Search Flights | Alaska Tour & Travel</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Montserrat", sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 76px;
+            background: #061a33;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 25px rgba(0,0,0,.15);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 13px;
+            background: linear-gradient(135deg,#16b4ff,#0764c7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transform: rotate(-7deg);
+        }
+
+        .logo-text strong {
+            display: block;
+            font-size: 17px;
+            letter-spacing: 1px;
+        }
+
+        .logo-text span {
+            display: block;
+            font-size: 9px;
+            color: #a8bed5;
+            letter-spacing: 2px;
+            margin-top: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #d9e7f4;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            transition: .3s;
+        }
+
+        .nav-links a:hover {
+            color: #24b5ff;
+        }
+
+        .login-btn {
+            border: 1px solid #38546f;
+            padding: 10px 17px;
+            border-radius: 9px;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            padding: 45px 6% 95px;
+            color: white;
+            background:
+                linear-gradient(
+                    120deg,
+                    rgba(4,24,50,.97),
+                    rgba(6,72,119,.9)
+                ),
+                url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1600&q=80");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .hero h1 {
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 9px;
+        }
+
+        .hero p {
+            color: #c8dced;
+            font-size: 13px;
+        }
+
+        /* ================= SEARCH ================= */
+
+        .search-wrapper {
+            max-width: 1200px;
+            margin: -62px auto 0;
+            padding: 0 20px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .search-box {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 16px 45px rgba(19,48,78,.16);
+        }
+
+        .trip-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 19px;
+        }
+
+        .trip-tab {
+            border: none;
+            background: #edf3f8;
+            color: #627489;
+            padding: 9px 17px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .trip-tab.active {
+            background: #087fd0;
+            color: white;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns:
+                1.25fr
+                1.25fr
+                1fr
+                1fr
+                .9fr
+                auto;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .field label {
+            display: block;
+            font-size: 9px;
+            color: #738397;
+            font-weight: 800;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+        .input-box {
+            height: 51px;
+            border: 1px solid #dce5ee;
+            border-radius: 11px;
+            background: #fbfdff;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 0 12px;
+        }
+
+        .input-box i {
+            color: #0785d6;
+            font-size: 13px;
+        }
+
+        .input-box input,
+        .input-box select {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 11px;
+            font-weight: 600;
+            color: #172033;
+        }
+
+        .search-btn {
+            height: 51px;
+            border: none;
+            border-radius: 11px;
+            padding: 0 21px;
+            background: linear-gradient(135deg,#0e91e5,#075eb9);
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            box-shadow: 0 8px 20px rgba(14,145,229,.25);
+            transition: .3s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            max-width: 1200px;
+            margin: 35px auto 70px;
+            padding: 0 20px;
+        }
+
+        .result-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .route-title {
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .route-title span {
+            color: #0786d7;
+            padding: 0 5px;
+        }
+
+        .result-count {
+            margin-top: 5px;
+            font-size: 11px;
+            color: #7a8999;
+        }
+
+        .sort-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #778696;
+            font-size: 10px;
+        }
+
+        .sort-box select {
+            border: 1px solid #dce5ee;
+            background: white;
+            border-radius: 8px;
+            padding: 9px 12px;
+            outline: none;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 245px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* ================= FILTER ================= */
+
+        .filter-card {
+            background: white;
+            border-radius: 15px;
+            padding: 19px;
+            box-shadow: 0 6px 25px rgba(21,44,72,.07);
+            position: sticky;
+            top: 95px;
+        }
+
+        .filter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .filter-header h3 {
+            font-size: 13px;
+        }
+
+        .clear-btn {
+            border: none;
+            background: none;
+            color: #087fd0;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .filter-section {
+            padding: 17px 0;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .filter-section:last-child {
+            border-bottom: none;
+        }
+
+        .filter-section h4 {
+            font-size: 11px;
+            margin-bottom: 12px;
+        }
+
+        .check-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            color: #667689;
+            font-size: 10px;
+        }
+
+        .check-left {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .check-left input {
+            accent-color: #087fd0;
+        }
+
+        .price-range {
+            width: 100%;
+            accent-color: #087fd0;
+        }
+
+        .price-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9px;
+            color: #7d8b99;
+            margin-top: 7px;
+        }
+
+        /* ================= FLIGHT CARD ================= */
+
+        .flight-list {
+            display: flex;
+            flex-direction: column;
+            gap: 13px;
+        }
+
+        .flight-card {
+            background: white;
+            border-radius: 15px;
+            padding: 19px;
+            border: 1px solid transparent;
+            box-shadow: 0 6px 25px rgba(21,44,72,.065);
+            transition: .25s;
+        }
+
+        .flight-card:hover {
+            transform: translateY(-2px);
+            border-color: #b9ddf5;
+            box-shadow: 0 12px 30px rgba(21,44,72,.1);
+        }
+
+        .flight-main {
+            display: grid;
+            grid-template-columns: 150px 1fr 130px;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .airline {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .airline-logo {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: #eaf5ff;
+            color: #087dca;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+        .airline-name {
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .flight-number {
+            color: #8997a5;
+            font-size: 9px;
+            margin-top: 4px;
+        }
+
+        .route {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .time {
+            min-width: 55px;
+        }
+
+        .time strong {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .airport {
+            color: #8492a0;
+            font-size: 9px;
+            margin-top: 4px;
+        }
+
+        .route-line {
+            flex: 1;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .route-line span {
+            display: block;
+            font-size: 9px;
+            color: #8a98a7;
+            margin-bottom: 7px;
+        }
+
+        .line {
+            height: 1px;
+            background: #ccd8e3;
+            position: relative;
+        }
+
+        .line::after {
+            content: "✈";
+            position: absolute;
+            top: -9px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 0 7px;
+            color: #1389d7;
+            font-size: 13px;
+        }
+
+        .stops {
+            font-size: 9px;
+            color: #0d9b68;
+            margin-top: 7px;
+        }
+
+        .price-area {
+            text-align: right;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .per-person {
+            font-size: 8px;
+            color: #8997a5;
+            margin-top: 3px;
+        }
+
+        .book-btn {
+            border: none;
+            background: #087fd0;
+            color: white;
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 10px;
+            font-weight: 800;
+            margin-top: 9px;
+            transition: .25s;
+        }
+
+        .book-btn:hover {
+            background: #075d9d;
+        }
+
+        .flight-footer {
+            border-top: 1px solid #edf1f5;
+            margin-top: 15px;
+            padding-top: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 9px;
+            color: #84919f;
+        }
+
+        .footer-info {
+            display: flex;
+            gap: 17px;
+        }
+
+        .footer-info i {
+            color: #0786d7;
+            margin-right: 4px;
+        }
+
+        .refundable {
+            color: #0a9a69;
+            font-weight: 700;
+        }
+
+        /* ================= NO RESULTS ================= */
+
+        .no-results {
+            background: white;
+            padding: 50px 20px;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .no-results i {
+            font-size: 40px;
+            color: #a0b1c0;
+            margin-bottom: 15px;
+        }
+
+        .no-results h3 {
+            margin-bottom: 7px;
+        }
+
+        .no-results p {
+            color: #82909d;
+            font-size: 11px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #061a33;
+            color: white;
+            padding: 35px 6%;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-brand {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .footer-brand span {
+            color: #20adf1;
+        }
+
+        .footer-text {
+            color: #8da3b9;
+            font-size: 9px;
+            margin-top: 5px;
+        }
+
+        .socials {
+            display: flex;
+            gap: 9px;
+        }
+
+        .socials a {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #102b48;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width:1050px) {
+
+            .search-grid {
+                grid-template-columns: repeat(3,1fr);
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+        }
+
+        @media(max-width:850px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-card {
+                position: static;
+            }
+
+            .flight-main {
+                grid-template-columns: 1fr;
+            }
+
+            .price-area {
+                text-align: left;
+            }
+        }
+
+        @media(max-width:600px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .hero {
+                padding: 35px 20px 90px;
+            }
+
+            .hero h1 {
+                font-size: 25px;
+            }
+
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .sort-box {
+                width: 100%;
+            }
+
+            .sort-box select {
+                flex: 1;
+            }
+
+            .route {
+                gap: 6px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+
+    </style>
+<script src="api.js"></script>
+</head>
+
+<body>
+
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+
+<header class="navbar">
+
+    <a href="#" class="logo">
+
+        <div class="logo-icon">
+            <i class="fa-solid fa-plane"></i>
+        </div>
+
+        <div class="logo-text">
+            <strong>ALASKA</strong>
+            <span>TOUR & TRAVEL</span>
+        </div>
+
+    </a>
+
+    <nav class="nav-links">
+
+        <a href="#">Home</a>
+        <a href="#">Flights</a>
+        <a href="#">Hotels</a>
+        <a href="#">Packages</a>
+        <a href="#">Contact</a>
+
+        <a href="#" class="login-btn">
+            <i class="fa-regular fa-user"></i>
+            Login
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>
+            Explore Flights to Alaska
+        </h1>
+
+        <p>
+            Compare flights from India to Alaska and discover beautiful destinations across the Last Frontier.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ============================================================
+     SEARCH
+============================================================ -->
+
+<div class="search-wrapper">
+
+    <form class="search-box" id="searchForm">
+
+        <div class="trip-tabs">
+
+            <button type="button" class="trip-tab active">
+                Round Trip
+            </button>
+
+            <button type="button" class="trip-tab">
+                One Way
+            </button>
+
+            <button type="button" class="trip-tab">
+                Multi City
+            </button>
+
+        </div>
+
+
+        <div class="search-grid">
+
+            <!-- FROM -->
+
+            <div class="field">
+
+                <label>From</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-plane-departure"></i>
+
+                    <select id="from">
+
+                        <option value="Mumbai (BOM)">
+                            Mumbai (BOM)
+                        </option>
+
+                        <option value="Delhi (DEL)">
+                            Delhi (DEL)
+                        </option>
+
+                        <option value="Kolkata (CCU)">
+                            Kolkata (CCU)
+                        </option>
+
+                        <option value="Chennai (MAA)">
+                            Chennai (MAA)
+                        </option>
+
+                        <option value="Anchorage (ANC)">
+                            Anchorage (ANC)
+                        </option>
+
+                        <option value="Fairbanks (FAI)">
+                            Fairbanks (FAI)
+                        </option>
+
+                        <option value="Juneau (JNU)">
+                            Juneau (JNU)
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- TO -->
+
+            <div class="field">
+
+                <label>To</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-plane-arrival"></i>
+
+                    <select id="to">
+
+                        <option value="Anchorage (ANC)">
+                            Anchorage (ANC)
+                        </option>
+
+                        <option value="Fairbanks (FAI)">
+                            Fairbanks (FAI)
+                        </option>
+
+                        <option value="Juneau (JNU)">
+                            Juneau (JNU)
+                        </option>
+
+                        <option value="Mumbai (BOM)">
+                            Mumbai (BOM)
+                        </option>
+
+                        <option value="Delhi (DEL)">
+                            Delhi (DEL)
+                        </option>
+
+                        <option value="Kolkata (CCU)">
+                            Kolkata (CCU)
+                        </option>
+
+                        <option value="Chennai (MAA)">
+                            Chennai (MAA)
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- DEPARTURE -->
+
+            <div class="field">
+
+                <label>Departure</label>
+
+                <div class="input-box">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    <input type="date" value="2026-09-15">
+
+                </div>
+
+            </div>
+
+
+            <!-- RETURN -->
+
+            <div class="field">
+
+                <label>Return</label>
+
+                <div class="input-box">
+
+                    <i class="fa-regular fa-calendar"></i>
+
+                    <input type="date" value="2026-09-20">
+
+                </div>
+
+            </div>
+
+
+            <!-- TRAVELLERS -->
+
+            <div class="field">
+
+                <label>Travellers</label>
+
+                <div class="input-box">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <select>
+
+                        <option>1 Adult</option>
+                        <option>2 Adults</option>
+                        <option>3 Adults</option>
+                        <option>4 Adults</option>
+                        <option>5 Adults</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <button type="submit" class="search-btn">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                Search
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- ============================================================
+     MAIN
+============================================================ -->
+
+<main class="main">
+
+    <div class="result-top">
+
+        <div>
+
+            <div class="route-title" id="routeTitle">
+                Mumbai <span>→</span> Anchorage
+            </div>
+
+            <div class="result-count" id="resultCount">
+                30 flights found · 15 September 2026
+            </div>
+
+        </div>
+
+
+        <div class="sort-box">
+
+            <span>Sort by</span>
+
+            <select id="sortSelect">
+
+                <option value="recommended">
+                    Recommended
+                </option>
+
+                <option value="price">
+                    Lowest Price
+                </option>
+
+                <option value="duration">
+                    Shortest Duration
+                </option>
+
+                <option value="departure">
+                    Earliest Departure
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <div class="content-grid">
+
+
+        <!-- =====================================================
+             FILTER SIDEBAR
+        ===================================================== -->
+
+        <aside class="filter-card">
+
+            <div class="filter-header">
+
+                <h3>
+                    <i class="fa-solid fa-sliders"></i>
+                    Filters
+                </h3>
+
+                <button class="clear-btn"
+                        onclick="clearFilters()">
+
+                    Clear All
+
+                </button>
+
+            </div>
+
+
+            <!-- PRICE -->
+
+            <div class="filter-section">
+
+                <h4>Price Range</h4>
+
+                <input
+                    type="range"
+                    class="price-range"
+                    id="priceRange"
+                    min="30000"
+                    max="150000"
+                    value="150000"
+                    step="1000"
+                    oninput="updatePrice(this.value)"
+                >
+
+                <div class="price-values">
+
+                    <span>₹30,000</span>
+
+                    <span id="priceValue">
+                        ₹1,50,000
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- STOPS -->
+
+            <div class="filter-section">
+
+                <h4>Stops</h4>
+
+                <label class="check-row">
+
+                    <span class="check-left">
+
+                        <input
+                            type="checkbox"
+                            class="stop-filter"
+                            value="Non-stop"
+                            checked
+                            onchange="applyFilters()"
+                        >
+
+                        Non-stop
+
+                    </span>
+
+                    <span>8</span>
+
+                </label>
+
+
+                <label class="check-row">
+
+                    <span class="check-left">
+
+                        <input
+                            type="checkbox"
+                            class="stop-filter"
+                            value="1 Stop"
+                            checked
+                            onchange="applyFilters()"
+                        >
+
+                        1 Stop
+
+                    </span>
+
+                    <span>14</span>
+
+                </label>
+
+
+                <label class="check-row">
+
+                    <span class="check-left">
+
+                        <input
+                            type="checkbox"
+                            class="stop-filter"
+                            value="2 Stops"
+                            checked
+                            onchange="applyFilters()"
+                        >
+
+                        2 Stops
+
+                    </span>
+
+                    <span>8</span>
+
+                </label>
+
+            </div>
+
+
+            <!-- AIRLINES -->
+
+            <div class="filter-section">
+
+                <h4>Airlines</h4>
+
+                <label class="check-row">
+                    <span class="check-left">
+                        <input type="checkbox" checked>
+                        Air India
+                    </span>
+                    <span>7</span>
+                </label>
+
+                <label class="check-row">
+                    <span class="check-left">
+                        <input type="checkbox" checked>
+                        IndiGo
+                    </span>
+                    <span>7</span>
+                </label>
+
+                <label class="check-row">
+                    <span class="check-left">
+                        <input type="checkbox" checked>
+                        Alaska Airlines
+                    </span>
+                    <span>6</span>
+                </label>
+
+                <label class="check-row">
+                    <span class="check-left">
+                        <input type="checkbox" checked>
+                        Delta
+                    </span>
+                    <span>5</span>
+                </label>
+
+                <label class="check-row">
+                    <span class="check-left">
+                        <input type="checkbox" checked>
+                        United
+                    </span>
+                    <span>5</span>
+                </label>
+
+            </div>
+
+
+            <!-- CLASS -->
+
+            <div class="filter-section">
+
+                <h4>Travel Class</h4>
+
+                <label class="check-row">
+
+                    <span class="check-left">
+                        <input type="checkbox" checked>
+                        Economy
+                    </span>
+
+                </label>
+
+                <label class="check-row">
+
+                    <span class="check-left">
+                        <input type="checkbox">
+                        Premium Economy
+                    </span>
+
+                </label>
+
+                <label class="check-row">
+
+                    <span class="check-left">
+                        <input type="checkbox">
+                        Business
+                    </span>
+
+                </label>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =====================================================
+             30 FLIGHTS
+        ===================================================== -->
+
+        <section>
+
+            <div class="flight-list" id="flightList">
+
+
+                <!-- 01 -->
+
+                <article class="flight-card"
+                    data-price="68999"
+                    data-duration="17h 20m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+
+                            <div class="airline-logo">
+                                <i class="fa-solid fa-plane"></i>
+                            </div>
+
+                            <div>
+                                <div class="airline-name">
+                                    Air India
+                                </div>
+
+                                <div class="flight-number">
+                                    AI 101
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>01:15</strong>
+                                <div class="airport">BOM</div>
+                            </div>
+
+                            <div class="route-line">
+
+                                <span>17h 20m</span>
+
+                                <div class="line"></div>
+
+                                <div class="stops">
+                                    1 Stop · SEA
+                                </div>
+
+                            </div>
+
+                            <div class="time">
+                                <strong>10:35</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="price-area">
+
+                            <div class="price">₹68,999</div>
+
+                            <div class="per-person">
+                                per person
+                            </div>
+
+                            <a href="pa.html" class="book-btn">Book Now</a>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="flight-footer">
+
+                        <div class="footer-info">
+
+                            <span>
+                                <i class="fa-solid fa-suitcase"></i>
+                                23 kg baggage
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-utensils"></i>
+                                Meal included
+                            </span>
+
+                        </div>
+
+                        <span class="refundable">
+                            Refundable
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <!-- 02 -->
+
+                <article class="flight-card"
+                    data-price="72999"
+                    data-duration="18h 10m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+
+                            <div class="airline-logo">
+                                <i class="fa-solid fa-plane"></i>
+                            </div>
+
+                            <div>
+                                <div class="airline-name">
+                                    IndiGo
+                                </div>
+                                <div class="flight-number">
+                                    6E 2045
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>02:30</strong>
+                                <div class="airport">DEL</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>18h 10m</span>
+                                <div class="line"></div>
+                                <div class="stops">
+                                    1 Stop · SEA
+                                </div>
+                            </div>
+
+                            <div class="time">
+                                <strong>11:40</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹72,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>							
+                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+
+                        <div class="footer-info">
+                            <span>
+                                <i class="fa-solid fa-suitcase"></i>
+                                20 kg baggage
+                            </span>
+
+                            <span>
+                                <i class="fa-solid fa-utensils"></i>
+                                Meal available
+                            </span>
+                        </div>
+
+                        <span class="refundable">
+                            Refundable
+                        </span>
+
+                    </div>
+
+                </article>
+
+
+                <!-- 03 -->
+
+                <article class="flight-card"
+                    data-price="75999"
+                    data-duration="19h 05m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+
+                            <div class="airline-logo">
+                                <i class="fa-solid fa-plane"></i>
+                            </div>
+
+                            <div>
+                                <div class="airline-name">
+                                    Air India
+                                </div>
+                                <div class="flight-number">
+                                    AI 187
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>04:20</strong>
+                                <div class="airport">CCU</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>19h 05m</span>
+                                <div class="line"></div>
+                                <div class="stops">
+                                    1 Stop · SEA
+                                </div>
+                            </div>
+
+                            <div class="time">
+                                <strong>13:25</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹75,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>   
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-wifi"></i>Wi-Fi</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 04 -->
+
+                <article class="flight-card"
+                    data-price="78999"
+                    data-duration="20h 15m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+
+                            <div class="airline-logo">
+                                <i class="fa-solid fa-plane"></i>
+                            </div>
+
+                            <div>
+                                <div class="airline-name">
+                                    Delta
+                                </div>
+                                <div class="flight-number">
+                                    DL 405
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>06:00</strong>
+                                <div class="airport">MAA</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>20h 15m</span>
+                                <div class="line"></div>
+                                <div class="stops">
+                                    1 Stop · SEA
+                                </div>
+                            </div>
+
+                            <div class="time">
+                                <strong>16:15</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹78,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>      
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal included</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 05 -->
+
+                <article class="flight-card"
+                    data-price="64999"
+                    data-duration="16h 50m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo">
+                                <i class="fa-solid fa-plane"></i>
+                            </div>
+
+                            <div>
+                                <div class="airline-name">
+                                    United
+                                </div>
+                                <div class="flight-number">
+                                    UA 82
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>07:10</strong>
+                                <div class="airport">BOM</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>16h 50m</span>
+                                <div class="line"></div>
+                                <div class="stops">
+                                    1 Stop · SFO
+                                </div>
+                            </div>
+
+                            <div class="time">
+                                <strong>09:00</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹64,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>  
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-wifi"></i>Wi-Fi</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 06 -->
+
+                <article class="flight-card"
+                    data-price="81999"
+                    data-duration="21h 10m"
+                    data-stop="2 Stops">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+
+                            <div>
+                                <div class="airline-name">IndiGo</div>
+                                <div class="flight-number">6E 512</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>08:25</strong>
+                                <div class="airport">BOM</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>21h 10m</span>
+                                <div class="line"></div>
+                                <div class="stops">2 Stops</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>17:35</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹81,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>     
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-clock"></i>2 Stops</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 07 -->
+
+                <article class="flight-card"
+                    data-price="69999"
+                    data-duration="18h 40m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Air India</div>
+                                <div class="flight-number">AI 302</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>09:15</strong>
+                                <div class="airport">DEL</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>18h 40m</span>
+                                <div class="line"></div>
+                                <div class="stops">1 Stop · SEA</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>12:55</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹69,999</div>
+                            <div class="per-person">per person</div>
+							<a href="tour.html" class="book-btn">Book Now</a>    
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal included</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 08 -->
+
+                <article class="flight-card"
+                    data-price="73999"
+                    data-duration="19h 30m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Delta</div>
+                                <div class="flight-number">DL 188</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>10:30</strong>
+                                <div class="airport">CCU</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>19h 30m</span>
+                                <div class="line"></div>
+                                <div class="stops">1 Stop · SEA</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>16:00</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹73,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>    
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-wifi"></i>Wi-Fi</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 09 -->
+
+                <article class="flight-card"
+                    data-price="76999"
+                    data-duration="20h 05m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">United</div>
+                                <div class="flight-number">UA 57</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>11:15</strong>
+                                <div class="airport">MAA</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>20h 05m</span>
+                                <div class="line"></div>
+                                <div class="stops">1 Stop · SFO</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>15:20</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹76,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>        
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal included</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 10 -->
+
+                <article class="flight-card"
+                    data-price="82999"
+                    data-duration="21h 25m"
+                    data-stop="2 Stops">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Air India</div>
+                                <div class="flight-number">AI 505</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>12:40</strong>
+                                <div class="airport">DEL</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>21h 25m</span>
+                                <div class="line"></div>
+                                <div class="stops">2 Stops</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>17:05</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹82,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>   
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-clock"></i>2 Stops</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 11 -->
+
+                <article class="flight-card"
+                    data-price="71999"
+                    data-duration="18h 55m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Alaska Airlines</div>
+                                <div class="flight-number">AS 102</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>13:20</strong>
+                                <div class="airport">BOM</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>18h 55m</span>
+                                <div class="line"></div>
+                                <div class="stops">1 Stop · SEA</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>15:15</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹71,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>      
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-wifi"></i>Wi-Fi</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 12 -->
+
+                <article class="flight-card"
+                    data-price="67999"
+                    data-duration="17h 45m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">United</div>
+                                <div class="flight-number">UA 201</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>14:10</strong>
+                                <div class="airport">BOM</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>17h 45m</span>
+                                <div class="line"></div>
+                                <div class="stops">1 Stop · SFO</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>12:55</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹67,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>       
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal available</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 13 -->
+
+                <article class="flight-card"
+                    data-price="79999"
+                    data-duration="19h 40m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Delta</div>
+                                <div class="flight-number">DL 501</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>15:30</strong>
+                                <div class="airport">DEL</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>19h 40m</span>
+                                <div class="line"></div>
+                                <div class="stops">1 Stop · SEA</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>16:10</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹79,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>     
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-wifi"></i>Wi-Fi</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 14 -->
+
+                <article class="flight-card"
+                    data-price="84999"
+                    data-duration="22h 15m"
+                    data-stop="2 Stops">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Air India</div>
+                                <div class="flight-number">AI 701</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>16:45</strong>
+                                <div class="airport">CCU</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>22h 15m</span>
+                                <div class="line"></div>
+                                <div class="stops">2 Stops</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>21:00</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹84,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>        
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-clock"></i>2 Stops</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 15 -->
+
+                <article class="flight-card"
+                    data-price="74999"
+                    data-duration="20h 30m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Alaska Airlines</div>
+                                <div class="flight-number">AS 215</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>18:00</strong>
+                                <div class="airport">MAA</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>20h 30m</span>
+                                <div class="line"></div>
+                                <div class="stops">1 Stop · SEA</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>19:30</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹74,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>
+							</div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal included</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 16 -->
+
+                <article class="flight-card"
+                    data-price="45999"
+                    data-duration="1h 25m"
+                    data-stop="Non-stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Alaska Airlines</div>
+                                <div class="flight-number">AS 301</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>06:20</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>1h 25m</span>
+                                <div class="line"></div>
+                                <div class="stops">Non-stop</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>07:45</strong>
+                                <div class="airport">FAI</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹45,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-wifi"></i>Wi-Fi</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 17 -->
+
+                <article class="flight-card"
+                    data-price="42999"
+                    data-duration="1h 40m"
+                    data-stop="Non-stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Alaska Airlines</div>
+                                <div class="flight-number">AS 415</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>08:10</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>1h 40m</span>
+                                <div class="line"></div>
+                                <div class="stops">Non-stop</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>09:50</strong>
+                                <div class="airport">JNU</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹42,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal available</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 18 -->
+
+                <article class="flight-card"
+                    data-price="38999"
+                    data-duration="1h 15m"
+                    data-stop="Non-stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Delta</div>
+                                <div class="flight-number">DL 720</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>10:00</strong>
+                                <div class="airport">FAI</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>1h 15m</span>
+                                <div class="line"></div>
+                                <div class="stops">Non-stop</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>11:15</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹38,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-wifi"></i>Wi-Fi</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 19 -->
+
+                <article class="flight-card"
+                    data-price="51999"
+                    data-duration="2h 05m"
+                    data-stop="Non-stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Alaska Airlines</div>
+                                <div class="flight-number">AS 530</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>12:30</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>2h 05m</span>
+                                <div class="line"></div>
+                                <div class="stops">Non-stop</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>14:35</strong>
+                                <div class="airport">JNU</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹51,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal included</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 20 -->
+
+                <article class="flight-card"
+                    data-price="46999"
+                    data-duration="1h 30m"
+                    data-stop="Non-stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Alaska Airlines</div>
+                                <div class="flight-number">AS 610</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>14:10</strong>
+                                <div class="airport">JNU</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>1h 30m</span>
+                                <div class="line"></div>
+                                <div class="stops">Non-stop</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>15:40</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹46,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-wifi"></i>Wi-Fi</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 21 -->
+
+                <article class="flight-card"
+                    data-price="49999"
+                    data-duration="1h 55m"
+                    data-stop="Non-stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Delta</div>
+                                <div class="flight-number">DL 815</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>16:00</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>1h 55m</span>
+                                <div class="line"></div>
+                                <div class="stops">Non-stop</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>17:55</strong>
+                                <div class="airport">FAI</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹49,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal available</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 22 -->
+
+                <article class="flight-card"
+                    data-price="55999"
+                    data-duration="2h 15m"
+                    data-stop="Non-stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Alaska Airlines</div>
+                                <div class="flight-number">AS 720</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>18:30</strong>
+                                <div class="airport">FAI</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>2h 15m</span>
+                                <div class="line"></div>
+                                <div class="stops">Non-stop</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>20:45</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹55,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-wifi"></i>Wi-Fi</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 23 -->
+
+                <article class="flight-card"
+                    data-price="57999"
+                    data-duration="1h 45m"
+                    data-stop="Non-stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Alaska Airlines</div>
+                                <div class="flight-number">AS 811</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>20:10</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>1h 45m</span>
+                                <div class="line"></div>
+                                <div class="stops">Non-stop</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>21:55</strong>
+                                <div class="airport">JNU</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹57,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal included</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 24 -->
+
+                <article class="flight-card"
+                    data-price="62999"
+                    data-duration="3h 10m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">United</div>
+                                <div class="flight-number">UA 920</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>21:00</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>3h 10m</span>
+                                <div class="line"></div>
+                                <div class="stops">1 Stop · FAI</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>00:10</strong>
+                                <div class="airport">JNU</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹62,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-clock"></i>Short layover</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 25 -->
+
+                <article class="flight-card"
+                    data-price="57999"
+                    data-duration="2h 30m"
+                    data-stop="1 Stop">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Delta</div>
+                                <div class="flight-number">DL 930</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>22:15</strong>
+                                <div class="airport">FAI</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>2h 30m</span>
+                                <div class="line"></div>
+                                <div class="stops">1 Stop</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>00:45</strong>
+                                <div class="airport">JNU</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹57,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal available</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 26 -->
+
+                <article class="flight-card"
+                    data-price="89999"
+                    data-duration="23h 15m"
+                    data-stop="2 Stops">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Air India</div>
+                                <div class="flight-number">AI 812</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>06:30</strong>
+                                <div class="airport">BOM</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>23h 15m</span>
+                                <div class="line"></div>
+                                <div class="stops">2 Stops</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>18:45</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹89,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-clock"></i>2 Stops</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 27 -->
+
+                <article class="flight-card"
+                    data-price="85999"
+                    data-duration="22h 40m"
+                    data-stop="2 Stops">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">IndiGo</div>
+                                <div class="flight-number">6E 900</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>07:50</strong>
+                                <div class="airport">DEL</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>22h 40m</span>
+                                <div class="line"></div>
+                                <div class="stops">2 Stops</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>16:30</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹85,999</div>
+                            <div class="per-person">per person</div>
+<a href="tour.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>20 kg baggage</span>
+                            <span><i class="fa-solid fa-wifi"></i>Wi-Fi</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 28 -->
+
+                <article class="flight-card"
+                    data-price="91999"
+                    data-duration="24h 05m"
+                    data-stop="2 Stops">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Delta</div>
+                                <div class="flight-number">DL 1005</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>09:45</strong>
+                                <div class="airport">CCU</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>24h 05m</span>
+                                <div class="line"></div>
+                                <div class="stops">2 Stops</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>21:50</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹91,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal included</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 29 -->
+
+                <article class="flight-card"
+                    data-price="93999"
+                    data-duration="24h 40m"
+                    data-stop="2 Stops">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">United</div>
+                                <div class="flight-number">UA 1102</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>11:30</strong>
+                                <div class="airport">MAA</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>24h 40m</span>
+                                <div class="line"></div>
+                                <div class="stops">2 Stops</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>20:10</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹93,999</div>
+                            <div class="per-person">per person</div>
+<a href="pa.html" class="book-btn">Book Now</a>                        </div>
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-wifi"></i>Wi-Fi</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+                <!-- 30 -->
+
+                <article class="flight-card"
+                    data-price="97999"
+                    data-duration="25h 10m"
+                    data-stop="2 Stops">
+
+                    <div class="flight-main">
+
+                        <div class="airline">
+                            <div class="airline-logo"><i class="fa-solid fa-plane"></i></div>
+                            <div>
+                                <div class="airline-name">Alaska Airlines</div>
+                                <div class="flight-number">AS 1200</div>
+                            </div>
+                        </div>
+
+                        <div class="route">
+
+                            <div class="time">
+                                <strong>13:20</strong>
+                                <div class="airport">BOM</div>
+                            </div>
+
+                            <div class="route-line">
+                                <span>25h 10m</span>
+                                <div class="line"></div>
+                                <div class="stops">2 Stops</div>
+                            </div>
+
+                            <div class="time">
+                                <strong>18:30</strong>
+                                <div class="airport">ANC</div>
+                            </div>
+
+                        </div>
+
+                        <div class="price-area">
+                            <div class="price">₹97,999</div>
+                            <div class="per-person">per person</div>
+							<a href="pa.html" class="book-btn">Book Now</a>
+                       </div>
+
+
+                    </div>
+
+                    <div class="flight-footer">
+                        <div class="footer-info">
+                            <span><i class="fa-solid fa-suitcase"></i>23 kg baggage</span>
+                            <span><i class="fa-solid fa-utensils"></i>Meal included</span>
+                        </div>
+                        <span class="refundable">Refundable</span>
+                    </div>
+
+                </article>
+
+
+            </div>
+
+
+            <!-- NO RESULTS -->
+
+            <div class="no-results" id="noResults">
+
+                <i class="fa-solid fa-plane-slash"></i>
+
+                <h3>
+                    No flights found
+                </h3>
+
+                <p>
+                    Try changing your filters or increasing your price range.
+                </p>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+
+<footer>
+
+    <div class="footer-content">
+
+        <div>
+
+            <div class="footer-brand">
+                ALASKA <span>TOUR & TRAVEL</span>
+            </div>
+
+            <div class="footer-text">
+                Your journey to Alaska begins with us.
+            </div>
+
+        </div>
+
+
+        <div class="socials">
+
+            <a href="#">
+                <i class="fa-brands fa-facebook-f"></i>
+            </a>
+
+            <a href="#">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="#">
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+            <a href="#">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+
+<script>
+
+    /* ================= SEARCH ================= */
+
+    document
+        .getElementById("searchForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const from =
+                document.getElementById("from").value;
+
+            const to =
+                document.getElementById("to").value;
+
+            document.getElementById("routeTitle").innerHTML =
+                `${from} <span>→</span> ${to}`;
+
+            window.scrollTo({
+                top: 350,
+                behavior: "smooth"
+            });
+
+        });
+
+
+    /* ================= TRIP TABS ================= */
+
+    const tabs =
+        document.querySelectorAll(".trip-tab");
+
+    tabs.forEach(tab => {
+
+        tab.addEventListener("click", function() {
+
+            tabs.forEach(item =>
+                item.classList.remove("active")
+            );
+
+            this.classList.add("active");
+
+        });
+
+    });
+
+
+   /* ================= BOOK BUTTON ================= */
+
+document
+    .querySelectorAll(".book-btn")
+    .forEach(button => {
+
+        button.addEventListener("click", function(event) {
+
+            
+
+            const card =
+                this.closest(".flight-card");
+
+            /* AIRLINE */
+
+            const airline =
+                card.querySelector(".airline-name")
+                    .textContent
+                    .trim();
+
+            /* FLIGHT NUMBER */
+
+            const flightNumber =
+                card.querySelector(".flight-number")
+                    .textContent
+                    .trim();
+
+            /* DEPARTURE TIME */
+
+            const departure =
+                card.querySelectorAll(".time strong")[0]
+                    .textContent
+                    .trim();
+
+            /* ARRIVAL TIME */
+
+            const arrival =
+                card.querySelectorAll(".time strong")[1]
+                    .textContent
+                    .trim();
+
+            /* AIRPORT CODES */
+
+            const airports =
+                card.querySelectorAll(".airport");
+
+            const fromCode =
+                airports[0].textContent.trim();
+
+            const toCode =
+                airports[1].textContent.trim();
+
+            /* PRICE */
+
+            const priceText =
+                card.querySelector(".price")
+                    .textContent
+                    .trim();
+
+            const price =
+                priceText.replace(/[₹,]/g, "");
+
+            /* CITY NAME */
+
+            const cityNames = {
+                BOM: "Mumbai",
+                DEL: "Delhi",
+                CCU: "Kolkata",
+                MAA: "Chennai",
+                ANC: "Anchorage",
+                FAI: "Fairbanks",
+                JNU: "Juneau"
+            };
+
+            const from =
+                cityNames[fromCode] || fromCode;
+
+            const to =
+                cityNames[toCode] || toCode;
+
+            /* DATE */
+
+            const date =
+                "15-Sep-2026";
+
+            /* CLASS */
+
+            const flightClass =
+                "Economy";
+
+            /* CREATE BOOKING URL */
+
+            const bookingURL =
+                "pa.html?" +
+                "from=" + encodeURIComponent(from) +
+                "&fromCode=" + encodeURIComponent(fromCode) +
+                "&to=" + encodeURIComponent(to) +
+                "&toCode=" + encodeURIComponent(toCode) +
+                "&date=" + encodeURIComponent(date) +
+                "&departure=" + encodeURIComponent(departure) +
+                "&arrival=" + encodeURIComponent(arrival) +
+                "&flight=" + encodeURIComponent(flightNumber) +
+                "&class=" + encodeURIComponent(flightClass) +
+                "&price=" + encodeURIComponent(price);
+
+            /* GO TO BOOKING DETAILS */
+
+            window.location.href = bookingURL;
+
+        });
+
+    });
+
+
+    /* ================= PRICE ================= */
+
+    function updatePrice(value) {
+
+        document.getElementById("priceValue")
+            .textContent =
+            "₹" +
+            Number(value).toLocaleString("en-IN");
+
+        applyFilters();
+
+    }
+
+
+    /* ================= FILTER ================= */
+
+    function applyFilters() {
+
+        const maxPrice =
+            Number(
+                document.getElementById("priceRange").value
+            );
+
+        const selectedStops =
+            Array.from(
+                document.querySelectorAll(
+                    ".stop-filter:checked"
+                )
+            ).map(item => item.value);
+
+        const cards =
+            document.querySelectorAll(".flight-card");
+
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+
+            const price =
+                Number(card.dataset.price);
+
+            const stop =
+                card.dataset.stop;
+
+            const priceOkay =
+                price <= maxPrice;
+
+            const stopOkay =
+                selectedStops.includes(stop);
+
+            if (priceOkay && stopOkay) {
+
+                card.style.display = "block";
+                visibleCount++;
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+
+        document.getElementById("resultCount")
+            .textContent =
+            `${visibleCount} flights found · 15 September 2026`;
+
+        document.getElementById("noResults")
+            .style.display =
+            visibleCount === 0 ? "block" : "none";
+
+    }
+
+
+    /* ================= CLEAR FILTERS ================= */
+
+    function clearFilters() {
+
+        document.getElementById("priceRange")
+            .value = 150000;
+
+        document.getElementById("priceValue")
+            .textContent = "₹1,50,000";
+
+        document
+            .querySelectorAll(".stop-filter")
+            .forEach(item => {
+
+                item.checked = true;
+
+            });
+
+        document
+            .querySelectorAll(".flight-card")
+            .forEach(card => {
+
+                card.style.display = "block";
+
+            });
+
+        document.getElementById("resultCount")
+            .textContent =
+            "30 flights found · 15 September 2026";
+
+        document.getElementById("noResults")
+            .style.display = "none";
+
+    }
+
+
+    /* ================= SORT ================= */
+
+    document
+        .getElementById("sortSelect")
+        .addEventListener("change", function() {
+
+            const list =
+                document.getElementById("flightList");
+
+            const cards =
+                Array.from(
+                    list.querySelectorAll(".flight-card")
+                );
+
+            if (this.value === "price") {
+
+                cards.sort((a,b) =>
+                    Number(a.dataset.price) -
+                    Number(b.dataset.price)
+                );
+
+            }
+
+            if (this.value === "duration") {
+
+                cards.sort((a,b) =>
+                    convertDuration(a.dataset.duration) -
+                    convertDuration(b.dataset.duration)
+                );
+
+            }
+
+            if (this.value === "departure") {
+
+                cards.sort((a,b) => {
+
+                    const timeA =
+                        a.querySelector(".time strong")
+                         .textContent;
+
+                    const timeB =
+                        b.querySelector(".time strong")
+                         .textContent;
+
+                    return timeA.localeCompare(timeB);
+
+                });
+
+            }
+
+            cards.forEach(card =>
+                list.appendChild(card)
+            );
+
+        });
+
+
+    /* ================= DURATION ================= */
+
+    function convertDuration(duration) {
+
+        const hour =
+            duration.match(/(\d+)h/);
+
+        const minute =
+            duration.match(/(\d+)m/);
+
+        const h =
+            hour ? Number(hour[1]) : 0;
+
+        const m =
+            minute ? Number(minute[1]) : 0;
+
+        return h * 60 + m;
+
+    }
+
+
+(async()=>{const q=new URLSearchParams(location.search);const from=q.get("from")||"";const to=q.get("to")||"";if(from||to){try{const d=await API.flights({from,to});document.getElementById("routeTitle").innerHTML=`${from||"Any"} <span>→</span> ${to||"Any"}`;document.getElementById("resultCount").textContent=d.count+" flights found";}catch(e){console.error(e)}}})();
+</script>
+
+</body>
+</html>
+

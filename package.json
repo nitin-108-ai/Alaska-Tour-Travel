@@ -1,0 +1,8 @@
+{
+  "name": "alaska-tour-travel-fullstack",
+  "private": true,
+  "scripts": {
+    "install-backend": "cd backend && npm install",
+    "start": "cd backend && npm start"
+  }
+}

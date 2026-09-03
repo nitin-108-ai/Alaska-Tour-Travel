@@ -1,0 +1,842 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Search Flights | Alaska Tour & Travel</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="bookti.css">
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+<script src="api.js"></script>
+</head>
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            <i class="fa-solid fa-plane-departure"></i>
+        </div>
+
+        <div>
+            <h2>ALASKA</h2>
+            <span>TOUR & TRAVEL</span>
+        </div>
+
+    </div>
+
+
+    <nav>
+
+        <a href="index.htmll">Home</a>
+        <a href="index.htmll">Destinations</a>
+        <a href="index.htmll">Packages</a>
+        <a href="index.htmll">About</a>
+        <a href="index.htmll">Contact</a>
+
+    </nav>
+
+
+    <a href="index.htmll" class="nav-btn">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back Home
+
+    </a>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-tag">
+
+            <i class="fa-solid fa-sparkles"></i>
+
+            PLAN • TRAVEL • EXPLORE
+
+        </div>
+
+
+        <h1>
+
+            Book Your Next
+
+            <span>Adventure</span>
+
+        </h1>
+
+
+        <p>
+
+            Find the best flights from India to Alaska
+            and start your unforgettable journey.
+
+        </p>
+
+    </div>
+
+
+    <div class="hero-stats">
+
+        <div>
+
+            <strong>500+</strong>
+
+            <span>Destinations</span>
+
+        </div>
+
+
+        <div>
+
+            <strong>10K+</strong>
+
+            <span>Happy Travelers</span>
+
+        </div>
+
+
+        <div>
+
+            <strong>24/7</strong>
+
+            <span>Travel Support</span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FLIGHT BOOKING
+===================================================== -->
+
+<main class="booking-wrapper">
+
+    <section class="form-area">
+
+
+        <!-- ================= FLIGHT FORM ================= -->
+
+        <form
+            id="flight"
+            class="booking-form active"
+            action="seacht.html"
+            method="GET"
+        >
+
+
+            <!-- FORM HEADING -->
+
+            <div class="form-heading">
+
+                <div class="heading-icon">
+
+                    <i class="fa-solid fa-plane"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>Search Flights</h2>
+
+                    <p>
+                        Find the best flight for your journey
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- TRIP TYPE -->
+
+            <div class="trip-type">
+
+                <label class="selected">
+
+                    <input
+                        type="radio"
+                        name="trip"
+                        value="one-way"
+                        checked
+                    >
+
+                    <span>One Way</span>
+
+                </label>
+
+
+                <label>
+
+                    <input
+                        type="radio"
+                        name="trip"
+                        value="round-trip"
+                    >
+
+                    <span>Round Trip</span>
+
+                </label>
+
+            </div>
+
+
+            <!-- SEARCH GRID -->
+
+            <div class="search-grid">
+
+
+                <!-- FROM -->
+
+                <div class="input-box">
+
+                    <label>
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        From
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        name="from"
+                        placeholder="Departure city"
+                        required
+                    >
+
+
+                    <small>
+
+                        Where are you leaving from?
+
+                    </small>
+
+                </div>
+
+
+                <!-- SWAP -->
+
+                <div class="swap">
+
+                    <button
+                        type="button"
+                        onclick="swapLocations()"
+                        title="Swap locations"
+                    >
+
+                        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- TO -->
+
+                <div class="input-box">
+
+                    <label>
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        To
+
+                    </label>
+
+
+                    <input
+                        type="text"
+                        name="to"
+                        placeholder="Destination"
+                        required
+                    >
+
+
+                    <small>
+
+                        Where do you want to go?
+
+                    </small>
+
+                </div>
+
+
+                <!-- DEPARTURE -->
+
+                <div class="input-box">
+
+                    <label>
+
+                        <i class="fa-regular fa-calendar"></i>
+
+                        Departure
+
+                    </label>
+
+
+                    <input
+                        type="date"
+                        name="departure"
+                        id="departure"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- RETURN -->
+
+                <div class="input-box">
+
+                    <label>
+
+                        <i class="fa-regular fa-calendar"></i>
+
+                        Return
+
+                    </label>
+
+
+                    <input
+                        type="date"
+                        name="return"
+                        id="return"
+                    >
+
+                </div>
+
+
+                <!-- TRAVELERS -->
+
+                <div class="input-box">
+
+                    <label>
+
+                        <i class="fa-solid fa-users"></i>
+
+                        Travelers
+
+                    </label>
+
+
+                    <select
+                        name="travelers"
+                        required
+                    >
+
+                        <option value="">
+
+                            Select travelers
+
+                        </option>
+
+
+                        <option value="1">
+
+                            1 Adult
+
+                        </option>
+
+
+                        <option value="2">
+
+                            2 Adults
+
+                        </option>
+
+
+                        <option value="3">
+
+                            3 Adults
+
+                        </option>
+
+
+                        <option value="4">
+
+                            4 Adults
+
+                        </option>
+
+
+                        <option value="5">
+
+                            5+ Adults
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- CLASS -->
+
+                <div class="input-box">
+
+                    <label>
+
+                        <i class="fa-solid fa-chair"></i>
+
+                        Class
+
+                    </label>
+
+
+                    <select
+                        name="class"
+                        required
+                    >
+
+                        <option value="">
+
+                            Select class
+
+                        </option>
+
+
+                        <option value="economy">
+
+                            Economy
+
+                        </option>
+
+
+                        <option value="premium">
+
+                            Premium Economy
+
+                        </option>
+
+
+                        <option value="business">
+
+                            Business
+
+                        </option>
+
+
+                        <option value="first">
+
+                            First Class
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH BUTTON -->
+
+            <button
+                type="submit"
+                class="search-btn"
+            >
+
+                <span>Search Flights</span>
+
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <!-- =================================================
+         WHY BOOK WITH US
+    ================================================= -->
+
+    <section class="benefits">
+
+        <div class="section-title">
+
+            <span>WHY ALASKA?</span>
+
+            <h2>
+
+                Travel With Confidence
+
+            </h2>
+
+        </div>
+
+
+        <div class="benefit-grid">
+
+
+            <!-- CARD 1 -->
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+
+                <h3>
+
+                    Secure Booking
+
+                </h3>
+
+
+                <p>
+
+                    Your booking information is handled
+                    safely and securely.
+
+                </p>
+
+            </div>
+
+
+            <!-- CARD 2 -->
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+
+                    <i class="fa-solid fa-headset"></i>
+
+                </div>
+
+
+                <h3>
+
+                    24/7 Support
+
+                </h3>
+
+
+                <p>
+
+                    Our travel support team is available
+                    whenever you need us.
+
+                </p>
+
+            </div>
+
+
+            <!-- CARD 3 -->
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+
+                    <i class="fa-solid fa-tags"></i>
+
+                </div>
+
+
+                <h3>
+
+                    Best Deals
+
+                </h3>
+
+
+                <p>
+
+                    Get competitive prices and attractive
+                    travel packages.
+
+                </p>
+
+            </div>
+
+
+            <!-- CARD 4 -->
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+
+                    <i class="fa-solid fa-earth-americas"></i>
+
+                </div>
+
+
+                <h3>
+
+                    Worldwide Travel
+
+                </h3>
+
+
+                <p>
+
+                    Discover amazing destinations and
+                    unforgettable experiences.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================= -->
+
+    <footer>
+
+        <div class="footer-brand">
+
+            <h2>ALASKA</h2>
+
+            <p>
+
+                Your journey. Our passion.
+
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="index.htmll">
+                Home
+            </a>
+
+            <a href="index.htmll">
+                Destinations
+            </a>
+
+            <a href="index.htmll">
+                Packages
+            </a>
+
+            <a href="index.htmll">
+                Contact
+            </a>
+
+        </div>
+
+
+        <div class="social">
+
+            <a href="#">
+                <i class="fa-brands fa-facebook-f"></i>
+            </a>
+
+            <a href="#">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="#">
+                <i class="fa-brands fa-twitter"></i>
+            </a>
+
+        </div>
+
+    </footer>
+
+</main>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+/* =========================================
+   SWAP FROM / TO
+========================================= */
+
+function swapLocations() {
+
+    const from = document.querySelector(
+        '#flight input[name="from"]'
+    );
+
+    const to = document.querySelector(
+        '#flight input[name="to"]'
+    );
+
+    const temp = from.value;
+
+    from.value = to.value;
+
+    to.value = temp;
+
+}
+
+
+/* =========================================
+   MINIMUM DEPARTURE DATE
+========================================= */
+
+const today = new Date()
+    .toISOString()
+    .split("T")[0];
+
+document.getElementById("departure").min = today;
+
+document.getElementById("return").min = today;
+
+
+/* =========================================
+   RETURN DATE AFTER DEPARTURE
+========================================= */
+
+document
+    .getElementById("departure")
+    .addEventListener("change", function () {
+
+        document.getElementById("return").min = this.value;
+
+    });
+
+
+/* =========================================
+   ROUND TRIP RETURN REQUIRED
+========================================= */
+
+const tripRadios =
+    document.querySelectorAll(
+        'input[name="trip"]'
+    );
+
+const returnInput =
+    document.getElementById("return");
+
+
+tripRadios.forEach(function (radio) {
+
+    radio.addEventListener("change", function () {
+
+        if (this.value === "round-trip") {
+
+            returnInput.required = true;
+
+        } else {
+
+            returnInput.required = false;
+
+            returnInput.value = "";
+
+        }
+
+    });
+
+});
+
+
+/* =========================================
+   TRIP TYPE VISUAL SELECTION
+========================================= */
+
+const tripLabels =
+    document.querySelectorAll(".trip-type label");
+
+
+tripLabels.forEach(function (label) {
+
+    label.addEventListener("click", function () {
+
+        tripLabels.forEach(function (item) {
+
+            item.classList.remove("selected");
+
+        });
+
+        label.classList.add("selected");
+
+    });
+
+});
+
+
+/* =========================================
+   FORM SUBMIT → SAVE pendingBooking → paymen.html
+========================================= */
+
+document.getElementById("flight").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const fd = new FormData(this);
+
+    // Base price map by class
+    const classPriceMap = {
+        economy : 58400,
+        premium : 72000,
+        business: 95000,
+        first   : 130000
+    };
+    const travelers   = parseInt(fd.get("travelers") || "1");
+    const flightClass = fd.get("class") || "economy";
+    const basePrice   = classPriceMap[flightClass] || 62500;
+    const totalPrice  = basePrice * travelers;
+
+    const booking = {
+        from          : fd.get("from"),
+        to            : fd.get("to"),
+        travelDate    : fd.get("departure"),
+        returnDate    : fd.get("return")    || null,
+        travelers,
+        flightClass,
+        tripType      : fd.get("trip"),
+        passengerName : localStorage.getItem("alaskaUserName") || "Traveler",
+        totalPrice,
+        price         : totalPrice,
+        status        : "pending"
+    };
+
+    localStorage.setItem("pendingBooking", JSON.stringify(booking));
+    window.location.href = "paymen.html";
+});
+
+
+
+</script>
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bank Transfer | Alaska Tour & Travel</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef6ff, #f7faff);
+            color: #172033;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(20, 55, 90, .15);
+            border: 1px solid #e4edf6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #061a33, #087fd0);
+            color: white;
+            padding: 28px;
+            text-align: center;
+        }
+
+        .bank-icon {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 12px;
+            border-radius: 16px;
+            background: rgba(255,255,255,.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .header h2 {
+            font-size: 23px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 12px;
+            color: #c9e5fa;
+        }
+
+        .form-area {
+            padding: 28px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #173b70;
+            margin-bottom: 18px;
+        }
+
+        .field {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #53657a;
+            margin-bottom: 7px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap span {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #087fd0;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 47px;
+            padding: 0 13px 0 38px;
+            border: 1px solid #d8e2ec;
+            border-radius: 10px;
+            background: #fbfdff;
+            outline: none;
+            font-size: 13px;
+            color: #172033;
+            transition: .25s;
+        }
+
+        select {
+            padding-left: 13px;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #0786d7;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(8,127,208,.08);
+        }
+
+        .amount-box {
+            background: #f0f8ff;
+            border: 1px solid #cce8fb;
+            border-radius: 13px;
+            padding: 15px;
+            margin-top: 5px;
+        }
+
+        .amount-box label {
+            color: #0875bb;
+        }
+
+        .amount-box input {
+            background: white;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .security {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f5faf8;
+            border: 1px solid #d7eee4;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 18px;
+        }
+
+        .security-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #dff5eb;
+            color: #07905f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .security strong {
+            display: block;
+            font-size: 11px;
+            color: #087452;
+            margin-bottom: 3px;
+        }
+
+        .security span {
+            font-size: 9px;
+            color: #71827d;
+        }
+
+        button {
+            width: 100%;
+            height: 50px;
+            margin-top: 22px;
+            border: none;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #0e91e5, #075eb9);
+            color: white;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 9px 22px rgba(14,145,229,.25);
+            transition: .25s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 13px 28px rgba(14,145,229,.32);
+        }
+
+        button.loading {
+            pointer-events: none;
+            opacity: .75;
+        }
+
+        .note {
+            text-align: center;
+            margin-top: 15px;
+            color: #8a98a7;
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        @media(max-width: 500px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .form-area {
+                padding: 22px;
+            }
+
+            .header {
+                padding: 24px 18px;
+            }
+
+        }
+
+    </style>
+<script src="api.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div class="bank-icon">
+            🏦
+        </div>
+
+        <h2>Bank Transfer</h2>
+
+        <p>
+            Secure payment for your Alaska Tour & Travel booking
+        </p>
+
+    </div>
+
+
+    <div class="form-area">
+
+        <div class="section-title">
+            Enter Transfer Details
+        </div>
+
+        <form id="transferForm">
+
+            <!-- NAME -->
+
+            <div class="field">
+
+                <label for="name">
+                    ACCOUNT HOLDER NAME
+                </label>
+
+                <div class="input-wrap">
+
+                    <span>👤</span>
+
+                    <input
+                        id="name"
+                        type="text"
+                        placeholder="Enter account holder name"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ACCOUNT NUMBER -->
+
+            <div class="field">
+
+                <label for="account">
+                    ACCOUNT NUMBER
+                </label>
+
+                <div class="input-wrap">
+
+                    <span>▣</span>
+
+                    <input
+                        id="account"
+                        type="text"
+                        inputmode="numeric"
+                        maxlength="18"
+                        placeholder="Enter account number"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- IFSC -->
+
+            <div class="field">
+
+                <label for="ifsc">
+                    IFSC CODE
+                </label>
+
+                <div class="input-wrap">
+
+                    <span>⌂</span>
+
+                    <input
+                        id="ifsc"
+                        type="text"
+                        maxlength="11"
+                        placeholder="Example: SBIN0001234"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- AMOUNT -->
+
+            <div class="field amount-box">
+
+                <label for="amount">
+                    TRANSFER AMOUNT
+                </label>
+
+                <div class="input-wrap">
+
+                    <span>₹</span>
+
+                    <input
+                        id="amount"
+                        type="number"
+                        min="1"
+                        step="0.01"
+                        placeholder="Enter amount"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- PURPOSE -->
+
+            <div class="field">
+
+                <label for="purpose">
+                    PURPOSE
+                </label>
+
+                <select id="purpose">
+
+                    <option value="Booking Payment">
+                        Booking Payment
+                    </option>
+
+                    <option value="Personal Transfer">
+                        Personal Transfer
+                    </option>
+
+                    <option value="Payment">
+                        Payment
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SECURITY -->
+
+            <div class="security">
+
+                <div class="security-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <strong>
+                        Demo Secure Transfer
+                    </strong>
+
+                    <span>
+                        This is a demonstration page.
+                        No real bank transaction is processed.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button type="submit" id="transferBtn">
+                Transfer Money
+            </button>
+
+            <div class="note">
+                By continuing, you confirm that the information entered is correct.
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+document.getElementById("transferForm").addEventListener("submit",async function(event){
+ event.preventDefault(); const button=document.getElementById("transferBtn");
+ const payload={name:document.getElementById("name").value.trim(),account:document.getElementById("account").value.trim(),ifsc:document.getElementById("ifsc").value.trim().toUpperCase(),amount:document.getElementById("amount").value,purpose:document.getElementById("purpose").value};
+ try{button.classList.add("loading");button.textContent="Processing Transfer...";const t=await API.transfer(payload);localStorage.setItem("bankTransferData",JSON.stringify(t));location.href="inv.html?transfer="+encodeURIComponent(t.id)}catch(e){if(!API.token()){alert("Please login before making a transfer.");location.href="logintravel.html"}else alert(e.message)}finally{button.classList.remove("loading")}
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1142 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment Methods | Alaska Tour & Travel</title>
+
+    <!-- Google Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 20px;
+
+            font-family: "Montserrat", sans-serif;
+
+            color: #173943;
+
+            background:
+                radial-gradient(
+                    circle at 10% 15%,
+                    rgba(0, 166, 166, 0.20),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 85%,
+                    rgba(0, 124, 131, 0.18),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #03151f,
+                    #064653,
+                    #00858b
+                );
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           BACKGROUND DECORATION
+        ===================================================== */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            width: 420px;
+            height: 420px;
+
+            border-radius: 50%;
+
+            top: -180px;
+            right: -150px;
+
+            border: 1px solid rgba(255,255,255,0.10);
+
+            box-shadow:
+                0 0 80px rgba(0,190,190,0.12);
+
+            pointer-events: none;
+        }
+
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            width: 300px;
+            height: 300px;
+
+            border-radius: 50%;
+
+            bottom: -150px;
+            left: -100px;
+
+            background: rgba(86,224,223,0.08);
+
+            filter: blur(5px);
+
+            pointer-events: none;
+        }
+
+
+        /* =====================================================
+           MAIN PAYMENT CARD
+        ===================================================== */
+
+        .payment-section {
+
+            width: 100%;
+            max-width: 1050px;
+
+            position: relative;
+
+            background: rgba(255,255,255,0.97);
+
+            border-radius: 28px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 35px 80px rgba(0,0,0,0.30);
+
+            animation: cardAppear .8s ease;
+        }
+
+
+        @keyframes cardAppear {
+
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .payment-header {
+
+            position: relative;
+
+            padding: 45px 50px;
+
+            color: white;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #031c29,
+                    #064653,
+                    #008c95
+                );
+        }
+
+
+        .payment-header::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 280px;
+            height: 280px;
+
+            border-radius: 50%;
+
+            right: -100px;
+            top: -150px;
+
+            border: 1px solid rgba(255,255,255,0.10);
+        }
+
+
+        .payment-header::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            border-radius: 50%;
+
+            left: -90px;
+            bottom: -110px;
+
+            background: rgba(86,224,223,0.08);
+        }
+
+
+        .brand {
+
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 28px;
+        }
+
+
+        .brand-icon {
+
+            width: 46px;
+            height: 46px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            color: white;
+
+            font-size: 19px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #00b4b8,
+                    #006d77
+                );
+
+            box-shadow:
+                0 8px 20px rgba(0,0,0,.25);
+        }
+
+
+        .brand-text h3 {
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        .brand-text span {
+
+            display: block;
+
+            margin-top: 3px;
+
+            font-size: 15px;
+
+            letter-spacing: 2px;
+
+            opacity: .65;
+        }
+
+
+        .heading {
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .heading .tag {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 7px 12px;
+
+            margin-bottom: 15px;
+
+            border: 1px solid rgba(255,255,255,.15);
+
+            border-radius: 30px;
+
+            background: rgba(255,255,255,.07);
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        .heading h1 {
+
+            font-size: 36px;
+
+            font-weight: 800;
+
+            line-height: 1.15;
+
+            margin-bottom: 10px;
+        }
+
+
+        .heading h1 span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #56e0df,
+                    #ffffff
+                );
+
+            background-clip: text;
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        .heading p {
+
+            max-width: 600px;
+
+            color: rgba(255,255,255,.70);
+
+            font-size: 15px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           PAYMENT CONTENT
+        ===================================================== */
+
+        .payment-content {
+
+            padding: 40px 50px 45px;
+        }
+
+
+        .section-label {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .section-label-icon {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            color: #007c83;
+
+            background: #edf8f8;
+
+            font-size: 16px;
+        }
+
+
+        .section-label h2 {
+
+            color: #173943;
+
+            font-size: 19px;
+
+            font-weight: 800;
+        }
+
+
+        .section-label p {
+
+            margin-top: 3px;
+
+            color: #94a2a7;
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           PAYMENT METHODS
+        ===================================================== */
+
+        .methods {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+
+        /* PAYMENT CARD */
+
+        .method {
+
+            position: relative;
+
+            min-height: 225px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            padding: 25px;
+
+            overflow: hidden;
+
+            text-decoration: none;
+
+            color: inherit;
+
+            background: #ffffff;
+
+            border: 1px solid #e3ebed;
+
+            border-radius: 18px;
+
+            transition:
+                transform .35s ease,
+                box-shadow .35s ease,
+                border-color .35s ease;
+        }
+
+
+        .method::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 100px;
+            height: 100px;
+
+            border-radius: 50%;
+
+            right: -45px;
+            bottom: -45px;
+
+            background: rgba(0,166,166,.06);
+
+            transition: .35s ease;
+        }
+
+
+        .method:hover {
+
+            transform: translateY(-8px);
+
+            border-color: #9ed3d5;
+
+            box-shadow:
+                0 20px 40px rgba(0,80,90,.12);
+        }
+
+
+        .method:hover::before {
+
+            transform: scale(1.6);
+        }
+
+
+        /* ICON */
+
+        .icon {
+
+            width: 54px;
+            height: 54px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            margin-bottom: 20px;
+
+            border-radius: 14px;
+
+            color: #007c83;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #edfafa,
+                    #dff3f4
+                );
+
+            font-size: 20px;
+
+            transition: .35s ease;
+        }
+
+
+        .method:hover .icon {
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #006d77,
+                    #00a6a6
+                );
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 8px 18px rgba(0,120,125,.20);
+        }
+
+
+        /* INFO */
+
+        .method-info {
+
+            position: relative;
+
+            z-index: 2;
+
+            flex: 1;
+        }
+
+
+        .method-info h3 {
+
+            color: #29434b;
+
+            font-size: 17px;
+
+            font-weight: 800;
+
+            margin-bottom: 10px;
+        }
+
+
+        .method-info p {
+
+            color: #89999e;
+
+            font-size: 14px;
+
+            line-height: 1.75;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* AVAILABLE */
+
+        .available {
+
+            position: relative;
+
+            z-index: 2;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            color: #168b72;
+
+            background: #edf9f5;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 15px;
+
+            font-weight: 800;
+
+            letter-spacing: .5px;
+        }
+
+
+        .available::before {
+
+            content: "";
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background: #168b72;
+
+            box-shadow:
+                0 0 0 4px rgba(22,139,114,.10);
+        }
+
+
+        /* =====================================================
+           SECURITY FOOTER
+        ===================================================== */
+
+        .security-box {
+
+            margin-top: 28px;
+
+            padding: 18px 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            border: 1px solid #e3edef;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f7fbfc,
+                    #ffffff
+                );
+        }
+
+
+        .security-icon {
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 11px;
+
+            color: #007c83;
+
+            background: #eaf7f7;
+
+            font-size: 15px;
+        }
+
+
+        .security-text strong {
+
+            display: block;
+
+            color: #29454e;
+
+            font-size: 14px;
+
+            margin-bottom: 4px;
+        }
+
+
+        .security-text span {
+
+            color: #96a4a8;
+
+            font-size: 15px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           BACK BUTTON
+        ===================================================== */
+
+        .back-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-top: 25px;
+
+            padding: 11px 17px;
+
+            border-radius: 9px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #023047,
+                    #007c83
+                );
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 8px 18px rgba(0,90,100,.16);
+
+            transition: .3s ease;
+        }
+
+
+        .back-button:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 13px 25px rgba(0,90,100,.24);
+        }
+
+
+        .back-button i {
+
+            transition: .3s ease;
+        }
+
+
+        .back-button:hover i {
+
+            transform: translateX(-4px);
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 850px) {
+
+            body {
+
+                padding: 25px 15px;
+            }
+
+
+            .payment-header {
+
+                padding: 35px;
+            }
+
+
+            .payment-content {
+
+                padding: 35px;
+            }
+
+
+            .methods {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding: 12px;
+
+                align-items: flex-start;
+            }
+
+
+            .payment-section {
+
+                border-radius: 20px;
+
+                margin: 10px 0;
+            }
+
+
+            .payment-header {
+
+                padding: 30px 22px;
+            }
+
+
+            .brand {
+
+                margin-bottom: 22px;
+            }
+
+
+            .heading h1 {
+
+                font-size: 28px;
+            }
+
+
+            .heading p {
+
+                font-size: 14px;
+            }
+
+
+            .payment-content {
+
+                padding: 28px 18px 30px;
+            }
+
+
+            .methods {
+
+                grid-template-columns: 1fr;
+
+                gap: 13px;
+            }
+
+
+            .method {
+
+                min-height: auto;
+
+                padding: 20px;
+            }
+
+
+            .section-label h2 {
+
+                font-size: 17px;
+            }
+
+
+            .security-box {
+
+                align-items: flex-start;
+
+                padding: 15px;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 400px) {
+
+            .heading h1 {
+
+                font-size: 25px;
+            }
+
+
+            .brand-text h3 {
+
+                font-size: 15px;
+            }
+
+
+            .payment-content {
+
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+        }
+
+    </style>
+
+<script src="api.js"></script>
+</head>
+
+
+<body>
+
+
+<section class="payment-section">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="payment-header">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-plane-departure"></i>
+            </div>
+
+            <div class="brand-text">
+
+                <h3>ALASKA TOUR & TRAVEL</h3>
+
+                <span>TRAVEL • EXPLORE • EXPERIENCE</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="heading">
+
+            <div class="tag">
+                <i class="fa-solid fa-shield-halved"></i>
+                SECURE PAYMENT
+            </div>
+
+            <h1>
+                Choose Your
+                <span>Payment Method</span>
+            </h1>
+
+            <p>
+                Select a convenient and secure payment option
+                to complete your Alaska Tour & Travel booking.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PAYMENT CONTENT
+    ====================================================== -->
+
+    <div class="payment-content">
+
+
+        <div class="section-label">
+
+            <div class="section-label-icon">
+                <i class="fa-solid fa-credit-card"></i>
+            </div>
+
+            <div>
+
+                <h2>Available Payment Options</h2>
+
+                <p>
+                    Select any option below to continue with your payment.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="methods">
+
+
+            <!-- UPI -->
+
+            <a href="upi.html" class="method">
+
+                <div class="icon">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                </div>
+
+                <div class="method-info">
+
+                    <h3>UPI Payment</h3>
+
+                    <p>
+                        Pay quickly using Google Pay, PhonePe,
+                        Paytm or any supported UPI application.
+                    </p>
+
+                </div>
+
+                <span class="available">
+                    AVAILABLE
+                </span>
+
+            </a>
+
+
+            <!-- BANK TRANSFER -->
+
+            <a href="international.html" class="method">
+
+                <div class="icon">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+
+                <div class="method-info">
+
+                    <h3>Bank Transfer</h3>
+
+                    <p>
+                        Make a direct and secure transfer
+                        to our official business bank account.
+                    </p>
+
+                </div>
+
+                <span class="available">
+                    AVAILABLE
+                </span>
+
+            </a>
+
+
+            <!-- INVOICE -->
+
+            <a href="inv.html" class="method">
+
+                <div class="icon">
+                    <i class="fa-solid fa-file-invoice"></i>
+                </div>
+
+                <div class="method-info">
+
+                    <h3>Invoice</h3>
+
+                    <p>
+                        Request a professional invoice containing
+                        complete payment instructions.
+                    </p>
+
+                </div>
+
+                <span class="available">
+                    AVAILABLE
+                </span>
+
+            </a>
+
+
+        </div>
+
+
+        <!-- SECURITY -->
+
+        <div class="security-box">
+
+            <div class="security-icon">
+
+                <i class="fa-solid fa-lock"></i>
+
+            </div>
+
+            <div class="security-text">
+
+                <strong>
+                    Your payment information is secure
+                </strong>
+
+                <span>
+                    Payment details are handled securely and
+                    confidentially. Never share your UPI PIN,
+                    password or banking OTP with anyone.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- BACK -->
+
+        <a href="bookti.html" class="back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Booking
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+</body>
+
+</html>
+```
+

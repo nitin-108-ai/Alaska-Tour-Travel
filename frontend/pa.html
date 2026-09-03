@@ -1,0 +1,596 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Booking Details | Alaska Tour & Travel</title>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        /* HEADER */
+
+        header {
+            background: linear-gradient(135deg, #041a32, #075b9d);
+            color: white;
+            padding: 25px 8%;
+        }
+
+        header h1 {
+            font-size: 28px;
+        }
+
+        header p {
+            margin-top: 6px;
+            color: #dceeff;
+        }
+
+        /* CONTAINER */
+
+        .container {
+            max-width: 1050px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        /* STEPS */
+
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .step {
+            padding: 11px 24px;
+            background: #dfe7ef;
+            color: #777;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+
+        .step.active {
+            background: #0879d1;
+            color: white;
+        }
+
+        /* CARD */
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.08);
+        }
+
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #06345f;
+            margin-bottom: 25px;
+        }
+
+        .title i {
+            color: #0879d1;
+            font-size: 23px;
+        }
+
+        /* FLIGHT ROUTE */
+
+        .route {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr 1fr;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .airport {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .airport small {
+            color: #777;
+        }
+
+        .airport .code {
+            font-size: 34px;
+            font-weight: bold;
+            color: #06345f;
+        }
+
+        .airport .city {
+            font-size: 17px;
+        }
+
+        .plane {
+            color: #0879d1;
+            font-size: 25px;
+        }
+
+        .line {
+            height: 2px;
+            background: #c5dcec;
+            margin: 10px 30px;
+        }
+
+        /* FLIGHT DETAILS */
+
+        .flight-details {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            background: #f2f8fd;
+            border-radius: 12px;
+            padding: 20px;
+            gap: 15px;
+        }
+
+        .detail {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .detail span {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .detail strong {
+            color: #172033;
+        }
+
+        /* PRICE */
+
+        .price-box {
+            margin-top: 22px;
+            padding: 18px;
+            background: #eef7ff;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-box span {
+            color: #555;
+        }
+
+        .price {
+            font-size: 25px;
+            font-weight: bold;
+            color: #0879d1;
+        }
+
+        /* FORM */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            padding: 13px;
+            border: 1px solid #ccd6df;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #0879d1;
+        }
+
+        /* BUTTONS */
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 15px 28px;
+            border: none;
+            border-radius: 9px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .back {
+            background: #e2e7ec;
+            color: #333;
+        }
+
+        .payment {
+            background: linear-gradient(135deg, #0879d1, #034d8b);
+            color: white;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        /* MOBILE */
+
+        @media(max-width:700px) {
+
+            .steps {
+                flex-direction: column;
+            }
+
+            .route {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .flight-details {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .payment {
+                max-width: none;
+            }
+
+        }
+
+    </style>
+
+<script src="api.js"></script>
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>
+        <i class="fa-solid fa-plane-departure"></i>
+        Alaska Tour & Travel
+    </h1>
+
+    <p>
+        Complete your booking
+    </p>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- STEPS -->
+
+    <div class="steps">
+
+        <div class="step active">
+            1. Booking Details
+        </div>
+
+        <div class="step">
+            2. Payment
+        </div>
+
+        <div class="step">
+            3. Confirmation
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+    <!-- PASSENGER DETAILS -->
+
+    <section class="card">
+
+        <div class="title">
+
+            <i class="fa-solid fa-user"></i>
+
+            <h2>
+                Passenger Details
+            </h2>
+
+        </div>
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label>
+                    First Name
+                </label>
+
+                <input
+                    type="text"
+                    placeholder="Enter first name">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Last Name
+                </label>
+
+                <input
+                    type="text"
+                    placeholder="Enter last name">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Date of Birth
+                </label>
+
+                <input type="date">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Gender
+                </label>
+
+                <select>
+
+                    <option value="">
+                        Select Gender
+                    </option>
+
+                    <option>
+                        Male
+                    </option>
+
+                    <option>
+                        Female
+                    </option>
+
+                    <option>
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Nationality
+                </label>
+
+                <input
+                    type="text"
+                    placeholder="Enter nationality">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Passport Number
+                </label>
+
+                <input
+                    type="text"
+                    placeholder="Enter passport number">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Mobile Number
+                </label>
+
+                <input
+                    type="tel"
+                    placeholder="Enter mobile number">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    placeholder="Enter email address">
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Address
+                </label>
+
+                <input
+                    type="text"
+                    placeholder="Enter your address">
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- BUTTONS -->
+
+    <div class="buttons">
+
+        <a
+            href="seacht.html"
+            class="btn back">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Flights
+
+        </a>
+
+
+        <button
+            class="btn payment"
+            onclick="goPayment()">
+			 <span>
+                 	<a href="paymen.html" class="button order-now">
+                     Continue to Payment
+				
+            
+            </a>
+
+                </span>
+
+           
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </button>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+    /* GET FLIGHT DETAILS FROM URL */
+
+    const params = new URLSearchParams(window.location.search);
+
+
+    document.getElementById("from").textContent =
+        params.get("from") || "---";
+
+    document.getElementById("fromCode").textContent =
+        params.get("fromCode") || "---";
+
+
+    document.getElementById("to").textContent =
+        params.get("to") || "---";
+
+    document.getElementById("toCode").textContent =
+        params.get("toCode") || "---";
+
+
+    document.getElementById("date").textContent =
+        params.get("date") || "---";
+
+
+    document.getElementById("departure").textContent =
+        params.get("departure") || "---";
+
+
+    document.getElementById("arrival").textContent =
+        params.get("arrival") || "---";
+
+
+    document.getElementById("flight").textContent =
+        params.get("flight") || "---";
+
+
+    document.getElementById("class").textContent =
+        params.get("class") || "---";
+
+
+    const price =
+        Number(params.get("price")) || 0;
+
+
+    document.getElementById("price").textContent =
+        "₹" + price.toLocaleString("en-IN");
+
+
+    /* PAYMENT */
+
+    async function goPayment() {
+      const q=Object.fromEntries(new URLSearchParams(location.search));
+      try { const b=await API.booking(q); localStorage.setItem("currentBooking",JSON.stringify(b)); location.href="paymen.html"; }
+      catch(e){ if(!API.token()){ alert("Please login before booking."); location.href="logintravel.html"; } else alert(e.message); }
+    }
+
+</script>
+
+
+</body>
+
+</html>
+```

@@ -1,0 +1,212 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TravelWorld - Login</title>
+
+    <link rel="stylesheet" href="logins.css">
+<script src="api.js"></script>
+</head>
+
+<body>
+
+    <!-- Background Decorations -->
+    <div class="cloud cloud1">☁</div>
+    <div class="cloud cloud2">☁</div>
+
+    <div class="travel-card">
+
+        <!-- Left Travel Section -->
+        <div class="travel-info">
+
+            <div class="brand">
+                <div class="brand-logo">✈</div>
+                <span>TravelWorld</span>
+            </div>
+
+            <div class="travel-content">
+                <p class="small-title">EXPLORE • DREAM • TRAVEL</p>
+
+                <h1>
+                    Your Journey<br>
+                    <span>Starts Here.</span>
+                </h1>
+
+                <p>
+                    Discover beautiful destinations, create unforgettable
+                    memories and explore the world with TravelWorld.
+                </p>
+
+                <div class="destination">
+                    <span>🌴</span>
+                    <div>
+                        <strong>Explore the World</strong>
+                        <small>Adventure is waiting for you</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="plane">✈</div>
+
+        </div>
+
+
+        <!-- Login Section -->
+        <div class="login-section">
+
+            <div class="mobile-logo">✈</div>
+
+            <h2>Welcome Back!</h2>
+
+            <p class="welcome">
+                Login to continue your journey
+            </p>
+
+            <!-- Social Login -->
+            <div class="social-login">
+
+                <a href="loginwithgoogle.html" class="social-btn">
+                    <img src="google.png" alt="Google">
+                    <span>Google</span>
+                </a>
+
+                <a href="applelogin.html" class="social-btn">
+                    <img src="apple.png" alt="Apple">
+                    <span>Apple</span>
+                </a>
+
+            </div>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+
+            <form id="loginForm">
+
+                <!-- Email -->
+                <div class="input-group">
+
+                    <label for="email">Email Address</label>
+
+                    <div class="input-wrapper">
+                        <span>✉</span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Enter your email address"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+                <div class="input-group">
+
+                    <div class="password-heading">
+                        <label for="password">Password</label>
+
+                        <a href="forget.html">
+                            Forgot Password?
+                        </a>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <span>🔒</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+                    </div>
+
+                    <button
+                        type="button"
+                        id="togglePassword"
+                        class="show-password"
+                    >
+                        Show Password
+                    </button>
+
+                </div>
+
+
+                <!-- Message -->
+                <p id="message"></p>
+
+
+                <!-- Login -->
+                <button type="submit" class="login-btn">
+                    Log In
+                    <span>✈</span>
+                </button>
+
+            </form>
+
+
+            <p class="signup">
+                Don't have an account?
+                <a href="signin.html">Create Account</a>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script>
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput  = document.getElementById("password");
+const msgEl          = document.getElementById("message");
+const loginBtn       = document.querySelector(".login-btn");
+
+// Toggle password visibility
+togglePassword.onclick = () => {
+  passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+  togglePassword.textContent = passwordInput.type === "password" ? "Show Password" : "Hide Password";
+};
+
+// Login form submit
+document.getElementById("loginForm").onsubmit = async (e) => {
+  e.preventDefault();
+  msgEl.textContent = "";
+  msgEl.className   = "";
+
+  // Disable button to prevent double-submit
+  loginBtn.disabled    = true;
+  loginBtn.textContent = "Logging in…";
+
+  try {
+    const emailVal = document.getElementById("email").value.trim();
+    const d = await API.login(emailVal, passwordInput.value);
+
+    // Persist token + user info for other pages to use
+    localStorage.setItem("alaskaToken",    d.token);
+    localStorage.setItem("alaskaUserName", d.user.name);
+    localStorage.setItem("alaskaUserEmail", d.user.email);
+
+    msgEl.textContent = "Login successful! Redirecting…";
+    msgEl.className   = "success";
+
+    setTimeout(() => location.href = "index.html", 500);
+  } catch (err) {
+    msgEl.textContent = err.message || "Login failed. Please try again.";
+    msgEl.className   = "error";
+
+    // Re-enable button on failure
+    loginBtn.disabled    = false;
+    loginBtn.innerHTML   = "Log In <span>✈</span>";
+  }
+};
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,756 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ALASKA TOUR & TRAVEL</title>
+
+  <!-- Favicon -->
+  <link
+    rel="icon"
+    href="https://cdn-icons-png.flaticon.com/512/201/201623.png"
+    type="image/png"
+  >
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+  >
+
+  <!-- Swiper CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+  >
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="MAIN.css">
+<script src="api.js"></script>
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+
+  <header>
+    <nav class="navbar">
+
+      <a href="#home" class="nav-logo">
+        <h2 class="logo-text">
+          <i class="fas fa-plane-departure"></i>
+          ALASKA TOUR & TRAVEL
+        </h2>
+      </a>
+
+      <ul class="nav-menu">
+
+        <button
+          id="menu-close-button"
+          class="fas fa-times"
+          aria-label="Close menu">
+        </button>
+
+        <li class="nav-item">
+          <a href="#home" class="nav-link">Home</a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#about" class="nav-link">About</a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#tours" class="nav-link">Tours</a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#reviews" class="nav-link">Reviews</a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#contact" class="nav-link">Contact</a>
+        </li>
+
+        <li class="nav-item">
+          <a href="logintravel.html" class="nav-link">Sign In</a>
+        </li>
+
+      </ul>
+
+      <button
+        id="menu-open-button"
+        class="fas fa-bars"
+        aria-label="Open menu">
+      </button>
+
+    </nav>
+  </header>
+
+
+  <main>
+
+    <!-- ================= HERO SECTION ================= -->
+
+    <section class="hero-section" id="home">
+
+      <div class="section-content">
+
+        <div class="hero-details">
+
+          <h2 class="title">
+            Explore Alaska
+          </h2>
+
+          <h3 class="subtitle">
+            Discover the wild beauty of Alaska
+          </h3>
+
+          <p class="description">
+            Experience breathtaking glaciers, majestic mountains,
+            amazing wildlife, Northern Lights and unforgettable
+            adventures with Alaska Tour & Travel.
+          </p>
+
+          <div class="buttons">
+
+            <a href="bookti.html" class="button order-now">
+              Book Your Tour
+            </a>
+
+            <a href="#contact" class="button contact-us">
+              Contact Us
+            </a>
+
+          </div>
+
+        </div>
+
+        <div class="hero-image-wrapper">
+
+          <img
+            src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=80"
+            alt="Beautiful Alaska landscape"
+            class="hero-image"
+          >
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= ABOUT SECTION ================= -->
+
+    <section class="about-section" id="about">
+
+      <div class="section-content">
+
+        <div class="about-image-wrapper">
+
+          <img
+            src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=900&q=80"
+            alt="Alaska travel adventure"
+            class="about-image"
+          >
+
+        </div>
+
+        <div class="about-details">
+
+          <h2 class="section-title">
+            About Us
+          </h2>
+
+          <p class="text">
+            Welcome to Alaska Tour & Travel. We help travelers
+            discover the incredible beauty of Alaska through
+            carefully planned tours and exciting travel
+            experiences.
+          </p>
+
+          <p class="text">
+            From majestic glaciers and snowy mountains to
+            wildlife adventures and beautiful landscapes,
+            we make your Alaska journey comfortable,
+            memorable and enjoyable.
+          </p>
+
+          <p class="text">
+            Our goal is to provide safe, affordable and
+            unforgettable travel experiences for every traveler.
+          </p>
+
+          <div class="social-link-list">
+
+            <a href="#" class="social-link" aria-label="Facebook">
+              <i class="fa-brands fa-facebook"></i>
+            </a>
+
+            <a href="#" class="social-link" aria-label="Instagram">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+
+            <a href="#" class="social-link" aria-label="X">
+              <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= TOURS SECTION ================= -->
+
+    <section class="menu-section" id="tours">
+
+      <h2 class="section-title">
+        Popular Alaska Tours
+      </h2>
+
+      <div class="section-content">
+
+        <ul class="menu-list">
+
+          <!-- TOUR 1 -->
+
+          <li class="menu-item">
+
+            <img
+              src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=500&q=80"
+              alt="Glacier Adventure"
+              class="menu-image"
+            >
+
+            <div class="menu-details">
+
+              <h3 class="name">
+                Glacier Adventure
+              </h3>
+
+              <p class="text">
+                Experience breathtaking glaciers, icy landscapes
+                and unforgettable mountain views.
+              </p>
+
+            </div>
+
+          </li>
+
+
+          <!-- TOUR 2 -->
+
+          <li class="menu-item">
+
+            <img
+              src="https://images.unsplash.com/photo-1444464666168-49d633b86797?auto=format&fit=crop&w=500&q=80"
+              alt="Wildlife Safari"
+              class="menu-image"
+            >
+
+            <div class="menu-details">
+
+              <h3 class="name">
+                Wildlife Safari
+              </h3>
+
+              <p class="text">
+                Discover Alaska's amazing wildlife including
+                bears, moose, eagles and other beautiful animals.
+              </p>
+
+            </div>
+
+          </li>
+
+
+          <!-- TOUR 3 -->
+
+          <li class="menu-item">
+
+            <img
+              src="https://images.unsplash.com/photo-1483347756197-71ef80e95f73?auto=format&fit=crop&w=500&q=80"
+              alt="Northern Lights Tour"
+              class="menu-image"
+            >
+
+            <div class="menu-details">
+
+              <h3 class="name">
+                Northern Lights Tour
+              </h3>
+
+              <p class="text">
+                Witness the magical Aurora Borealis lighting
+                up the Alaska night sky.
+              </p>
+
+            </div>
+
+          </li>
+
+
+          <!-- TOUR 4 -->
+
+          <li class="menu-item">
+
+            <img
+              src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=500&q=80"
+              alt="Mountain Escape"
+              class="menu-image"
+            >
+
+            <div class="menu-details">
+
+              <h3 class="name">
+                Mountain Escape
+              </h3>
+
+              <p class="text">
+                Explore Alaska's magnificent mountains,
+                valleys and scenic hiking trails.
+              </p>
+
+            </div>
+
+          </li>
+
+
+          <!-- TOUR 5 -->
+
+          <li class="menu-item">
+
+            <img
+              src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=500&q=80"
+              alt="Nature Explorer"
+              class="menu-image"
+            >
+
+            <div class="menu-details">
+
+              <h3 class="name">
+                Nature Explorer
+              </h3>
+
+              <p class="text">
+                Enjoy peaceful forests, lakes, rivers and
+                stunning natural scenery.
+              </p>
+
+            </div>
+
+          </li>
+
+
+          <!-- TOUR 6 -->
+
+          <li class="menu-item">
+
+            <img
+              src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=500&q=80"
+              alt="Camping Adventure"
+              class="menu-image"
+            >
+
+            <div class="menu-details">
+
+              <h3 class="name">
+                Camping Adventure
+              </h3>
+
+              <p class="text">
+                Enjoy an exciting outdoor camping experience
+                surrounded by Alaska's beautiful wilderness.
+              </p>
+
+            </div>
+
+          </li>
+
+        </ul>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= REVIEWS SECTION ================= -->
+
+    <section class="reviews-section" id="reviews">
+
+      <h2 class="section-title">
+        Traveler Reviews
+      </h2>
+
+      <div class="section-content">
+
+        <div class="slider-container swiper">
+
+          <div class="slider-wrapper">
+
+            <ul class="reviews-list swiper-wrapper">
+
+              <!-- REVIEW 1 -->
+
+              <li class="review swiper-slide">
+
+                <img
+                  src="https://randomuser.me/api/portraits/women/44.jpg"
+                  alt="Sarah Johnson"
+                  class="user-image"
+                >
+
+                <h3 class="name">
+                  Sarah Johnson
+                </h3>
+
+                <i class="feedback">
+                  "Amazing Alaska experience! The glaciers
+                  and mountains were absolutely beautiful."
+                </i>
+
+              </li>
+
+
+              <!-- REVIEW 2 -->
+
+              <li class="review swiper-slide">
+
+                <img
+                  src="https://randomuser.me/api/portraits/men/32.jpg"
+                  alt="James Wilson"
+                  class="user-image"
+                >
+
+                <h3 class="name">
+                  James Wilson
+                </h3>
+
+                <i class="feedback">
+                  "The tour was well organized and the
+                  Northern Lights were unforgettable!"
+                </i>
+
+              </li>
+
+
+              <!-- REVIEW 3 -->
+
+              <li class="review swiper-slide">
+
+                <img
+                  src="https://randomuser.me/api/portraits/men/46.jpg"
+                  alt="Michael Brown"
+                  class="user-image"
+                >
+
+                <h3 class="name">
+                  Michael Brown
+                </h3>
+
+                <i class="feedback">
+                  "Fantastic wildlife tour. We saw bears,
+                  eagles and beautiful landscapes."
+                </i>
+
+              </li>
+
+
+              <!-- REVIEW 4 -->
+
+              <li class="review swiper-slide">
+
+                <img
+                  src="https://randomuser.me/api/portraits/women/65.jpg"
+                  alt="Emily Harris"
+                  class="user-image"
+                >
+
+                <h3 class="name">
+                  Emily Harris
+                </h3>
+
+                <i class="feedback">
+                  "One of the best trips of my life.
+                  Highly recommended Alaska Tour & Travel!"
+                </i>
+
+              </li>
+
+
+              <!-- REVIEW 5 -->
+
+              <li class="review swiper-slide">
+
+                <img
+                  src="https://randomuser.me/api/portraits/men/68.jpg"
+                  alt="Anthony Thompson"
+                  class="user-image"
+                >
+
+                <h3 class="name">
+                  Anthony Thompson
+                </h3>
+
+                <i class="feedback">
+                  "Beautiful places, friendly service and
+                  a truly memorable adventure."
+                </i>
+
+              </li>
+
+            </ul>
+
+            <div class="swiper-pagination"></div>
+
+            <div class="swiper-slide-button swiper-button-prev"></div>
+
+            <div class="swiper-slide-button swiper-button-next"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ================= CONTACT SECTION ================= -->
+
+    <section class="contact-section" id="contact">
+
+      <h2 class="section-title">
+        Contact Us
+      </h2>
+
+      <div class="section-content">
+
+        <!-- Contact Information -->
+
+        <ul class="contact-info-list">
+
+          <li class="contact-info">
+
+            <i class="fa-solid fa-location-crosshairs"></i>
+
+            <p>
+              Alaska Tour & Travel,
+              Anchorage, Alaska
+            </p>
+
+          </li>
+
+          <li class="contact-info">
+
+            <i class="fa-regular fa-envelope"></i>
+
+            <p>
+              info@alaskatourtravel.com
+            </p>
+
+          </li>
+
+          <li class="contact-info">
+
+            <i class="fa-solid fa-phone"></i>
+
+            <p>
+              +1 907 555 0123
+            </p>
+
+          </li>
+
+          <li class="contact-info">
+
+            <i class="fa-regular fa-clock"></i>
+
+            <p>
+              Monday - Saturday:
+              9:00 AM - 7:00 PM
+            </p>
+
+          </li>
+
+          <li class="contact-info">
+
+            <i class="fa-solid fa-plane"></i>
+
+            <p>
+              Tour Booking:
+              24/7 Online
+            </p>
+
+          </li>
+
+          <li class="contact-info">
+
+            <i class="fa-regular fa-clock"></i>
+
+            <p>
+              Sunday:
+              10:00 AM - 5:00 PM
+            </p>
+
+          </li>
+
+          <li class="contact-info">
+
+            <i class="fa-solid fa-globe"></i>
+
+            <p>
+              www.alaskatourtravel.com
+            </p>
+
+          </li>
+
+        </ul>
+
+
+        <!-- Contact Form -->
+
+        <form action="#" class="contact-form">
+
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            class="form-input"
+            required
+          >
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Your Email"
+            class="form-input"
+            required
+          >
+
+          <input
+            type="text"
+            name="destination"
+            placeholder="Destination / Tour"
+            class="form-input"
+            required
+          >
+
+          <textarea
+            name="message"
+            placeholder="Your Message"
+            class="form-input"
+            required
+          ></textarea>
+
+          <button
+            type="submit"
+            class="button submit-button">
+            Send Enquiry
+          </button>
+
+        </form>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ================= FOOTER ================= -->
+
+  <footer class="footer-section">
+
+    <div class="section-content">
+
+      <p class="copyright-text">
+        © 2026 Alaska Tour & Travel. All Rights Reserved.
+      </p>
+
+      <div class="social-link-list">
+
+        <a href="#" class="social-link" aria-label="Facebook">
+          <i class="fa-brands fa-facebook"></i>
+        </a>
+
+        <a href="#" class="social-link" aria-label="Instagram">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+
+        <a href="#" class="social-link" aria-label="X">
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+
+      </div>
+
+      <p class="policy-text">
+
+        <a href="term.html" class="policy-link">
+          Team Policy
+        </a>
+
+        <span class="separator">
+          •
+        </span>
+
+        <a href="#" class="policy-link">
+          Refund Policy
+        </a>
+
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ================= SWIPER JS ================= -->
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="script.js"></script>
+
+
+  <!-- ================= SWIPER CONFIGURATION ================= -->
+
+  <script>
+
+    const swiper = new Swiper(".slider-wrapper", {
+
+      loop: true,
+
+      spaceBetween: 30,
+
+      grabCursor: true,
+
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false
+      },
+
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true
+      },
+
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev"
+      }
+
+    });
+
+  </script>
+
+</body>
+
+</html>
+```

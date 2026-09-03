@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Payment Invoice | Alaska Tour & Travel</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef6ff,
+                    #f8fbff
+                );
+
+            color: #172033;
+
+            padding: 40px 15px;
+
+        }
+
+
+        .invoice {
+
+            width: 100%;
+
+            max-width: 700px;
+
+            margin: auto;
+
+            background: white;
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 20px 60px
+                rgba(20, 55, 90, .15);
+
+            border:
+                1px solid #e1eaf3;
+
+        }
+
+
+        /* HEADER */
+
+        .invoice-header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #061a33,
+                    #087fd0
+                );
+
+            color: white;
+
+            padding: 35px;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+        }
+
+
+        .brand h1 {
+
+            font-size: 25px;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .brand p {
+
+            font-size: 11px;
+
+            color: #c9e5fa;
+
+        }
+
+
+        .invoice-title {
+
+            text-align: right;
+
+        }
+
+
+        .invoice-title h2 {
+
+            font-size: 22px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .invoice-title span {
+
+            font-size: 10px;
+
+            color: #c9e5fa;
+
+        }
+
+
+        /* SUCCESS */
+
+        .success {
+
+            text-align: center;
+
+            padding: 28px 20px 10px;
+
+        }
+
+
+        .success-icon {
+
+            width: 65px;
+
+            height: 65px;
+
+            margin: auto;
+
+            border-radius: 50%;
+
+            background: #e0f7ed;
+
+            color: #07905f;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 30px;
+
+            font-weight: bold;
+
+        }
+
+
+        .success h3 {
+
+            margin-top: 12px;
+
+            font-size: 20px;
+
+            color: #173b70;
+
+        }
+
+
+        .success p {
+
+            margin-top: 6px;
+
+            color: #7a8999;
+
+            font-size: 12px;
+
+        }
+
+
+        /* DETAILS */
+
+        .content {
+
+            padding: 30px;
+
+        }
+
+
+        .section-title {
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            color: #173b70;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .details {
+
+            border:
+                1px solid #e1eaf3;
+
+            border-radius: 14px;
+
+            overflow: hidden;
+
+        }
+
+
+        .row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 15px 17px;
+
+            border-bottom:
+                1px solid #edf2f6;
+
+            font-size: 12px;
+
+        }
+
+
+        .row:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .label {
+
+            color: #718096;
+
+        }
+
+
+        .value {
+
+            font-weight: 700;
+
+            color: #172033;
+
+            text-align: right;
+
+        }
+
+
+        .amount-row {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border-radius: 14px;
+
+            background: #f0f8ff;
+
+            border: 1px solid #cce8fb;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+        }
+
+
+        .amount-label {
+
+            color: #0875bb;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .amount {
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+            color: #075eb9;
+
+        }
+
+
+        /* TRANSACTION */
+
+        .transaction {
+
+            margin-top: 20px;
+
+            background: #f7fafc;
+
+            border-radius: 12px;
+
+            padding: 15px;
+
+            text-align: center;
+
+        }
+
+
+        .transaction p {
+
+            font-size: 10px;
+
+            color: #7a8999;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .transaction strong {
+
+            font-size: 15px;
+
+            color: #173b70;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        /* FOOTER */
+
+        .footer {
+
+            padding: 0 30px 30px;
+
+            text-align: center;
+
+        }
+
+
+        .footer p {
+
+            font-size: 10px;
+
+            color: #8a98a7;
+
+            line-height: 1.6;
+
+        }
+
+
+        .buttons {
+
+            display: flex;
+
+            gap: 12px;
+
+            margin-top: 20px;
+
+        }
+
+
+        button {
+
+            flex: 1;
+
+            height: 45px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+            font-size: 12px;
+
+        }
+
+
+        .print-btn {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0e91e5,
+                    #075eb9
+                );
+
+            color: white;
+
+        }
+
+
+        .home-btn {
+
+            background: #edf4f9;
+
+            color: #0875bb;
+
+        }
+
+
+        button:hover {
+
+            transform: translateY(-2px);
+
+        }
+
+
+        /* MOBILE */
+
+        @media(max-width: 600px) {
+
+            body {
+
+                padding: 15px;
+
+            }
+
+
+            .invoice-header {
+
+                flex-direction: column;
+
+                text-align: center;
+
+            }
+
+
+            .invoice-title {
+
+                text-align: center;
+
+            }
+
+
+            .content {
+
+                padding: 20px;
+
+            }
+
+
+            .footer {
+
+                padding:
+                    0 20px 25px;
+
+            }
+
+
+            .row {
+
+                flex-direction: column;
+
+                gap: 5px;
+
+            }
+
+
+            .value {
+
+                text-align: left;
+
+            }
+
+
+            .buttons {
+
+                flex-direction: column;
+
+            }
+
+        }
+
+
+        /* PRINT */
+
+        @media print {
+
+            body {
+
+                background: white;
+
+                padding: 0;
+
+            }
+
+
+            .invoice {
+
+                box-shadow: none;
+
+                border: none;
+
+                max-width: 100%;
+
+            }
+
+
+            .buttons {
+
+                display: none;
+
+            }
+
+        }
+
+    </style>
+
+<script src="api.js"></script>
+</head>
+
+
+<body>
+
+
+<div class="invoice">
+
+
+    <!-- HEADER -->
+
+    <div class="invoice-header">
+
+        <div class="brand">
+
+            <h1>
+                Alaska Tour & Travel
+            </h1>
+
+            <p>
+                Travel • Explore • Experience
+            </p>
+
+        </div>
+
+
+        <div class="invoice-title">
+
+            <h2>
+                PAYMENT INVOICE
+            </h2>
+
+            <span>
+                BANK TRANSFER RECEIPT
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUCCESS -->
+
+    <div class="success">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h3>
+            Payment Successful
+        </h3>
+
+        <p>
+            Your demo bank transfer has been completed successfully.
+        </p>
+
+    </div>
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+
+        <div class="section-title">
+            PAYMENT DETAILS
+        </div>
+
+
+        <div class="details">
+
+
+            <div class="row">
+
+                <span class="label">
+                    Account Holder
+                </span>
+
+                <span
+                    class="value"
+                    id="invoiceName"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Account Number
+                </span>
+
+                <span
+                    class="value"
+                    id="invoiceAccount"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    IFSC Code
+                </span>
+
+                <span
+                    class="value"
+                    id="invoiceIfsc"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Purpose
+                </span>
+
+                <span
+                    class="value"
+                    id="invoicePurpose"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Payment Date
+                </span>
+
+                <span
+                    class="value"
+                    id="invoiceDate"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+            <div class="row">
+
+                <span class="label">
+                    Payment Time
+                </span>
+
+                <span
+                    class="value"
+                    id="invoiceTime"
+                >
+                    --
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- AMOUNT -->
+
+        <div class="amount-row">
+
+            <span class="amount-label">
+                TOTAL PAID
+            </span>
+
+            <span
+                class="amount"
+                id="invoiceAmount"
+            >
+                ₹0
+            </span>
+
+        </div>
+
+
+        <!-- TRANSACTION -->
+
+        <div class="transaction">
+
+            <p>
+                TRANSACTION ID
+            </p>
+
+            <strong
+                id="invoiceTransaction"
+            >
+                --
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        <p>
+            Thank you for choosing Alaska Tour & Travel.
+            This invoice is generated for demonstration purposes.
+            No real bank transaction has been processed.
+        </p>
+
+
+        <div class="buttons">
+
+            <button
+                class="print-btn"
+                onclick="window.print()"
+            >
+                🖨 Print Invoice
+            </button>
+
+
+            <button
+                class="home-btn"
+                onclick="goHome()"
+            >
+                ← Back
+            </button>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script>
+(async()=>{let transfer=null;try{const id=new URLSearchParams(location.search).get("transfer");if(id) transfer=await API.request("/transfers/"+encodeURIComponent(id));}catch(e){} if(!transfer){try{transfer=JSON.parse(localStorage.getItem("bankTransferData")||"null")}catch(e){}} if(!transfer){alert("No payment information found.");location.href="international.html";return}
+ invoiceName.textContent=transfer.name; invoiceAccount.textContent="XXXXXX"+String(transfer.account).slice(-4); invoiceIfsc.textContent=transfer.ifsc; invoicePurpose.textContent=transfer.purpose; invoiceDate.textContent=transfer.date; invoiceTime.textContent=transfer.time; invoiceAmount.textContent="₹"+Number(transfer.amount).toLocaleString("en-IN"); invoiceTransaction.textContent=transfer.id||transfer.transactionId;
+})(); function goHome(){location.href="index.html";}
+</script>
+
+
+</body>
+
+</html>

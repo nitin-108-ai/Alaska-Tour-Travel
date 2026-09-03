@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | Alaska Tour &amp; Travel</title>
+  <link rel="stylesheet" href="logins.css">
+  <script src="api.js"></script>
+</head>
+<body>
+
+  <div class="travel-card">
+
+    <!-- Left Travel Section -->
+    <div class="travel-info">
+      <div class="brand">
+        <div class="brand-logo">✈</div>
+        <span>ALASKA</span>
+      </div>
+      <div class="travel-content">
+        <p class="small-title">EXPLORE • DREAM • TRAVEL</p>
+        <h1>Create Your<br><span>Adventure.</span></h1>
+        <p>Join Alaska Tour &amp; Travel and manage your trips in one place.</p>
+      </div>
+      <div class="plane">✈</div>
+    </div>
+
+    <!-- Sign Up Section -->
+    <div class="login-section">
+      <h2>Create Account</h2>
+      <p class="welcome">Start your journey today</p>
+
+      <form id="signupForm">
+
+        <div class="input-group">
+          <label for="name">Name</label>
+          <div class="input-wrapper">
+            <span>👤</span>
+            <input id="name" required placeholder="Your name">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <span>✉</span>
+            <input id="email" type="email" required placeholder="you@example.com">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <span>🔒</span>
+            <input id="password" type="password" minlength="6" required placeholder="At least 6 characters">
+          </div>
+        </div>
+
+        <p id="message"></p>
+
+        <button type="submit" class="login-btn">Create Account ✈</button>
+
+      </form>
+
+      <p class="signup">Already have an account? <a href="logintravel.html">Log In</a></p>
+    </div>
+
+  </div>
+
+  <script>
+    const msgEl     = document.getElementById("message");
+    const signupBtn = document.querySelector(".login-btn");
+
+    document.getElementById("signupForm").onsubmit = async (e) => {
+      e.preventDefault();
+      msgEl.textContent = "";
+      msgEl.className   = "";
+
+      signupBtn.disabled    = true;
+      signupBtn.textContent = "Creating account…";
+
+      try {
+        const d = await API.register(
+          document.getElementById("name").value.trim(),
+          document.getElementById("email").value.trim(),
+          document.getElementById("password").value
+        );
+
+        // Save token + user info
+        localStorage.setItem("alaskaToken",     d.token);
+        localStorage.setItem("alaskaUserName",  d.user.name);
+        localStorage.setItem("alaskaUserEmail", d.user.email);
+
+        msgEl.textContent = "Account created! Redirecting…";
+        msgEl.className   = "success";
+
+        setTimeout(() => location.href = "index.html", 500);
+      } catch (err) {
+        msgEl.textContent = err.message || "Registration failed. Please try again.";
+        msgEl.className   = "error";
+
+        signupBtn.disabled   = false;
+        signupBtn.textContent = "Create Account ✈";
+      }
+    };
+  </script>
+
+</body>
+</html>
