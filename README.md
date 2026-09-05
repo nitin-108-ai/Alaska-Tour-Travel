@@ -1,26 +1,19 @@
 # ✈️ Alaska Tour & Travel — Full-Stack Web Application
 
-A full-stack travel booking application featuring flights, buses, trains, international holiday tours, dynamic booking & payment flows (UPI, Card, Bank Transfer), automated PDF/print invoices, traveler profile management, and an administrative control panel with an app-download tracker.
+A full-stack travel booking application featuring flights, buses, trains, international holiday tours, dynamic booking & payment flows (UPI, Card, Bank Transfer), automated printable invoices, traveler profile management, and an administrative control panel with an app-download tracker.
 
 ---
 
-## 🌐 Production Architecture & Live URLs
+## 🌐 LIVE WEBSITE
 
-- **Frontend (GitHub Pages):** [https://nitin-108-ai.github.io/Alaska-Tour-Travel/](https://nitin-108-ai.github.io/Alaska-Tour-Travel/)
-- **Backend API (Render Web Service):** [https://alaska-tour-travel-backend.onrender.com/api](https://alaska-tour-travel-backend.onrender.com/api)
-- **API Health Endpoint:** [https://alaska-tour-travel-backend.onrender.com/api/health](https://alaska-tour-travel-backend.onrender.com/api/health)
+> **Important:** Do NOT use localhost as your public website URL. Deploy the application using the instructions below.
 
-```
-[ Traveler / Admin Browser ]
-             │
-             ├──► GitHub Pages (Static Frontend: HTML5 / CSS3 / Vanilla JS)
-             │        │
-             │        └── config.js (Resolves API base URL dynamically)
-             │
-             └──► Render (Node.js + Express REST API + JWT + CORS)
-                      │
-                      └── backend/data.json (Seeded In-Memory / File Store)
-```
+- **Public Frontend Website:** `https://YOUR-FRONTEND-URL`
+  - *(GitHub Pages URL format for this repository: `https://nitin-108-ai.github.io/Alaska-Tour-Travel/`)*
+  - Place this URL in your GitHub repository: **About → Website**.
+- **Live Backend API:** `https://YOUR-BACKEND-URL`
+  - *(Render Web Service URL format: `https://<YOUR-RENDER-SERVICE-NAME>.onrender.com/api`)*
+- **API Health Check:** `https://YOUR-BACKEND-URL/health`
 
 ---
 
@@ -55,7 +48,7 @@ Alaska-Tour-Travel/
 │   ├── bus.html                 # Bus reservation booking flow
 │   ├── train.html               # IRCTC-style railway booking flow
 │   ├── tour.html                # Domestic vacation packages
-│   ├── international.html       # Global holiday destinations
+│   ├── international.html       # Global holiday destinations & bank transfer flow
 │   ├── signin.html              # User registration
 │   ├── logintravel.html         # User & Administrator login
 │   ├── contact.html             # Customer support & inquiry form
@@ -68,13 +61,15 @@ Alaska-Tour-Travel/
 
 ---
 
-## 🚀 1. Local Development Quickstart
+## 💻 LOCAL DEVELOPMENT (Testing & Dev Only)
+
+The URLs below are only valid on your private computer during local development and are never accessible to public users.
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) v18.0.0 or higher
-- npm (installed with Node)
+- npm (bundled with Node)
 
-### Step-by-Step
+### Running Locally
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/nitin-108-ai/Alaska-Tour-Travel.git
@@ -95,179 +90,114 @@ Alaska-Tour-Travel/
    FRONTEND_URL=http://localhost:5500,http://127.0.0.1:5500,http://localhost:3000
    ```
 
-4. **Start the backend server:**
+4. **Start the local backend server:**
    ```bash
    npm start
-   # Server starts on http://localhost:5000
    ```
+   *Local output: `Alaska Travel API running on port 5000 [development]`*
 
-5. **Launch the frontend:**
-   - Open `frontend/index.html` directly in any web browser, or serve it using VS Code Live Server (`http://localhost:5500`).
-   - `frontend/config.js` automatically detects `localhost` or `127.0.0.1` and points API requests to `http://localhost:5000/api`.
+5. **Open local frontend:**
+   - Open `frontend/index.html` in your browser, or run via VS Code Live Server at `http://127.0.0.1:5500/frontend/index.html`.
+   - `frontend/config.js` automatically detects `localhost` / `127.0.0.1` and routes API requests to `http://localhost:5000/api`.
 
 ---
 
-## 🛠️ 2. Backend Deployment (Render)
+## 🛠️ PRODUCTION BACKEND DEPLOYMENT (Render)
 
-The backend is configured with `render.yaml` for 1-click or repository-linked deployment on Render.
+The backend is configured with `render.yaml` for deployment on Render.
 
-### Option A: Using Blueprint (Recommended)
-1. Sign in to [Render Dashboard](https://dashboard.render.com/).
+### Option A: Using Render Blueprint (Recommended)
+1. Sign in to [dashboard.render.com](https://dashboard.render.com/).
 2. Click **New +** → **Blueprint**.
-3. Connect the GitHub repository: `https://github.com/nitin-108-ai/Alaska-Tour-Travel`.
-4. Render detects `render.yaml` and provisions:
+3. Connect your GitHub repository: `https://github.com/nitin-108-ai/Alaska-Tour-Travel`.
+4. Render automatically reads `render.yaml`:
    - Service Name: `alaska-tour-travel-backend`
    - Runtime: `Node`
-   - Build Command: `cd backend && npm install`
-   - Start Command: `cd backend && npm start`
-   - Auto-generated `JWT_SECRET`
+   - Root Directory: `backend`
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+   - Auto-generates a secure `JWT_SECRET`
+5. Click **Apply**.
 
-### Option B: Manual Web Service Setup
+### Option B: Manual Web Service Setup on Render
 1. Click **New +** → **Web Service**.
-2. Connect your repository.
+2. Connect your GitHub repository.
 3. Configure settings:
    - **Root Directory:** `backend`
    - **Build Command:** `npm install`
    - **Start Command:** `npm start`
    - **Environment:** `Node`
-4. Add Environment Variables (see table below).
+4. Add Environment Variables:
+   - `NODE_ENV`: `production`
+   - `JWT_SECRET`: *(A long, secure random key)*
+   - `FRONTEND_URL`: `https://nitin-108-ai.github.io`
 5. Click **Deploy Web Service**.
-6. Copy your service URL (e.g., `https://alaska-tour-travel-backend.onrender.com`).
+6. Once deployed, note your public backend URL:
+   `https://<YOUR-RENDER-SERVICE-NAME>.onrender.com/api`
 
 ---
 
-## 📦 3. Frontend Deployment (GitHub Pages)
+## 🚀 PRODUCTION FRONTEND DEPLOYMENT (GitHub Pages)
 
-The repository includes an automated GitHub Actions deployment workflow at `.github/workflows/deploy-pages.yml`.
+The repository includes a GitHub Actions workflow at `.github/workflows/deploy-pages.yml` that automatically deploys the `./frontend` directory to GitHub Pages.
 
-### Enable GitHub Pages in your repository:
-1. Go to your GitHub repository: `https://github.com/nitin-108-ai/Alaska-Tour-Travel`.
+### Setup Steps:
+1. Go to your repository on GitHub: `https://github.com/nitin-108-ai/Alaska-Tour-Travel`.
 2. Navigate to **Settings** → **Pages**.
 3. Under **Build and deployment** → **Source**, select **GitHub Actions**.
-4. When you push to the `master` branch, GitHub Actions will automatically bundle and deploy the `./frontend` directory directly to GitHub Pages.
-5. Your live site will be available at:
+4. Push your changes to the `master` branch.
+5. GitHub Actions will build and deploy the frontend.
+6. The deployed application will be accessible at:
    `https://nitin-108-ai.github.io/Alaska-Tour-Travel/`
 
 ---
 
-## 🔑 4. Environment Variables Reference
+## ⚙️ Connecting Frontend to the Live Backend
 
-| Variable | Required | Default / Example | Purpose |
-| :--- | :---: | :--- | :--- |
-| `PORT` | Auto | `5000` (Local) / Auto-assigned by Render | Port for Express listener |
-| `JWT_SECRET` | **Yes** | Auto-generated on Render / Strong random string | Signing & verifying JWT user/admin session tokens |
-| `FRONTEND_URL` | Optional | `https://nitin-108-ai.github.io` | Comma-separated allowed CORS origins |
-
-> [!NOTE]
-> `server.js` dynamically permits requests from `https://nitin-108-ai.github.io`, all `*.github.io` subdomains, and local dev servers even if `FRONTEND_URL` is omitted.
-
----
-
-## ⚙️ 5. Configuring the Production API URL
-
-The frontend uses `frontend/config.js` to define the centralized backend URL:
-
-```javascript
-// frontend/config.js
-window.APP_CONFIG = {
-  // Replace with your active Render web service URL:
-  API_BASE_URL: "https://alaska-tour-travel-backend.onrender.com/api",
-  DEMO_MODE: true,
-  VERSION: "1.0.0"
-};
-```
-
-### Dynamic Switcher / Testing without Re-deploying:
-If your backend is deployed at a different Render URL, you can switch it instantly from the browser developer console or localStorage without editing any files:
-```javascript
-// Run in browser console:
-localStorage.setItem('alaskaApiUrl', 'https://your-custom-backend.onrender.com/api');
-location.reload();
-
-// To clear:
-localStorage.removeItem('alaskaApiUrl');
-location.reload();
-```
-
----
-
-## 🔄 6. How to Connect GitHub Pages to Render
-
-1. Deploy the backend on Render and confirm that the health check responds:
-   ```bash
-   curl https://<YOUR-RENDER-APP>.onrender.com/api/health
-   # Response: {"status":"healthy","service":"Alaska Tour & Travel API",...}
+1. Once your backend is deployed on Render, copy its public URL (e.g., `https://alaska-tour-travel-backend.onrender.com`).
+2. Open `frontend/config.js` and set:
+   ```javascript
+   const PRODUCTION_BACKEND_URL = "https://<YOUR-RENDER-SERVICE-NAME>.onrender.com";
    ```
-2. If your Render URL differs from `https://alaska-tour-travel-backend.onrender.com/api`, open `frontend/config.js` and update `API_BASE_URL`.
-3. Commit and push the changes:
+3. Commit and push:
    ```bash
    git add frontend/config.js
-   git commit -m "update production backend url"
+   git commit -m "configure production backend url"
    git push origin master
    ```
-4. GitHub Actions will rebuild the frontend in ~60 seconds.
-5. Open `https://nitin-108-ai.github.io/Alaska-Tour-Travel/` and verify that login, search, and bookings connect seamlessly.
+4. GitHub Actions will automatically re-deploy the frontend within ~60 seconds.
 
 ---
 
-## 🧪 7. Testing the Backend API
+## 🔑 Environment Variables Reference
 
-You can test all endpoints using `curl` or Postman:
-
-```bash
-# 1. Health check
-curl -X GET http://localhost:5000/api/health
-
-# 2. Flight Search
-curl -X GET "http://localhost:5000/api/flights/search?from=DEL&to=BOM&date=2026-09-10"
-
-# 3. App Download Counter
-curl -X POST http://localhost:5000/api/app-download -H "Content-Type: application/json" -d '{"platform":"android"}'
-
-# 4. Traveler Registration
-curl -X POST http://localhost:5000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"John Doe","email":"john@example.com","password":"password123","phone":"9876543210"}'
-
-# 5. Admin Login
-curl -X POST http://localhost:5000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"admin@alaska.com","password":"admin123"}'
-```
+| Variable | Required in Production | Example / Default | Description |
+| :--- | :---: | :--- | :--- |
+| `PORT` | Auto-provided by Render | `10000` (Render) / `5000` (Local) | HTTP server listener port |
+| `JWT_SECRET` | **Yes** | 32+ character random string | Signs and verifies traveler and admin JWT tokens |
+| `FRONTEND_URL` | Optional | `https://nitin-108-ai.github.io` | Allowed CORS origins whitelist |
+| `NODE_ENV` | Recommended | `production` | Enables production optimizations and security warnings |
 
 ---
 
-## 🛡️ 8. Security & Roles
+## 🛡️ Security & Role System
 
-- **Role-Based Authentication:**
-  - **Traveler Role:** Can search flights/buses/trains, create bookings, process payments, download invoices, and manage personal profiles.
-  - **Admin Role:** Can view all system bookings, change booking statuses (`CONFIRMED`, `CANCELLED`, `COMPLETED`), access the live analytics dashboard, and inspect the mobile app download counters.
+- **Dual-Role Authentication:**
+  - **Traveler (`role: user`):** Book flights/trains/buses/tours, complete UPI/card payments, view past bookings, update traveler profile.
+  - **Administrator (`role: admin`):** View KPI dashboard (revenue, total bookings, active users), manage customer bookings, view live app download statistics.
 - **Default Seed Accounts:**
-  - **Admin:** `admin@alaska.com` / `admin123`
-  - **Traveler:** Create a new traveler account via `signin.html` or login at `logintravel.html`.
-- **Protected Endpoints:** Admin routes enforce `authenticateToken` + `requireAdmin` middleware.
-- **Rate Limiting:** Protects `/api/auth/login` and `/api/auth/register` against brute-force attempts (100 requests per 15 minutes).
-- **Graceful Cloud Restarts:** Render free tier spins down inactive services after 15 minutes. `frontend/api.js` detects spin-up delays and prompts travelers politely while the server wakes up.
+  - Admin: `admin@alaska.com` / `admin123`
+  - User: Register via `signin.html` or login at `logintravel.html`
+- **Protected Endpoints:** All `/api/admin/*` endpoints require `Bearer` token with `role: admin`.
+- **Brute-Force Rate Limiting:** 100 requests per 15 minutes on auth endpoints.
 
 ---
 
-## 📜 9. Git Commands to Commit & Push
+## 📜 Deployment Git Commands
 
 ```bash
-# 1. Verify changed files
 git status
-
-# 2. Stage all production configuration files
 git add .
-
-# 3. Commit changes
-git commit -m "prepare project for production deployment"
-
-# 4. Push to master branch
+git commit -m "prepare project for public production deployment"
 git push origin master
 ```
-
----
-
-## 📄 License & Attribution
-Developed for **Alaska Tour & Travel**. All rights reserved.

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="alaska-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#13b8a8" />
+      <stop offset="100%" stop-color="#0879d1" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#alaska-grad)" />
+  <path fill="#ffffff" d="M15 36.5 L24 20 L43 25 L53 15 C55 13 58 13 59.5 14.5 C61 16 61 19 59 21 L49 31 L54 50 L37.5 41.5 L31 48 L31 53.5 L26.5 49 L22 44.5 L27.5 44.5 L34 38 Z" />
+</svg>
