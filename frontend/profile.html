@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>My Profile & Bookings | Alaska Tour & Travel</title>
   <!-- Favicon & PWA Metadata -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -43,6 +43,13 @@
       padding: 0;
       box-sizing: border-box;
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+      width: 100%;
+      -webkit-text-size-adjust: 100%;
     }
 
     body {
@@ -1042,27 +1049,312 @@
         background: none;
         position: static;
       }
+    /* =====================================================
+       RESPONSIVE & MOBILE DRAWER STYLES
+    ===================================================== */
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 860px) {
+    .header-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Animated 3-Bar / Hamburger Toggle Button */
+    .profile-mobile-toggle {
+      display: none;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(19, 184, 168, 0.4);
+      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      padding: 10px 9px;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+    }
+    .profile-mobile-toggle:hover,
+    .profile-mobile-toggle:active {
+      background: rgba(19, 184, 168, 0.2);
+      border-color: #13b8a8;
+      transform: scale(1.04);
+    }
+    .profile-mobile-toggle .bar {
+      width: 100%;
+      height: 2.5px;
+      background: #38efdb;
+      border-radius: 3px;
+      transition: transform 0.35s ease, opacity 0.25s ease;
+    }
+    .profile-mobile-toggle.active .bar1 {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .profile-mobile-toggle.active .bar2 {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
+    .profile-mobile-toggle.active .bar3 {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+
+    /* Mobile Drawer Top Bar */
+    .mobile-drawer-top {
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      width: 100%;
+    }
+    .drawer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .profile-drawer-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+    .profile-drawer-close:hover,
+    .profile-drawer-close:active {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: #ef4444;
+      color: #ef4444;
+      transform: rotate(90deg);
+    }
+
+    /* Mobile Drawer Overlay Backdrop */
+    .profile-nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 15, 28, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 99998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .profile-nav-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* TABLET & MOBILE MEDIA QUERIES (Zero Zoom In/Out) */
+    @media (max-width: 900px) {
+      header {
+        padding: 12px 16px;
+      }
+      .brand-text h1 {
+        font-size: 16px;
+      }
+      .brand-text span {
+        font-size: 9px;
+      }
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+      }
+      .profile-mobile-toggle {
+        display: flex;
+      }
+      .mobile-drawer-top {
+        display: flex;
+      }
+
+      /* Sliding Drawer Navigation */
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -320px;
+        width: 290px;
+        max-width: 85vw;
+        height: 100vh;
+        height: 100dvh;
+        background: linear-gradient(180deg, #041a32 0%, #062b54 100%);
+        border-left: 1px solid rgba(19, 184, 168, 0.35);
+        box-shadow: -15px 0 50px rgba(0, 0, 0, 0.65);
+        padding: 24px 20px 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        overflow-y: auto;
+        z-index: 99999;
+        transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .nav-links.open {
+        right: 0;
+      }
+      .nav-links li {
+        width: 100%;
+        list-style: none;
+      }
+      .nav-links a {
+        padding: 12px 16px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 15px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .nav-links a:hover,
+      .nav-links a.active {
+        background: rgba(19, 184, 168, 0.16);
+        color: #38efdb;
+        transform: translateX(4px);
+      }
+
+      /* Main Container & Hero Card Edge-to-Edge */
+      .container {
+        padding: 0 14px;
+        margin: 16px auto;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+      .profile-hero {
+        padding: 22px 18px;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        gap: 18px;
+      }
+      .profile-user-wrap {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+      }
+      .profile-hero-actions {
+        width: 100%;
+        justify-content: center;
+        gap: 10px;
+      }
+      .btn-action {
+        flex: 1;
+        min-width: 135px;
+        justify-content: center;
+        min-height: 44px;
+      }
+
+      /* Responsive Stats Row (2 Columns on Mobile) */
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 16px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .stat-card {
+        padding: 14px 12px;
+        gap: 10px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .stat-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+        border-radius: 12px;
+      }
+      .stat-info h3 {
+        font-size: 18px;
+      }
+      .stat-info p {
+        font-size: 11px;
+      }
+
+      /* Tabs and Filter Pills */
+      .profile-tabs {
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 6px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tab-btn {
+        padding: 9px 16px;
+        font-size: 13px;
+        white-space: nowrap;
+        min-height: 44px;
+      }
+      .filter-pills {
+        overflow-x: auto;
+        padding-bottom: 6px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .pill {
+        padding: 7px 14px;
+        font-size: 12px;
+        white-space: nowrap;
+        min-height: 38px;
+      }
+
+      /* Booking Cards on Mobile */
+      .booking-card {
+        padding: 18px 16px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .booking-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
       .booking-card-body {
         grid-template-columns: 1fr;
-        gap: 18px;
+        gap: 14px;
+      }
+      .trip-route {
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .route-arrow {
+        max-width: 90px;
       }
       .trip-specifics {
         border-left: none;
         padding-left: 0;
         border-top: 1px solid #f1f5f9;
-        padding-top: 15px;
+        padding-top: 12px;
       }
       .booking-actions {
-        align-items: flex-start;
-        border-top: 1px solid #f1f5f9;
-        padding-top: 15px;
-        flex-direction: row;
-        justify-content: space-between;
+        flex-direction: column;
         width: 100%;
+        gap: 8px;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 12px;
+        align-items: stretch;
+      }
+      .booking-actions button,
+      .booking-actions a {
+        width: 100%;
+        justify-content: center;
+        min-height: 44px;
       }
       .bp-grid-details {
         grid-template-columns: repeat(2, 1fr);
@@ -1072,20 +1364,23 @@
       }
     }
 
-    @media (max-width: 600px) {
-      .profile-hero {
-        padding: 24px;
+    @media (max-width: 480px) {
+      .stats-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
       }
-      .profile-user-wrap {
+      .stat-card {
+        padding: 12px 10px;
         flex-direction: column;
         text-align: center;
+        align-items: center;
       }
-      .bp-route-hero {
-        grid-template-columns: 1fr;
-        gap: 10px;
+      .stat-info h3 {
+        font-size: 16px;
       }
-      .bp-mid-plane {
-        margin: 10px 0;
+      .btn-action {
+        width: 100%;
+        min-width: 100%;
       }
     }
   </style>
@@ -1105,7 +1400,28 @@
       </div>
     </a>
 
-    <ul class="nav-links">
+    <!-- Header Controls: Profile dropdown + Animated 3-Bar Toggle -->
+    <div class="header-right-controls">
+      <div id="profile-slot"></div>
+      <button id="profileMenuToggle" class="profile-mobile-toggle" aria-label="Toggle navigation menu">
+        <span class="bar bar1"></span>
+        <span class="bar bar2"></span>
+        <span class="bar bar3"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer Overlay -->
+    <div id="profileNavOverlay" class="profile-nav-overlay"></div>
+
+    <!-- Navigation Menu (Desktop row / Mobile animated sliding drawer) -->
+    <ul class="nav-links" id="profileNavLinks">
+      <div class="mobile-drawer-top">
+        <div class="drawer-brand">
+          <div class="brand-icon" style="width: 36px; height: 36px; font-size: 16px;"><i class="fa-solid fa-plane-departure"></i></div>
+          <strong style="font-size: 15px; color: #fff;">Alaska Travel</strong>
+        </div>
+        <button id="profileDrawerClose" class="profile-drawer-close" aria-label="Close menu">&times;</button>
+      </div>
       <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
       <li><a href="tour.html"><i class="fa-solid fa-compass"></i> Explore Tours</a></li>
       <li><a href="bookti.html"><i class="fa-solid fa-plane"></i> Flights</a></li>
@@ -1113,7 +1429,6 @@
       <li><a href="bus.html"><i class="fa-solid fa-bus"></i> Buses</a></li>
       <li><a href="profile.html" class="active"><i class="fa-solid fa-user"></i> My Profile</a></li>
       <li><a href="contact.html"><i class="fa-solid fa-headset"></i> Contact</a></li>
-      <li id="profile-slot"></li>
     </ul>
   </header>
 
@@ -1412,9 +1727,37 @@
     let currentBookings = [];
     let currentFilter = 'all';
 
+    // Current active user credentials
+    function getCurrentUser() {
+      const email = (localStorage.getItem("alaskaUserEmail") || "").trim().toLowerCase();
+      const id = (localStorage.getItem("alaskaUserId") || "").trim();
+      const name = (localStorage.getItem("alaskaUserName") || "").trim();
+      return { email, id, name };
+    }
+
+    // Strict booking ownership check
+    function isCurrentUserBooking(b, user) {
+      if (!user.email && !user.id) return true; // guest fallback
+
+      const bEmail = (b.userEmail || b.email || "").trim().toLowerCase();
+      const bUserId = (b.userId || "").trim();
+
+      if (user.id && bUserId && user.id === bUserId) return true;
+      if (user.email && bEmail && user.email === bEmail) return true;
+
+      // If booking has neither email nor userId, check if passenger name matches
+      if (!bEmail && !bUserId && user.name && (b.passengerName || b.passenger)) {
+        const pass = (b.passengerName || b.passenger || "").trim().toLowerCase();
+        if (pass === user.name.toLowerCase()) return true;
+      }
+
+      return false;
+    }
+
     // ── 1. Page Initialization ──
     document.addEventListener("DOMContentLoaded", async () => {
-      loadUserInfo();
+      initMobileNav();
+      await loadUserInfo();
       await syncAndRenderBookings();
 
       // Check if URL has ?bookingId=... to auto-open ticket modal
@@ -1425,33 +1768,97 @@
       }
     });
 
+    // ── Mobile Drawer Navigation ──
+    function initMobileNav() {
+      const toggle = document.getElementById("profileMenuToggle");
+      const drawer = document.getElementById("profileNavLinks");
+      const overlay = document.getElementById("profileNavOverlay");
+      const closeBtn = document.getElementById("profileDrawerClose");
+
+      function openDrawer() {
+        if (toggle) toggle.classList.add("active");
+        if (drawer) drawer.classList.add("open");
+        if (overlay) overlay.classList.add("active");
+        document.body.classList.add("mobile-menu-open");
+      }
+
+      function closeDrawer() {
+        if (toggle) toggle.classList.remove("active");
+        if (drawer) drawer.classList.remove("open");
+        if (overlay) overlay.classList.remove("active");
+        document.body.classList.remove("mobile-menu-open");
+      }
+
+      if (toggle) {
+        toggle.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (drawer && drawer.classList.contains("open")) {
+            closeDrawer();
+          } else {
+            openDrawer();
+          }
+        });
+      }
+
+      if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
+      if (overlay) overlay.addEventListener("click", closeDrawer);
+
+      if (drawer) {
+        drawer.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", closeDrawer);
+        });
+      }
+    }
+
     // ── 2. User Info in Hero & Settings ──
-    function loadUserInfo() {
-      const name = localStorage.getItem("alaskaUserName") || "Valued Traveler";
-      const email = localStorage.getItem("alaskaUserEmail") || "traveler@alaska.com";
+    async function loadUserInfo() {
+      const user = getCurrentUser();
+      const name = user.name || "Valued Traveler";
+      const email = user.email || "traveler@alaska.com";
       const initials = name.trim().split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase();
 
       document.getElementById("heroName").innerHTML = `${name} <i class="fa-solid fa-circle-check" style="color: #38efdb; font-size: 18px;" title="Verified Traveler"></i>`;
       document.getElementById("heroEmail").textContent = email;
       document.getElementById("heroAvatar").textContent = initials || "T";
 
-      // Settings form fields
-      document.getElementById("profName").value = name;
+      // Try fetching live profile from backend if logged in
+      if (window.API && API.token && API.token()) {
+        try {
+          const profile = await API.getProfile();
+          if (profile && profile.user) {
+            const u = profile.user;
+            if (u.name) {
+              localStorage.setItem("alaskaUserName", u.name);
+              document.getElementById("heroName").innerHTML = `${u.name} <i class="fa-solid fa-circle-check" style="color: #38efdb; font-size: 18px;" title="Verified Traveler"></i>`;
+            }
+            if (u.phone) localStorage.setItem(`alaskaUserPhone_${user.email}`, u.phone);
+            if (u.nationality) localStorage.setItem(`alaskaUserNationality_${user.email}`, u.nationality);
+            if (u.passport) localStorage.setItem(`alaskaUserPassport_${user.email}`, u.passport);
+            if (u.address) localStorage.setItem(`alaskaUserAddress_${user.email}`, u.address);
+          }
+        } catch (e) {
+          console.warn("Live profile fetch notice:", e);
+        }
+      }
+
+      // Settings form fields scoped to user email
+      document.getElementById("profName").value = localStorage.getItem("alaskaUserName") || name;
       document.getElementById("profEmail").value = email;
-      document.getElementById("profPhone").value = localStorage.getItem("alaskaUserPhone") || "";
-      document.getElementById("profNationality").value = localStorage.getItem("alaskaUserNationality") || "Indian";
-      document.getElementById("profPassport").value = localStorage.getItem("alaskaUserPassport") || "";
-      document.getElementById("profAddress").value = localStorage.getItem("alaskaUserAddress") || "";
+      document.getElementById("profPhone").value = (user.email && localStorage.getItem(`alaskaUserPhone_${user.email}`)) || localStorage.getItem("alaskaUserPhone") || "";
+      document.getElementById("profNationality").value = (user.email && localStorage.getItem(`alaskaUserNationality_${user.email}`)) || localStorage.getItem("alaskaUserNationality") || "Indian";
+      document.getElementById("profPassport").value = (user.email && localStorage.getItem(`alaskaUserPassport_${user.email}`)) || localStorage.getItem("alaskaUserPassport") || "";
+      document.getElementById("profAddress").value = (user.email && localStorage.getItem(`alaskaUserAddress_${user.email}`)) || localStorage.getItem("alaskaUserAddress") || "";
     }
 
-    // ── 3. Sync Bookings with Backend and LocalStorage ──
+    // ── 3. Sync Bookings with Backend and LocalStorage (User-Isolated) ──
     async function syncAndRenderBookings() {
-      const pane = document.getElementById("paneBookings");
+      const user = getCurrentUser();
+      const userKey = user.email ? `alaskaBookings_${user.email}` : "alaskaBookings";
 
       try {
-        // Fetch from backend API if authenticated
+        // 1. Fetch from backend API (server already filters strictly by current authenticated user)
         let serverBookings = [];
-        if (API.token()) {
+        if (window.API && API.token && API.token()) {
           try {
             serverBookings = await API.getBookings();
           } catch (err) {
@@ -1459,24 +1866,31 @@
           }
         }
 
-        // LocalStorage bookings
-        const localBookings = JSON.parse(localStorage.getItem("alaskaBookings") || "[]");
+        // 2. Read user-specific local storage cache
+        const userScopedLocal = JSON.parse(localStorage.getItem(userKey) || "[]");
 
-        // Merge backend + localBookings uniquely by id
+        // 3. Check legacy general storage, but strictly filter to CURRENT user only
+        const generalLocal = JSON.parse(localStorage.getItem("alaskaBookings") || "[]");
+        const matchingGeneral = generalLocal.filter(b => isCurrentUserBooking(b, user));
+
+        // Merge strictly matching bookings uniquely by ID
         const mergedMap = new Map();
-        [...serverBookings, ...localBookings].forEach(b => {
+        [...serverBookings, ...userScopedLocal, ...matchingGeneral].forEach(b => {
+          if (!b) return;
           const id = b.id || b.bookingId;
-          if (id && !mergedMap.has(id)) {
+          if (id && isCurrentUserBooking(b, user) && !mergedMap.has(id)) {
             mergedMap.set(id, b);
           }
         });
 
         currentBookings = Array.from(mergedMap.values());
 
-        // Keep local cache synced
-        localStorage.setItem("alaskaBookings", JSON.stringify(currentBookings));
+        // Cache back to user-scoped storage
+        if (user.email) {
+          localStorage.setItem(userKey, JSON.stringify(currentBookings));
+        }
 
-        // Update statistics
+        // Update statistics strictly for this user
         updateStats(currentBookings);
 
         // Render cards
@@ -1807,10 +2221,23 @@
       }
 
       // Update local state
+      const user = getCurrentUser();
+      const userKey = user.email ? `alaskaBookings_${user.email}` : "alaskaBookings";
       const target = currentBookings.find(b => (b.id === bookingId || b.bookingId === bookingId));
       if (target) {
         target.status = 'cancelled';
-        localStorage.setItem("alaskaBookings", JSON.stringify(currentBookings));
+        if (user.email) {
+          localStorage.setItem(userKey, JSON.stringify(currentBookings));
+        }
+        // Also update legacy store if it holds this booking
+        try {
+          const general = JSON.parse(localStorage.getItem("alaskaBookings") || "[]");
+          const gt = general.find(b => (b.id === bookingId || b.bookingId === bookingId));
+          if (gt) {
+            gt.status = 'cancelled';
+            localStorage.setItem("alaskaBookings", JSON.stringify(general));
+          }
+        } catch(e){}
       }
 
       showToast("Booking cancelled successfully.");
@@ -1825,21 +2252,28 @@
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
 
+      const user = getCurrentUser();
       const updatedName = document.getElementById("profName").value.trim();
       const updatedPhone = document.getElementById("profPhone").value.trim();
       const updatedNationality = document.getElementById("profNationality").value.trim();
       const updatedPassport = document.getElementById("profPassport").value.trim();
       const updatedAddress = document.getElementById("profAddress").value.trim();
 
-      // Persist to localStorage
+      // Persist to user-scoped localStorage
       if (updatedName) localStorage.setItem("alaskaUserName", updatedName);
+      if (user.email) {
+        if (updatedPhone) localStorage.setItem(`alaskaUserPhone_${user.email}`, updatedPhone);
+        if (updatedNationality) localStorage.setItem(`alaskaUserNationality_${user.email}`, updatedNationality);
+        if (updatedPassport) localStorage.setItem(`alaskaUserPassport_${user.email}`, updatedPassport);
+        if (updatedAddress) localStorage.setItem(`alaskaUserAddress_${user.email}`, updatedAddress);
+      }
       if (updatedPhone) localStorage.setItem("alaskaUserPhone", updatedPhone);
       if (updatedNationality) localStorage.setItem("alaskaUserNationality", updatedNationality);
       if (updatedPassport) localStorage.setItem("alaskaUserPassport", updatedPassport);
       if (updatedAddress) localStorage.setItem("alaskaUserAddress", updatedAddress);
 
       // Persist to backend if logged in
-      if (API.token()) {
+      if (window.API && API.token && API.token()) {
         try {
           await API.updateProfile({
             name: updatedName,
@@ -1853,7 +2287,7 @@
         }
       }
 
-      loadUserInfo();
+      await loadUserInfo();
       showToast("Profile details updated successfully!");
 
       btn.disabled = false;

@@ -221,7 +221,32 @@
     const initials = name.trim().split(' ')
       .map(w => w[0]).slice(0, 2).join('').toUpperCase();
 
-    const bookings = JSON.parse(localStorage.getItem('alaskaBookings') || '[]');
+    const currentEmail = (email || '').toLowerCase().trim();
+    const currentUserId = localStorage.getItem('alaskaUserId') || '';
+
+    function isCurrentUserBooking(b) {
+      if (!currentEmail && !currentUserId) return false;
+      const bEmail = (b.userEmail || b.email || '').toLowerCase().trim();
+      const bUser = b.userId || '';
+      if (currentEmail && bEmail && bEmail === currentEmail) return true;
+      if (currentUserId && bUser && bUser === currentUserId) return true;
+      if (!bEmail && !bUser) {
+        const cName = name.toLowerCase().trim();
+        const pName = (b.passengerName || b.passenger || '').toLowerCase().trim();
+        if (cName && pName && (pName.includes(cName) || cName.includes(pName))) return true;
+      }
+      return false;
+    }
+
+    const userScopedKey = 'alaskaBookings_' + currentEmail;
+    const userScoped = JSON.parse(localStorage.getItem(userScopedKey) || '[]');
+    const globalFiltered = JSON.parse(localStorage.getItem('alaskaBookings') || '[]').filter(isCurrentUserBooking);
+    const initialMap = new Map();
+    [...userScoped, ...globalFiltered].forEach(b => {
+      const id = b.id || b.bookingId;
+      if (id && !initialMap.has(id)) initialMap.set(id, b);
+    });
+    const bookings = Array.from(initialMap.values());
 
     slot.innerHTML = `
       <div class="profile-trigger-nav" id="profileTriggerNav">
@@ -270,15 +295,24 @@
     // Sync with backend bookings in background
     if (window.API && API.token && API.token()) {
       API.getBookings().then(serverBookings => {
-        if (Array.isArray(serverBookings) && serverBookings.length > 0) {
-          const local = JSON.parse(localStorage.getItem('alaskaBookings') || '[]');
+        if (Array.isArray(serverBookings)) {
+          const userServer = serverBookings.filter(isCurrentUserBooking);
           const map = new Map();
-          [...serverBookings, ...local].forEach(b => {
+          [...userServer, ...bookings].forEach(b => {
             const id = b.id || b.bookingId;
-            if (id && !map.has(id)) map.set(id, b);
+            if (id && !map.has(id)) {
+              if (!b.userEmail && currentEmail) b.userEmail = currentEmail;
+              if (!b.userId && currentUserId) b.userId = currentUserId;
+              map.set(id, b);
+            }
           });
           const merged = Array.from(map.values());
-          localStorage.setItem('alaskaBookings', JSON.stringify(merged));
+          localStorage.setItem(userScopedKey, JSON.stringify(merged));
+
+          // Also keep alaskaBookings synchronized per user without mixing others
+          const otherBookings = JSON.parse(localStorage.getItem('alaskaBookings') || '[]').filter(b => !isCurrentUserBooking(b));
+          localStorage.setItem('alaskaBookings', JSON.stringify([...merged, ...otherBookings]));
+
           const listEl = document.getElementById('pdnBookingsList');
           if (listEl) listEl.innerHTML = getBookingsHTML(merged);
         }
@@ -293,7 +327,7 @@
     document.addEventListener('click', () => slot.classList.remove('open'));
     document.getElementById('profileDropdownNav').addEventListener('click', e => e.stopPropagation());
     document.getElementById('profileLogoutBtn').addEventListener('click', () => {
-      ['alaskaToken', 'alaskaUserName', 'alaskaUserEmail', 'alaskaUserId', 'alaskaUserRole'].forEach(k => localStorage.removeItem(k));
+      ['alaskaToken', 'alaskaUserName', 'alaskaUserEmail', 'alaskaUserId', 'alaskaUserRole', 'alaskaUserPhone', 'alaskaUserAddress', 'alaskaUserPassport', 'alaskaUserNationality'].forEach(k => localStorage.removeItem(k));
       location.href = 'logintravel.html';
     });
   }

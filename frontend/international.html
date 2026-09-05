@@ -557,10 +557,15 @@ document.getElementById("transferForm").addEventListener("submit", async functio
           transferId: t.id,
           status: "confirmed"
         });
+        const currentEmail = (localStorage.getItem("alaskaUserEmail") || curPending.email || "").toLowerCase().trim();
+        const currentUserId = localStorage.getItem("alaskaUserId") || "";
         const all = JSON.parse(localStorage.getItem("alaskaBookings") || "[]");
-        all.unshift({
+        const newBooking = {
           id: bRes.id,
           bookingId: bRes.id,
+          userId: currentUserId,
+          userEmail: currentEmail,
+          email: currentEmail,
           passenger: curPending.passengerName || localStorage.getItem("alaskaUserName") || "Traveler",
           from: curPending.from || "Mumbai",
           to: curPending.to || "Anchorage",
@@ -570,8 +575,14 @@ document.getElementById("transferForm").addEventListener("submit", async functio
           paymentMethod: "Bank Transfer",
           status: "confirmed",
           paidAt: new Date().toLocaleString("en-IN")
-        });
+        };
+        all.unshift(newBooking);
         localStorage.setItem("alaskaBookings", JSON.stringify(all));
+        if (currentEmail) {
+          const userScoped = JSON.parse(localStorage.getItem("alaskaBookings_" + currentEmail) || "[]");
+          userScoped.unshift(newBooking);
+          localStorage.setItem("alaskaBookings_" + currentEmail, JSON.stringify(userScoped));
+        }
         localStorage.removeItem("pendingBooking");
       } catch(e) {}
     }

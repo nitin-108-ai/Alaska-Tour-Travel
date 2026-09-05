@@ -26,6 +26,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Close when clicking outside drawer (backdrop)
+  document.addEventListener("click", (e) => {
+    if (document.body.classList.contains("show-mobile-menu")) {
+      const navMenu = document.querySelector(".navbar .nav-menu");
+      if (navMenu && !navMenu.contains(e.target) && menuOpenButton && !menuOpenButton.contains(e.target)) {
+        document.body.classList.remove("show-mobile-menu");
+      }
+    }
+  });
+
   // Header background on scroll
   const header = document.querySelector("header");
   if (header) {

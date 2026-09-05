@@ -588,31 +588,86 @@ app.post("/api/auth/social", authLimiter, (req,res)=>{
 });
 
 app.post("/api/bookings",auth,(req,res)=>{
-  const b={id:"BK-"+Date.now(),userId:req.user.id,status:"confirmed",createdAt:new Date().toISOString(),...req.body};
-  const data=readData(); data.bookings.push(b); writeData(data); res.status(201).json(b);
+  const uEmail = (req.user.email || "").toLowerCase().trim();
+  const b = {
+    id: "BK-" + Date.now(),
+    userId: req.user.id,
+    userEmail: uEmail,
+    email: (req.body.email || uEmail).toLowerCase().trim(),
+    passengerName: req.body.passengerName || req.user.name || "Traveler",
+    status: "confirmed",
+    createdAt: new Date().toISOString(),
+    ...req.body
+  };
+  const data = readData();
+  data.bookings.push(b);
+  writeData(data);
+  res.status(201).json(b);
 });
+
 app.get("/api/bookings",auth,(req,res)=>{
   const data = readData();
-  const userBookings = data.bookings
-    .filter(b=>b.userId===req.user.id)
+  const uEmail = (req.user.email || "").toLowerCase().trim();
+  const uId = req.user.id;
+  const userBookings = (data.bookings || [])
+    .filter(b => {
+      if (b.userId && b.userId === uId) return true;
+      const bEmail = (b.userEmail || b.email || "").toLowerCase().trim();
+      if (uEmail && bEmail && bEmail === uEmail) return true;
+      return false;
+    })
     .sort((a,b)=>new Date(b.createdAt||0) - new Date(a.createdAt||0));
   res.json(userBookings);
 });
+
 app.get("/api/bookings/:id",auth,(req,res)=>{
   const data = readData();
-  const b = data.bookings.find(x=>x.id===req.params.id && x.userId===req.user.id);
+  const uEmail = (req.user.email || "").toLowerCase().trim();
+  const uId = req.user.id;
+  const b = (data.bookings || []).find(x => {
+    if (x.id !== req.params.id) return false;
+    if (x.userId && x.userId === uId) return true;
+    const xEmail = (x.userEmail || x.email || "").toLowerCase().trim();
+    if (uEmail && xEmail && xEmail === uEmail) return true;
+    return false;
+  });
   if(!b) return res.status(404).json({message:"Booking not found"});
   res.json(b);
 });
+
 app.patch("/api/bookings/:id/cancel",auth,(req,res)=>{
   const data = readData();
-  const b = data.bookings.find(x=>x.id===req.params.id && x.userId===req.user.id);
+  const uEmail = (req.user.email || "").toLowerCase().trim();
+  const uId = req.user.id;
+  const b = (data.bookings || []).find(x => {
+    if (x.id !== req.params.id) return false;
+    if (x.userId && x.userId === uId) return true;
+    const xEmail = (x.userEmail || x.email || "").toLowerCase().trim();
+    if (uEmail && xEmail && xEmail === uEmail) return true;
+    return false;
+  });
   if(!b) return res.status(404).json({message:"Booking not found"});
   b.status = "cancelled";
   b.cancelledAt = new Date().toISOString();
   writeData(data);
   res.json({message:"Booking cancelled successfully", booking:b});
 });
+
+app.get("/api/auth/profile",auth,(req,res)=>{
+  const data = readData();
+  const u = data.users.find(x => x.id === req.user.id || (x.email && x.email.toLowerCase() === req.user.email.toLowerCase()));
+  if(!u) return res.status(404).json({message:"User not found"});
+  res.json({
+    user: sanitizeUser(u),
+    profile: {
+      phone: u.phone || "",
+      address: u.address || "",
+      passport: u.passport || "",
+      nationality: u.nationality || "Indian"
+    }
+  });
+});
+
 app.put("/api/auth/profile",auth,(req,res)=>{
   const {name, phone, address, passport, nationality} = req.body;
   const data = readData();

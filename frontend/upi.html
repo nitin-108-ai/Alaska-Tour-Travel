@@ -401,10 +401,15 @@
       });
 
       // 3. Store latest booking in localStorage for profile display
+      const currentEmail = (localStorage.getItem("alaskaUserEmail") || pending.email || "").toLowerCase().trim();
+      const currentUserId = localStorage.getItem("alaskaUserId") || "";
       const allBookings = JSON.parse(localStorage.getItem("alaskaBookings") || "[]");
-      allBookings.unshift({
+      const newBooking = {
         id          : bookingRes.id,
         bookingId   : bookingRes.id,
+        userId      : currentUserId,
+        userEmail   : currentEmail,
+        email       : currentEmail,
         passenger   : pending.passengerName || localStorage.getItem("alaskaUserName") || "—",
         from        : pending.from        || "—",
         to          : pending.to          || "—",
@@ -415,8 +420,14 @@
         paymentId   : paymentRes.id,
         status      : "confirmed",
         paidAt      : new Date().toLocaleString("en-IN")
-      });
+      };
+      allBookings.unshift(newBooking);
       localStorage.setItem("alaskaBookings", JSON.stringify(allBookings));
+      if (currentEmail) {
+        const userScoped = JSON.parse(localStorage.getItem("alaskaBookings_" + currentEmail) || "[]");
+        userScoped.unshift(newBooking);
+        localStorage.setItem("alaskaBookings_" + currentEmail, JSON.stringify(userScoped));
+      }
       localStorage.removeItem("pendingBooking");
 
       // 4. Show success screen

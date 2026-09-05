@@ -47,6 +47,7 @@ window.API = {
   getBookings(){return this.request("/bookings");},
   getBooking(id){return this.request("/bookings/"+encodeURIComponent(id));},
   cancelBooking(id){return this.request("/bookings/"+encodeURIComponent(id)+"/cancel",{method:"PATCH"});},
+  getProfile(){return this.request("/auth/profile");},
   updateProfile(data){return this.request("/auth/profile",{method:"PUT",body:JSON.stringify(data)});},
   payment(data){return this.request("/payments",{method:"POST",body:JSON.stringify(data)});},
   transfer(data){return this.request("/transfers",{method:"POST",body:JSON.stringify(data)});},
