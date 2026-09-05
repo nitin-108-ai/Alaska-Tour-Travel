@@ -1568,3 +1568,140 @@ textarea.form-input {
     text-align: center;
   }
 }
+
+/* =====================================================
+   PWA INSTALL & CROSS-DEVICE ENHANCEMENTS
+===================================================== */
+
+/* Safe area insets for iOS notches and modern devices */
+header {
+  padding-top: max(16px, env(safe-area-inset-top));
+  padding-left: max(20px, env(safe-area-inset-left));
+  padding-right: max(20px, env(safe-area-inset-right));
+}
+
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Slide up animation for PWA banner */
+@keyframes pwaSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 30px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* PWA Install Button Helper */
+.pwa-install-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--teal-light), var(--teal-dark));
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(19, 184, 168, 0.35);
+  min-height: 44px;
+}
+
+.pwa-install-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(19, 184, 168, 0.5);
+}
+
+/* Mobile & Touch Improvements (320px - 430px) */
+@media (max-width: 480px) {
+  .hero-section .section-content {
+    padding: 120px 16px 60px;
+  }
+
+  .hero-section .title {
+    font-size: 2.2rem;
+    line-height: 1.15;
+  }
+
+  .hero-section .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .hero-section .buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .hero-section .button {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+    font-size: 14px;
+  }
+
+  /* Form & Input Touch Accessibility */
+  .contact-section .contact-form .form-input,
+  button,
+  .button,
+  a.button {
+    min-height: 44px;
+  }
+}
+
+/* Ultra Small Screens (320px) */
+@media (max-width: 350px) {
+  .navbar .logo-text strong {
+    font-size: 15px;
+  }
+  .navbar .logo-text span {
+    font-size: 9px;
+  }
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 17px;
+  }
+}
+
+/* Large Screens & Smart TV Displays (1920px - 4K) */
+@media (min-width: 1920px) {
+  :root {
+    --max-width: 1600px;
+  }
+
+  body {
+    font-size: 18px;
+  }
+
+  .hero-section .title {
+    font-size: 4.5rem;
+  }
+
+  .hero-section .subtitle {
+    font-size: 2rem;
+  }
+
+  .hero-section .description {
+    font-size: 1.35rem;
+    max-width: 900px;
+  }
+
+  .hero-section .button {
+    padding: 16px 36px;
+    font-size: 1.15rem;
+  }
+
+  section .section-title {
+    font-size: 2.6rem;
+  }
+}

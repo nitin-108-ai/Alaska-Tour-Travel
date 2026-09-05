@@ -8,9 +8,15 @@
 
   <title>ALASKA TOUR & TRAVEL</title>
 
-  <!-- Favicon -->
+  <!-- Favicon & PWA Icons -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="https://cdn-icons-png.flaticon.com/512/201/201623.png" type="image/png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#041a32">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Alaska Tour">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
   <!-- Font Awesome -->
   <link
@@ -24,10 +30,11 @@
     href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
   >
 
-  <!-- Custom CSS -->
+  <!-- Custom CSS & Scripts -->
   <link rel="stylesheet" href="MAIN.css">
   <script src="config.js"></script>
   <script src="api.js"></script>
+  <script src="pwa.js"></script>
 
 </head>
 
@@ -88,6 +95,12 @@
 
         <li class="nav-item">
           <a href="admin.html" class="nav-link" style="color: #00f2fe; font-weight: 700;"><i class="fa-solid fa-shield-halved"></i> Admin</a>
+        </li>
+
+        <li class="nav-item">
+          <button class="pwa-install-btn" data-pwa-install style="display:none;" aria-label="Install Alaska Tour App">
+            <i class="fa-solid fa-download"></i> Install App
+          </button>
         </li>
 
         <li class="nav-item" id="profile-slot">

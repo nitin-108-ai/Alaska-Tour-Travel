@@ -827,7 +827,7 @@ app.get("/api/admin/app-stats", adminAuth, (req, res) => {
   res.json(data.appStats || {});
 });
 
-app.post("/api/admin/app-stats/download", (req, res) => {
+app.post(["/api/admin/app-stats/download", "/api/app-download"], (req, res) => {
   const { platform = "android" } = req.body;
   const data = readData();
   if (!data.appStats) {
@@ -856,7 +856,7 @@ app.get("/api/admin/payments", adminAuth, (req, res) => {
 });
 
 // Health check for hosting platforms (Render, Railway, UptimeRobot)
-app.get("/api/health", (req, res) => res.json({
+app.get(["/health", "/api/health"], (req, res) => res.json({
   ok: true,
   service: "Alaska Tour & Travel API",
   status: "online",
