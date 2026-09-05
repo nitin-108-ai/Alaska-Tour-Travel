@@ -1,10 +1,14 @@
 # Dependencies
 node_modules/
+backend/node_modules/
 
 # Environment secrets — NEVER commit
 .env
+.env.*
 .env.local
 .env.production
+backend/.env
+backend/.env.*
 
 # Data file (user data — keep out of repo)
 backend/data.json

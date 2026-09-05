@@ -1,14 +1,41 @@
-
 window.API = {
-  base: location.protocol === "file:" ? "http://localhost:5000/api" : "/api",
-  token(){ return localStorage.getItem("alaskaToken"); },
-  async request(path, options={}){
-    const headers={"Content-Type":"application/json",...(options.headers||{})};
-    const token=this.token(); if(token) headers.Authorization="Bearer "+token;
-    const res=await fetch(this.base+path,{...options,headers});
-    const data=await res.json().catch(()=>({}));
-    if(!res.ok) throw new Error(data.message||"Request failed");
-    return data;
+  get base() {
+    if (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) {
+      return window.APP_CONFIG.API_BASE_URL.replace(/\/+$/, "");
+    }
+    const stored = typeof localStorage !== "undefined" ? localStorage.getItem("alaskaApiUrl") : null;
+    if (stored) return stored.replace(/\/+$/, "");
+
+    const isLocal = typeof location !== "undefined" && (
+      location.hostname === "localhost" ||
+      location.hostname === "127.0.0.1" ||
+      location.protocol === "file:"
+    );
+    if (isLocal) {
+      return location.protocol === "file:" ? "http://localhost:5000/api" : (location.port === "5000" ? "/api" : "http://localhost:5000/api");
+    }
+    return "https://alaska-tour-travel-backend.onrender.com/api";
+  },
+
+  token() { return localStorage.getItem("alaskaToken"); },
+
+  async request(path, options = {}) {
+    const headers = { "Content-Type": "application/json", ...(options.headers || {}) };
+    const token = this.token();
+    if (token) headers.Authorization = "Bearer " + token;
+
+    const fullUrl = this.base + path;
+    try {
+      const res = await fetch(fullUrl, { ...options, headers });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.message || `Request failed with status ${res.status}`);
+      return data;
+    } catch (err) {
+      if (err.name === "TypeError" && err.message && err.message.toLowerCase().includes("fetch")) {
+        throw new Error("Unable to connect to Alaska Travel backend. If using cloud hosting, the server may be waking up from sleep. Please retry in 10-20 seconds.");
+      }
+      throw err;
+    }
   },
   login(email,password){return this.request("/auth/login",{method:"POST",body:JSON.stringify({email,password})});},
   register(name,email,password){return this.request("/auth/register",{method:"POST",body:JSON.stringify({name,email,password})});},

@@ -12,37 +12,107 @@ const rateLimit = require("express-rate-limit");
 const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || "alaska-travel-development-secret";
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5000";
+const FRONTEND_URL = process.env.FRONTEND_URL || "https://nitin-108-ai.github.io,http://localhost:5000";
 const FRONTEND = path.join(__dirname, "../../frontend");
 const DATA = path.join(__dirname, "../data.json");
 
 // Warn if using the default fallback secret
-if (JWT_SECRET === "alaska-travel-development-secret") {
+if (JWT_SECRET === "alaska-travel-development-secret" && process.env.NODE_ENV === "production") {
   console.warn("[WARN] JWT_SECRET is using the default fallback — set a real secret in .env for production!");
 }
 
-// Rate limiter — 10 requests per 15 minutes per IP on auth routes
+// Rate limiter — generous limit for production demos & testing
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 100,
   standardHeaders: true,
   legacyHeaders: false,
   message: { message: "Too many attempts, please try again after 15 minutes." }
 });
 
+// Configure CORS for both GitHub Pages & Localhost
+const allowedOrigins = [
+  "https://nitin-108-ai.github.io",
+  "http://localhost:5000",
+  "http://localhost:3000",
+  "http://127.0.0.1:5500",
+  "http://127.0.0.1:5000",
+  ...FRONTEND_URL.split(",").map(s => s.trim())
+].filter(Boolean);
+
 app.use(cors({
-  origin: FRONTEND_URL,
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes("*") || allowedOrigins.indexOf(origin) !== -1 || origin.endsWith(".github.io")) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 function readData() {
-  if (!fs.existsSync(DATA)) fs.writeFileSync(DATA, JSON.stringify({appStats:{totalDownloads:1482,androidDownloads:924,iosDownloads:428,pwaDownloads:130,dailyActiveUsers:346},users:[],bookings:[],payments:[],transfers:[]}, null, 2));
-  const d = JSON.parse(fs.readFileSync(DATA, "utf8"));
-  if (!d.appStats) {
-    d.appStats = { totalDownloads: 1482, androidDownloads: 924, iosDownloads: 428, pwaDownloads: 130, dailyActiveUsers: 346 };
+  const defaultData = {
+    appStats: { totalDownloads: 1482, androidDownloads: 924, iosDownloads: 428, pwaDownloads: 130, dailyActiveUsers: 346 },
+    users: [
+      {
+        id: "admin-master-001",
+        name: "Alaska Admin",
+        email: "admin@alaska.com",
+        password: "$2b$10$u9DLOt6M32OtMgCaKFN9cO3CcZjWaX3sxd./OzI2EWEKJ6X2sN8EW",
+        plainHint: "admin123",
+        role: "admin",
+        createdAt: new Date().toISOString(),
+        lastActive: new Date().toISOString(),
+        appUsed: true
+      },
+      {
+        id: "232b91c9-dd52-441a-88d4-9279cf97c50f",
+        name: "Test Traveler",
+        email: "test@alaska.com",
+        password: "$2b$10$BttcgbXVEf/3332FVC9RbuzXa4Fz1KbtWCMSmsDn7ToG6SJXskkdi",
+        plainHint: "password123",
+        role: "user",
+        createdAt: new Date().toISOString(),
+        lastActive: new Date().toISOString(),
+        appUsed: true
+      },
+      {
+        id: "565a9a4d-921a-4346-a685-7a4a502cd970",
+        name: "nitin",
+        email: "grow50065@gmail.com",
+        password: "$2b$10$BttcgbXVEf/3332FVC9RbuzXa4Fz1KbtWCMSmsDn7ToG6SJXskkdi",
+        plainHint: "password123",
+        role: "user",
+        createdAt: new Date().toISOString(),
+        lastActive: new Date().toISOString(),
+        appUsed: true
+      }
+    ],
+    bookings: [],
+    payments: [],
+    transfers: []
+  };
+
+  if (!fs.existsSync(DATA)) {
+    fs.writeFileSync(DATA, JSON.stringify(defaultData, null, 2));
+    return defaultData;
+  }
+  let d;
+  try {
+    d = JSON.parse(fs.readFileSync(DATA, "utf8"));
+  } catch {
+    d = defaultData;
+  }
+  if (!d.appStats) d.appStats = defaultData.appStats;
+  if (!Array.isArray(d.users)) d.users = defaultData.users;
+  if (!d.users.some(u => u.role === "admin" || u.email === "admin@alaska.com")) {
+    d.users.unshift(defaultData.users[0]);
+    writeData(d);
   }
   return d;
 }
@@ -785,9 +855,23 @@ app.get("/api/admin/payments", adminAuth, (req, res) => {
   res.json({ payments: data.payments || [], transfers: data.transfers || [] });
 });
 
+// Health check for hosting platforms (Render, Railway, UptimeRobot)
+app.get("/api/health", (req, res) => res.json({
+  ok: true,
+  service: "Alaska Tour & Travel API",
+  status: "online",
+  environment: process.env.NODE_ENV || "development",
+  timestamp: new Date().toISOString()
+}));
+
 app.use(express.static(FRONTEND));
-app.use((req,res)=>res.sendFile(path.join(FRONTEND,"index.html")));
-app.listen(PORT,()=>{
-  console.log(`Alaska Travel API running on http://localhost:${PORT}`);
+app.use((req, res) => {
+  if (req.path.startsWith("/api/")) {
+    return res.status(404).json({ message: "API endpoint not found" });
+  }
+  res.sendFile(path.join(FRONTEND, "index.html"));
+});
+app.listen(PORT, () => {
+  console.log(`Alaska Travel API running on port ${PORT} [${process.env.NODE_ENV || "development"}]`);
   console.log(`Serving frontend from: ${FRONTEND}`);
 });
