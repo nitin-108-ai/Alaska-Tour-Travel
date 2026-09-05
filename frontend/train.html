@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indian Railways Train Ticket Booking | Alaska Tour & Travel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="api.js"></script>
+  <script src="profile.js"></script>
+
+  <style>
+    :root {
+      --primary: #0879d1;
+      --primary-dark: #041a32;
+      --accent: #13b8a8;
+      --rail-orange: #d97706;
+      --rail-green: #15803d;
+      --bg: #f3f6fa;
+      --card-bg: #ffffff;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 16px;
+      --shadow: 0 8px 24px rgba(4, 26, 50, 0.08);
+      --shadow-hover: 0 16px 36px rgba(4, 26, 50, 0.14);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Montserrat", sans-serif; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* NAVBAR */
+    .navbar {
+      background: linear-gradient(135deg, #041a32 0%, #062b54 50%, #008c95 100%);
+      color: white;
+      padding: 16px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: white;
+    }
+    .logo-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #13b8a8, #0879d1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 12px rgba(19, 184, 168, 0.4);
+    }
+    .logo-text strong { font-size: 17px; font-weight: 900; letter-spacing: 0.8px; display: block; }
+    .logo-text span { font-size: 10px; color: #94b8d7; letter-spacing: 1.5px; display: block; }
+
+    .nav-links { display: flex; align-items: center; gap: 20px; list-style: none; }
+    .nav-links a { color: #d0e4f7; text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: #38efdb; }
+
+    /* HERO & SEARCH BAR */
+    .train-hero {
+      background: linear-gradient(135deg, rgba(4, 26, 50, 0.94) 0%, rgba(7, 43, 84, 0.90) 100%),
+                  url('https://images.unsplash.com/photo-1532105956626-9569c03602f6?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      padding: 45px 20px 35px;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(19, 184, 168, 0.22);
+      border: 1px solid rgba(19, 184, 168, 0.5);
+      color: #38efdb;
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .train-hero h1 {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .train-hero p {
+      font-size: 14px;
+      color: #c9e3f9;
+      max-width: 650px;
+      margin: 0 auto 26px;
+      line-height: 1.6;
+    }
+
+    /* SEARCH CONTAINER */
+    .search-card {
+      background: white;
+      border-radius: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+      box-shadow: 0 15px 40px rgba(4, 26, 50, 0.18);
+      color: var(--text);
+      text-align: left;
+    }
+
+    .search-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 40px 1.5fr 1.2fr 1.2fr 130px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .form-group label i { color: #0879d1; }
+
+    .form-control {
+      border: 1.5px solid var(--border);
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+      outline: none;
+      transition: all 0.2s;
+      width: 100%;
+      background: #f8fafc;
+    }
+    .form-control:focus {
+      border-color: #0879d1;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(8, 121, 209, 0.12);
+    }
+
+    .btn-swap {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #f1f5f9;
+      color: #0879d1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.2s;
+    }
+    .btn-swap:hover { background: #0879d1; color: white; transform: rotate(180deg); }
+
+    .btn-search {
+      background: linear-gradient(135deg, #0879d1, #008c95);
+      color: white;
+      border: none;
+      height: 48px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+      box-shadow: 0 6px 18px rgba(8, 121, 209, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-search:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(8, 121, 209, 0.45); }
+
+    /* POPULAR CHIPS */
+    .quick-routes {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .quick-routes span { font-size: 12px; color: var(--muted); font-weight: 600; }
+    .route-chip {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #0369a1;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .route-chip:hover { background: #0369a1; color: white; }
+
+    /* RESULTS MAIN */
+    .results-wrap {
+      max-width: 1120px;
+      width: 100%;
+      margin: 32px auto 60px;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    /* RESULTS HEADER */
+    .results-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      border-radius: 14px;
+      padding: 16px 24px;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .route-meta h2 { font-size: 19px; font-weight: 800; color: #041a32; display: flex; align-items: center; gap: 8px; }
+    .route-meta span { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+
+    .filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .f-pill {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #475569;
+      transition: all 0.2s;
+    }
+    .f-pill:hover, .f-pill.active {
+      background: #041a32;
+      color: white;
+      border-color: #041a32;
+    }
+
+    /* TRAIN CARDS */
+    .train-card {
+      background: white;
+      border-radius: 18px;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: all 0.25s ease;
+    }
+    .train-card:hover {
+      box-shadow: var(--shadow-hover);
+      border-color: #cbd5e1;
+    }
+
+    .card-top {
+      background: #f8fafc;
+      border-bottom: 1px solid #edf2f7;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .train-badge-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .train-num {
+      background: #041a32;
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+    .train-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .train-type-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: #0879d1;
+      background: #e0f2fe;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .runs-on {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .card-body {
+      padding: 24px;
+    }
+
+    /* TIMELINE */
+    .journey-timeline {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1.5fr;
+      align-items: center;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .station-col.start { text-align: left; }
+    .station-col.end { text-align: right; }
+
+    .j-time {
+      font-size: 24px;
+      font-weight: 900;
+      color: #041a32;
+      line-height: 1.2;
+    }
+    .j-stn {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 4px;
+    }
+    .j-code {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .mid-duration {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .d-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0879d1;
+      background: #f0f7ff;
+      padding: 2px 10px;
+      border-radius: 12px;
+    }
+    .d-line {
+      width: 100%;
+      height: 2px;
+      background: #cbd5e1;
+      position: relative;
+    }
+    .d-line::before, .d-line::after {
+      content: '';
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #0879d1;
+      top: -2.5px;
+    }
+    .d-line::before { left: 0; }
+    .d-line::after { right: 0; }
+
+    /* CLASS TILES */
+    .classes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .class-box {
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      background: #fdfdfd;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .class-box:hover {
+      border-color: #0879d1;
+      background: #f0f8ff;
+      transform: translateY(-2px);
+    }
+    .class-box.selected {
+      border-color: #0879d1;
+      background: #f0f8ff;
+      box-shadow: 0 4px 12px rgba(8, 121, 209, 0.2);
+    }
+
+    .cb-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .cb-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .cb-fare {
+      font-size: 14px;
+      font-weight: 800;
+      color: #008c95;
+    }
+
+    .cb-status {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #15803d;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* CARD FOOTER */
+    .card-footer {
+      border-top: 1px solid #f1f5f9;
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .fare-summary {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .fs-label { font-size: 12px; color: var(--muted); font-weight: 600; }
+    .fs-amount { font-size: 22px; font-weight: 900; color: #041a32; }
+
+    .btn-book-train {
+      background: linear-gradient(135deg, #13b8a8, #0879d1);
+      color: white;
+      border: none;
+      padding: 11px 26px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(8, 121, 209, 0.3);
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn-book-train:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(8, 121, 209, 0.45);
+      opacity: 0.95;
+    }
+
+    /* EMPTY RESULTS */
+    .empty-trains {
+      background: white;
+      border-radius: var(--radius);
+      padding: 50px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px dashed #cbd5e1;
+    }
+
+    @media (max-width: 900px) {
+      .search-grid { grid-template-columns: 1fr; gap: 14px; }
+      .btn-swap { margin: 0 auto; }
+      .btn-search { margin-top: 8px; }
+      .journey-timeline { grid-template-columns: 1fr; gap: 16px; text-align: center; }
+      .station-col.start, .station-col.end { text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon"><i class="fa-solid fa-plane-departure"></i></div>
+      <div class="logo-text">
+        <strong>ALASKA</strong>
+        <span>TOUR &amp; TRAVEL</span>
+      </div>
+    </a>
+
+    <nav class="nav-links">
+      <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="bookti.html"><i class="fa-solid fa-plane"></i> Flights</a>
+      <a href="train.html" class="active"><i class="fa-solid fa-train"></i> Trains</a>
+      <a href="bus.html"><i class="fa-solid fa-bus"></i> Buses</a>
+      <a href="tour.html"><i class="fa-solid fa-compass"></i> Explore Tours</a>
+      <a href="profile.html"><i class="fa-solid fa-user"></i> My Profile</a>
+      <a href="contact.html"><i class="fa-solid fa-headset"></i> Contact</a>
+    </nav>
+
+    <div id="profile-slot"></div>
+  </header>
+
+  <!-- HERO SECTION WITH SEARCH -->
+  <section class="train-hero">
+    <div class="hero-tag">
+      <i class="fa-solid fa-train-subway"></i> INDIAN RAILWAYS TICKET BOOKING
+    </div>
+    <h1>Search &amp; Book Train Tickets</h1>
+    <p>
+      Book Vande Bharat, Rajdhani, Shatabdi, and Superfast express trains across India.
+      Live confirmed seat availability with transparent fares and zero hidden charges.
+    </p>
+
+    <!-- MODE SWITCHER (Flights / Trains / Buses) -->
+    <div style="display: inline-flex; gap: 8px; margin-bottom: 22px; background: rgba(255,255,255,0.18); backdrop-filter: blur(8px); padding: 5px; border-radius: 50px;">
+      <a href="bookti.html" style="padding: 8px 18px; border-radius: 50px; background: transparent; color: white; text-decoration: none; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-plane"></i> Flights
+      </a>
+      <a href="train.html" style="padding: 8px 18px; border-radius: 50px; background: white; color: #064e3b; text-decoration: none; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 3px 10px rgba(0,0,0,0.2);">
+        <i class="fa-solid fa-train"></i> Trains
+      </a>
+      <a href="bus.html" style="padding: 8px 18px; border-radius: 50px; background: transparent; color: white; text-decoration: none; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;">
+        <i class="fa-solid fa-bus"></i> Buses
+      </a>
+    </div>
+
+    <!-- SEARCH BOX CARD -->
+    <div class="search-card">
+      <form id="trainSearchForm" onsubmit="event.preventDefault(); doSearch();">
+        <div class="search-grid">
+          
+          <!-- FROM -->
+          <div class="form-group">
+            <label><i class="fa-solid fa-location-dot"></i> From Station</label>
+            <input type="text" id="fromInput" class="form-control" placeholder="e.g. Mumbai Central (MMCT)" value="Mumbai" required>
+          </div>
+
+          <!-- SWAP BUTTON -->
+          <button type="button" class="btn-swap" onclick="swapStations()" title="Swap stations">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+          </button>
+
+          <!-- TO -->
+          <div class="form-group">
+            <label><i class="fa-solid fa-location-crosshairs"></i> To Station</label>
+            <input type="text" id="toInput" class="form-control" placeholder="e.g. New Delhi (NDLS), Agra, Varanasi" value="New Delhi" required>
+          </div>
+
+          <!-- DATE -->
+          <div class="form-group">
+            <label><i class="fa-regular fa-calendar"></i> Travel Date</label>
+            <input type="date" id="dateInput" class="form-control" required>
+          </div>
+
+          <!-- CLASS -->
+          <div class="form-group">
+            <label><i class="fa-solid fa-couch"></i> Class</label>
+            <select id="classSelect" class="form-control">
+              <option value="all">All Classes</option>
+              <option value="1A">AC First Class (1A)</option>
+              <option value="2A">AC 2 Tier (2A)</option>
+              <option value="3A">AC 3 Tier (3A)</option>
+              <option value="CC">AC Chair Car (CC)</option>
+              <option value="SL">Sleeper (SL)</option>
+            </select>
+          </div>
+
+          <!-- SEARCH BUTTON -->
+          <button type="submit" class="btn-search">
+            <i class="fa-solid fa-magnifying-glass"></i> Search
+          </button>
+
+        </div>
+
+        <!-- QUICK POPULAR ROUTES -->
+        <div class="quick-routes">
+          <span>Popular Routes:</span>
+          <button type="button" class="route-chip" onclick="setQuickRoute('Mumbai', 'New Delhi')">Mumbai → Delhi</button>
+          <button type="button" class="route-chip" onclick="setQuickRoute('New Delhi', 'Agra')">Delhi → Agra (Gatimaan)</button>
+          <button type="button" class="route-chip" onclick="setQuickRoute('New Delhi', 'Varanasi')">Delhi → Varanasi (Vande Bharat)</button>
+          <button type="button" class="route-chip" onclick="setQuickRoute('Mumbai', 'Madgaon Goa')">Mumbai → Goa</button>
+          <button type="button" class="route-chip" onclick="setQuickRoute('New Delhi', 'Jammu')">Delhi → Kashmir/Jammu</button>
+          <button type="button" class="route-chip" onclick="setQuickRoute('Bengaluru', 'Hampi')">Bengaluru → Hampi</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- RESULTS SECTION -->
+  <main class="results-wrap">
+
+    <div class="results-header-bar">
+      <div class="route-meta">
+        <h2 id="searchRouteTitle">
+          <i class="fa-solid fa-train" style="color: #0879d1;"></i>
+          <span id="routeFromDisplay">Mumbai</span> 
+          <i class="fa-solid fa-arrow-right" style="font-size: 14px; color: #94a3b8;"></i> 
+          <span id="routeToDisplay">New Delhi</span>
+        </h2>
+        <span id="resultsCountText">Loading trains...</span>
+      </div>
+
+      <div class="filter-pills">
+        <button class="f-pill active" onclick="filterType('all', this)">All Trains</button>
+        <button class="f-pill" onclick="filterType('Vande Bharat', this)">⚡ Vande Bharat</button>
+        <button class="f-pill" onclick="filterType('Rajdhani', this)">👑 Rajdhani</button>
+        <button class="f-pill" onclick="filterType('Shatabdi', this)">🚄 Shatabdi</button>
+        <button class="f-pill" onclick="filterType('Superfast', this)">🚩 Superfast</button>
+      </div>
+    </div>
+
+    <!-- TRAIN CARDS LIST -->
+    <div id="trainsList"></div>
+
+  </main>
+
+  <!-- JAVASCRIPT & LOGIC -->
+  <script>
+    let allTrains = [];
+    let currentTypeFilter = "all";
+    let selectedTrainClass = {};
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Set default date to +3 days
+      const d = new Date();
+      d.setDate(d.getDate() + 3);
+      document.getElementById("dateInput").value = d.toISOString().split("T")[0];
+
+      // Parse URL parameters if any (e.g. from tour.html)
+      const q = new URLSearchParams(window.location.search);
+      if (q.get("from")) document.getElementById("fromInput").value = q.get("from");
+      if (q.get("to")) document.getElementById("toInput").value = q.get("to");
+
+      doSearch();
+    });
+
+    function swapStations() {
+      const fromEl = document.getElementById("fromInput");
+      const toEl = document.getElementById("toInput");
+      const tmp = fromEl.value;
+      fromEl.value = toEl.value;
+      toEl.value = tmp;
+      doSearch();
+    }
+
+    function setQuickRoute(from, to) {
+      document.getElementById("fromInput").value = from;
+      document.getElementById("toInput").value = to;
+      doSearch();
+    }
+
+    async function doSearch() {
+      const from = document.getElementById("fromInput").value.trim();
+      const to = document.getElementById("toInput").value.trim();
+      const cls = document.getElementById("classSelect").value;
+
+      document.getElementById("routeFromDisplay").textContent = from || "Origin";
+      document.getElementById("routeToDisplay").textContent = to || "Destination";
+      document.getElementById("resultsCountText").textContent = "Fetching available trains...";
+
+      try {
+        const res = await API.trains({ from, to, class: cls });
+        allTrains = res.trains || [];
+        renderTrains();
+      } catch (err) {
+        console.error("Failed to load trains:", err);
+        allTrains = [];
+        renderTrains();
+      }
+    }
+
+    function filterType(type, btn) {
+      currentTypeFilter = type;
+      document.querySelectorAll(".f-pill").forEach(p => p.classList.remove("active"));
+      btn.classList.add("active");
+      renderTrains();
+    }
+
+    function renderTrains() {
+      const list = document.getElementById("trainsList");
+      let filtered = allTrains;
+
+      if (currentTypeFilter !== "all") {
+        filtered = filtered.filter(t => t.type.toLowerCase().includes(currentTypeFilter.toLowerCase()) || t.trainName.toLowerCase().includes(currentTypeFilter.toLowerCase()));
+      }
+
+      document.getElementById("resultsCountText").textContent = `${filtered.length} trains found for this route`;
+
+      if (filtered.length === 0) {
+        list.innerHTML = `
+          <div class="empty-trains">
+            <i class="fa-solid fa-train" style="font-size: 42px; color: #94a3b8; margin-bottom: 14px;"></i>
+            <h3 style="font-size: 19px; font-weight: 800; color: #041a32; margin-bottom: 6px;">No Direct Trains Found</h3>
+            <p style="font-size: 13.5px; color: #64748b; margin-bottom: 20px;">Try searching between major stations like Mumbai, Delhi, Agra, Jaipur, Varanasi, or Goa.</p>
+            <button class="btn-search" style="margin: 0 auto; display: inline-flex;" onclick="setQuickRoute('Mumbai', 'New Delhi')">
+              <i class="fa-solid fa-rotate-left"></i> Reset to Mumbai → Delhi
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = filtered.map(t => {
+        // default selected class
+        const defaultClass = t.classes[0] || { code: "SL", name: "Sleeper", fare: 450, status: "AVAILABLE" };
+        if (!selectedTrainClass[t.id]) {
+          selectedTrainClass[t.id] = defaultClass;
+        }
+        const activeCls = selectedTrainClass[t.id];
+
+        return `
+          <div class="train-card" id="train-${t.id}">
+            <div class="card-top">
+              <div class="train-badge-group">
+                <span class="train-num">${t.trainNumber}</span>
+                <span class="train-name">${t.trainName}</span>
+                <span class="train-type-tag">${t.type}</span>
+              </div>
+              <div class="runs-on">
+                <i class="fa-solid fa-calendar-check" style="color: #0879d1;"></i> Runs: <strong>${t.days}</strong>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="journey-timeline">
+                <div class="station-col start">
+                  <div class="j-time">${t.departure}</div>
+                  <div class="j-stn">${t.from}</div>
+                  <div class="j-code">${t.fromCode}</div>
+                </div>
+
+                <div class="mid-duration">
+                  <span class="d-text"><i class="fa-regular fa-clock"></i> ${t.duration}</span>
+                  <div class="d-line"></div>
+                </div>
+
+                <div class="station-col end">
+                  <div class="j-time">${t.arrival}</div>
+                  <div class="j-stn">${t.to}</div>
+                  <div class="j-code">${t.toCode}</div>
+                </div>
+              </div>
+
+              <!-- CLASS SELECTION TILES -->
+              <div class="classes-grid">
+                ${t.classes.map(c => `
+                  <div class="class-box ${activeCls.code === c.code ? 'selected' : ''}" onclick="selectClass('${t.id}', '${c.code}')">
+                    <div class="cb-top">
+                      <span class="cb-name">${c.name} (${c.code})</span>
+                      <span class="cb-fare">₹${c.fare}</span>
+                    </div>
+                    <div class="cb-status" style="color: ${c.color || '#15803d'};">
+                      <i class="fa-solid fa-circle-check"></i> ${c.status}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+
+              <div class="card-footer">
+                <div class="fare-summary">
+                  <span class="fs-label">Selected: <strong>${activeCls.name} (${activeCls.code})</strong> • Total Fare:</span>
+                  <span class="fs-amount" id="fare-${t.id}">₹${activeCls.fare.toLocaleString("en-IN")}</span>
+                </div>
+
+                <button class="btn-book-train" onclick="bookTrainTicket('${t.id}')">
+                  <i class="fa-solid fa-ticket"></i> Book Train Ticket
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectClass(trainId, classCode) {
+      const train = allTrains.find(t => t.id === trainId);
+      if (!train) return;
+      const target = train.classes.find(c => c.code === classCode);
+      if (!target) return;
+
+      selectedTrainClass[trainId] = target;
+      renderTrains();
+    }
+
+    function bookTrainTicket(trainId) {
+      const train = allTrains.find(t => t.id === trainId);
+      if (!train) return;
+
+      const cls = selectedTrainClass[trainId] || train.classes[0];
+      const date = document.getElementById("dateInput").value || "2026-09-18";
+
+      // Prepare booking object
+      const bookingData = {
+        type: "train",
+        airline: "Indian Railways",
+        flight: train.trainNumber + " " + train.trainName,
+        trainNumber: train.trainNumber,
+        trainName: train.trainName,
+        trainClass: cls.name + " (" + cls.code + ")",
+        flightClass: cls.name,
+        from: train.from,
+        fromCode: train.fromCode,
+        to: train.to,
+        toCode: train.toCode,
+        travelDate: date,
+        departure: train.departure,
+        arrival: train.arrival,
+        duration: train.duration,
+        price: cls.fare,
+        totalPrice: cls.fare,
+        status: "pending"
+      };
+
+      localStorage.setItem("pendingBooking", JSON.stringify(bookingData));
+
+      // Navigate to passenger details with pre-filled params
+      const q = new URLSearchParams({
+        type: "train",
+        from: train.from,
+        fromCode: train.fromCode,
+        to: train.to,
+        toCode: train.toCode,
+        date: date,
+        departure: train.departure,
+        arrival: train.arrival,
+        flight: train.trainNumber + " " + train.trainName,
+        airline: "Indian Railways (" + train.type + ")",
+        class: cls.name + " (" + cls.code + ")",
+        price: cls.fare
+      });
+
+      window.location.href = "pa.html?" + q.toString();
+    }
+  </script>
+
+</body>
+</html>

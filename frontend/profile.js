@@ -117,7 +117,16 @@
       .pdn-booking-card {
         background: rgba(19,184,168,0.07);
         border: 1px solid rgba(19,184,168,0.15);
-        border-radius: 10px; padding: 10px 12px; margin: 4px 0;
+        border-radius: 10px; padding: 10px 12px; margin: 6px 0;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: block;
+      }
+      .pdn-booking-card:hover {
+        background: rgba(19,184,168,0.18);
+        border-color: #13b8a8;
+        transform: translateX(3px);
       }
       .pdn-bc-route {
         font-size: 13px; font-weight: 700; color: #fff;
@@ -128,8 +137,8 @@
       .pdn-bc-meta span { font-size: 12px; color: #8a9db5; }
       .pdn-bc-amt { font-size: 13px; font-weight: 700; color: #13b8a8 !important; }
       .pdn-bc-badge {
-        display: inline-block; font-size: 11px; font-weight: 700;
-        padding: 2px 8px; border-radius: 20px; margin-top: 5px;
+        display: inline-block; font-size: 10px; font-weight: 700;
+        padding: 2px 8px; border-radius: 20px;
         background: rgba(0,200,150,0.15); color: #00c896;
       }
       .pdn-no-booking { font-size: 13px; color: #5a7a82; padding: 6px 10px; font-style: italic; }
@@ -155,6 +164,42 @@
     document.head.appendChild(style);
   }
 
+  function getBookingsHTML(bookings) {
+    if (!bookings || bookings.length === 0) {
+      return `<div class="pdn-no-booking">No confirmed bookings yet.</div>`;
+    }
+    const cards = bookings.slice(0, 3).map(b => {
+      const id = b.id || b.bookingId || '';
+      const from = b.from || '—';
+      const to = b.to || '—';
+      const date = b.travelDate || b.date || '—';
+      const cls = b.flightClass || b.class || 'Economy';
+      const amt = Number(b.totalPrice || b.amount || b.price || 0);
+
+      return `
+        <a href="profile.html?bookingId=${encodeURIComponent(id)}" class="pdn-booking-card" title="Click to open ticket & details">
+          <div class="pdn-bc-route">
+            <i class="fas fa-plane"></i>
+            ${from} → ${to}
+          </div>
+          <div class="pdn-bc-meta">
+            <span>${date} · ${cls}</span>
+            <span class="pdn-bc-amt">₹${amt.toLocaleString('en-IN')}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 11px; color: #38efdb; font-weight: 600;"><i class="fa-solid fa-ticket"></i> Open Ticket</span>
+            <span class="pdn-bc-badge">✅ Confirmed</span>
+          </div>
+        </a>`;
+    }).join('');
+
+    const viewAll = bookings.length > 3
+      ? `<a href="profile.html" style="font-size: 11px; color: #13b8a8; text-decoration: underline; display: block; text-align: right; padding: 4px 6px;">View All (${bookings.length}) Trips →</a>`
+      : '';
+
+    return cards + viewAll;
+  }
+
   function renderProfile() {
     const slot = document.getElementById('profile-slot');
     if (!slot) return;
@@ -177,20 +222,6 @@
       .map(w => w[0]).slice(0, 2).join('').toUpperCase();
 
     const bookings = JSON.parse(localStorage.getItem('alaskaBookings') || '[]');
-    let bookingsHTML = bookings.length === 0
-      ? `<div class="pdn-no-booking">No confirmed bookings yet.</div>`
-      : bookings.slice(0, 3).map(b => `
-          <div class="pdn-booking-card">
-            <div class="pdn-bc-route">
-              <i class="fas fa-plane"></i>
-              ${b.from || '—'} → ${b.to || '—'}
-            </div>
-            <div class="pdn-bc-meta">
-              <span>${b.date || '—'} · ${b.flightClass || 'Economy'}</span>
-              <span class="pdn-bc-amt">₹${Number(b.amount || 0).toLocaleString('en-IN')}</span>
-            </div>
-            <div><span class="pdn-bc-badge">✅ Confirmed</span></div>
-          </div>`).join('');
 
     slot.innerHTML = `
       <div class="profile-trigger-nav" id="profileTriggerNav">
@@ -208,24 +239,51 @@
           </div>
         </div>
 
+        ${localStorage.getItem('alaskaUserRole') === 'admin' ? `
+        <a href="admin.html" class="pdn-item" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(6, 78, 59, 0.45)); color: #34d399; font-weight: 700; margin-bottom: 8px; border: 1px solid rgba(16, 185, 129, 0.4); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
+          <i class="fas fa-shield-halved" style="color: #34d399;"></i> 🛡️ Admin Dashboard
+        </a>` : ''}
+
+        <a href="profile.html" class="pdn-item" style="background: rgba(19,184,168,0.14); color: #38efdb; font-weight: 700; margin-bottom: 6px;">
+          <i class="fas fa-id-badge"></i> My Profile &amp; Bookings
+        </a>
+
         <div class="pdn-section-title">✈ Recent Bookings</div>
-        ${bookingsHTML}
+        <div id="pdnBookingsList">${getBookingsHTML(bookings)}</div>
         <div class="pdn-divider"></div>
 
         <a href="index.html" class="pdn-item">
           <i class="fas fa-house"></i> Home
         </a>
-        <a href="bookti.html" class="pdn-item">
-          <i class="fas fa-plus-circle"></i> Book New Trip
+        <a href="tour.html" class="pdn-item">
+          <i class="fas fa-compass"></i> Explore Tours
         </a>
-        <a href="paymen.html" class="pdn-item">
-          <i class="fas fa-credit-card"></i> Payments
+        <a href="bookti.html" class="pdn-item">
+          <i class="fas fa-plus-circle"></i> Book Flights
         </a>
         <div class="pdn-divider"></div>
         <button class="pdn-item pdn-logout" id="profileLogoutBtn">
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
       </div>`;
+
+    // Sync with backend bookings in background
+    if (window.API && API.token && API.token()) {
+      API.getBookings().then(serverBookings => {
+        if (Array.isArray(serverBookings) && serverBookings.length > 0) {
+          const local = JSON.parse(localStorage.getItem('alaskaBookings') || '[]');
+          const map = new Map();
+          [...serverBookings, ...local].forEach(b => {
+            const id = b.id || b.bookingId;
+            if (id && !map.has(id)) map.set(id, b);
+          });
+          const merged = Array.from(map.values());
+          localStorage.setItem('alaskaBookings', JSON.stringify(merged));
+          const listEl = document.getElementById('pdnBookingsList');
+          if (listEl) listEl.innerHTML = getBookingsHTML(merged);
+        }
+      }).catch(() => {});
+    }
 
     // Events
     document.getElementById('profileTriggerNav').addEventListener('click', e => {
@@ -235,7 +293,7 @@
     document.addEventListener('click', () => slot.classList.remove('open'));
     document.getElementById('profileDropdownNav').addEventListener('click', e => e.stopPropagation());
     document.getElementById('profileLogoutBtn').addEventListener('click', () => {
-      ['alaskaToken', 'alaskaUserName', 'alaskaUserEmail'].forEach(k => localStorage.removeItem(k));
+      ['alaskaToken', 'alaskaUserName', 'alaskaUserEmail', 'alaskaUserId', 'alaskaUserRole'].forEach(k => localStorage.removeItem(k));
       location.href = 'logintravel.html';
     });
   }

@@ -90,8 +90,10 @@
         localStorage.setItem("alaskaToken",     d.token);
         localStorage.setItem("alaskaUserName",  d.user.name);
         localStorage.setItem("alaskaUserEmail", d.user.email);
+        localStorage.setItem("alaskaUserRole",  d.user.role || "user");
+        localStorage.setItem("alaskaUserId",    d.user.id);
 
-        msgEl.textContent = "Account created! Redirecting…";
+        msgEl.textContent = "Account created! Redirecting to Alaska Travel…";
         msgEl.className   = "success";
 
         setTimeout(() => location.href = "index.html", 500);

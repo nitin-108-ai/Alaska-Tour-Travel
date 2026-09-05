@@ -582,36 +582,16 @@
 
 
         <div class="invoice-title">
-
-            <h2>
-                PAYMENT INVOICE
-            </h2>
-
-            <span>
-                BANK TRANSFER RECEIPT
-            </span>
-
+            <h2 id="invTitle">PAYMENT INVOICE</h2>
+            <span id="invSubtitle">OFFICIAL BOOKING RECEIPT</span>
         </div>
-
     </div>
 
-
     <!-- SUCCESS -->
-
     <div class="success">
-
-        <div class="success-icon">
-            ✓
-        </div>
-
-        <h3>
-            Payment Successful
-        </h3>
-
-        <p>
-            Your demo bank transfer has been completed successfully.
-        </p>
-
+        <div class="success-icon">✓</div>
+        <h3 id="invSuccessTitle">Payment Confirmed</h3>
+        <p id="invSuccessSub">Your Alaska Tour &amp; Travel booking has been confirmed successfully.</p>
     </div>
 
 
@@ -626,104 +606,35 @@
 
 
         <div class="details">
-
-
             <div class="row">
-
-                <span class="label">
-                    Account Holder
-                </span>
-
-                <span
-                    class="value"
-                    id="invoiceName"
-                >
-                    --
-                </span>
-
+                <span class="label" id="labelName">Passenger Name</span>
+                <span class="value" id="invoiceName">--</span>
             </div>
 
-
             <div class="row">
-
-                <span class="label">
-                    Account Number
-                </span>
-
-                <span
-                    class="value"
-                    id="invoiceAccount"
-                >
-                    --
-                </span>
-
+                <span class="label" id="labelAccount">Route &amp; Flight</span>
+                <span class="value" id="invoiceAccount">--</span>
             </div>
 
-
             <div class="row">
-
-                <span class="label">
-                    IFSC Code
-                </span>
-
-                <span
-                    class="value"
-                    id="invoiceIfsc"
-                >
-                    --
-                </span>
-
+                <span class="label" id="labelIfsc">Travel Class &amp; Travelers</span>
+                <span class="value" id="invoiceIfsc">--</span>
             </div>
 
-
             <div class="row">
-
-                <span class="label">
-                    Purpose
-                </span>
-
-                <span
-                    class="value"
-                    id="invoicePurpose"
-                >
-                    --
-                </span>
-
+                <span class="label" id="labelPurpose">Travel Date</span>
+                <span class="value" id="invoicePurpose">--</span>
             </div>
 
-
             <div class="row">
-
-                <span class="label">
-                    Payment Date
-                </span>
-
-                <span
-                    class="value"
-                    id="invoiceDate"
-                >
-                    --
-                </span>
-
+                <span class="label" id="labelDate">Booking Date</span>
+                <span class="value" id="invoiceDate">--</span>
             </div>
 
-
             <div class="row">
-
-                <span class="label">
-                    Payment Time
-                </span>
-
-                <span
-                    class="value"
-                    id="invoiceTime"
-                >
-                    --
-                </span>
-
+                <span class="label" id="labelTime">Payment Method</span>
+                <span class="value" id="invoiceTime">--</span>
             </div>
-
-
         </div>
 
 
@@ -785,29 +696,158 @@
                 🖨 Print Invoice
             </button>
 
+            <button
+                class="home-btn"
+                onclick="location.href='profile.html'"
+                style="background: #e0f2fe; color: #0284c7; font-weight: 700;"
+            >
+                🎫 My Profile
+            </button>
 
             <button
                 class="home-btn"
                 onclick="goHome()"
             >
-                ← Back
+                ← Home
             </button>
 
         </div>
 
     </div>
 
-
 </div>
 
-
 <script>
-(async()=>{let transfer=null;try{const id=new URLSearchParams(location.search).get("transfer");if(id) transfer=await API.request("/transfers/"+encodeURIComponent(id));}catch(e){} if(!transfer){try{transfer=JSON.parse(localStorage.getItem("bankTransferData")||"null")}catch(e){}} if(!transfer){alert("No payment information found.");location.href="international.html";return}
- invoiceName.textContent=transfer.name; invoiceAccount.textContent="XXXXXX"+String(transfer.account).slice(-4); invoiceIfsc.textContent=transfer.ifsc; invoicePurpose.textContent=transfer.purpose; invoiceDate.textContent=transfer.date; invoiceTime.textContent=transfer.time; invoiceAmount.textContent="₹"+Number(transfer.amount).toLocaleString("en-IN"); invoiceTransaction.textContent=transfer.id||transfer.transactionId;
-})(); function goHome(){location.href="index.html";}
+(async () => {
+  const params = new URLSearchParams(location.search);
+  const bookingId = params.get("booking") || params.get("bookingId");
+  const transferId = params.get("transfer");
+
+  // 1. If looking for a Booking
+  if (bookingId || (!transferId && !localStorage.getItem("bankTransferData"))) {
+    let booking = null;
+
+    // Try backend if authenticated
+    if (bookingId && window.API && API.token()) {
+      try { booking = await API.getBooking(bookingId); } catch(e) {}
+    }
+
+    // Try local bookings
+    if (!booking) {
+      const localBookings = JSON.parse(localStorage.getItem("alaskaBookings") || "[]");
+      if (bookingId) {
+        booking = localBookings.find(b => (b.id === bookingId || b.bookingId === bookingId));
+      } else if (localBookings.length > 0) {
+        booking = localBookings[0];
+      }
+    }
+
+    // Try pendingBooking
+    if (!booking) {
+      booking = JSON.parse(localStorage.getItem("pendingBooking") || "null");
+    }
+
+    if (booking) {
+      if (booking.type === 'train') {
+        document.getElementById("invTitle").textContent = "TRAIN E-TICKET RECEIPT";
+        document.getElementById("invSubtitle").textContent = "INDIAN RAILWAYS RESERVATION";
+        document.getElementById("invSuccessTitle").textContent = "Train Reservation Confirmed";
+        document.getElementById("invSuccessSub").textContent = "Your Indian Railways train ticket has been confirmed with Alaska Tour & Travel.";
+
+        document.getElementById("labelAccount").textContent = "Train & Route";
+        document.getElementById("invoiceAccount").textContent = `${booking.trainNo || booking.flight || ''} ${booking.trainName || ''} • ${booking.from || 'Source'} → ${booking.to || 'Destination'}`;
+
+        document.getElementById("labelIfsc").textContent = "Class & Coach";
+        document.getElementById("invoiceIfsc").textContent = `${booking.trainClass || booking.flightClass || 'SL'} • Coach ${booking.coach || 'B1'} • Seat ${booking.seatNo || 'Confirmed'} (${booking.travelers || 1} Pax)`;
+      } else if (booking.type === 'bus') {
+        document.getElementById("invTitle").textContent = "BUS M-TICKET RECEIPT";
+        document.getElementById("invSubtitle").textContent = "INTERCITY BUS TRAVEL RECEIPT";
+        document.getElementById("invSuccessTitle").textContent = "Bus Ticket Confirmed";
+        document.getElementById("invSuccessSub").textContent = "Your Intercity bus booking has been confirmed with Alaska Tour & Travel.";
+
+        document.getElementById("labelAccount").textContent = "Operator & Route";
+        document.getElementById("invoiceAccount").textContent = `${booking.operator || 'Bus'} • ${booking.from || 'Origin'} → ${booking.to || 'Destination'}`;
+
+        document.getElementById("labelIfsc").textContent = "Bus Type & Seat";
+        document.getElementById("invoiceIfsc").textContent = `${booking.busType || 'Volvo AC'} • Seat ${booking.seatNo || 'Confirmed'} (${booking.travelers || 1} Pax)`;
+      } else {
+        document.getElementById("invTitle").textContent = "FLIGHT INVOICE";
+        document.getElementById("invSubtitle").textContent = "OFFICIAL TRAVEL RECEIPT";
+        document.getElementById("invSuccessTitle").textContent = "Booking Confirmed";
+        document.getElementById("invSuccessSub").textContent = "Your flight booking has been confirmed with Alaska Tour & Travel.";
+
+        document.getElementById("labelAccount").textContent = "Flight & Route";
+        document.getElementById("invoiceAccount").textContent = `${booking.flight || 'AS101'} • ${booking.from || 'Mumbai'} → ${booking.to || 'Anchorage'}`;
+
+        document.getElementById("labelIfsc").textContent = "Class & Travelers";
+        document.getElementById("invoiceIfsc").textContent = `${booking.flightClass || booking.class || 'Economy'} (${booking.travelers || 1} Traveler)`;
+      }
+
+      document.getElementById("labelName").textContent = "Passenger Name";
+      document.getElementById("invoiceName").textContent = booking.passengerName || booking.passenger || localStorage.getItem("alaskaUserName") || "Traveler";
+
+      document.getElementById("labelPurpose").textContent = "Travel Date";
+      document.getElementById("invoicePurpose").textContent = booking.travelDate || booking.date || "15-Sep-2026";
+
+      document.getElementById("labelDate").textContent = "Booking Date";
+      document.getElementById("invoiceDate").textContent = booking.paidAt || (booking.createdAt ? new Date(booking.createdAt).toLocaleDateString('en-IN') : new Date().toLocaleDateString('en-IN'));
+
+      document.getElementById("labelTime").textContent = "Payment Method";
+      document.getElementById("invoiceTime").textContent = `${booking.paymentMethod || 'UPI'} ${booking.upiId ? '(' + booking.upiId + ')' : ''}`;
+
+      const amount = Number(booking.totalPrice || booking.amount || booking.price || 62500);
+      document.getElementById("invoiceAmount").textContent = "₹" + amount.toLocaleString("en-IN");
+      document.getElementById("invoiceTransaction").textContent = booking.id || booking.bookingId || "BK-" + Date.now();
+      return;
+    }
+  }
+
+  // 2. If looking for a Bank Transfer
+  let transfer = null;
+  if (transferId && window.API) {
+    try { transfer = await API.request("/transfers/" + encodeURIComponent(transferId)); } catch(e) {}
+  }
+  if (!transfer) {
+    try { transfer = JSON.parse(localStorage.getItem("bankTransferData") || "null"); } catch(e) {}
+  }
+
+  if (transfer) {
+    document.getElementById("labelName").textContent = "Account Holder";
+    document.getElementById("invoiceName").textContent = transfer.name;
+
+    document.getElementById("labelAccount").textContent = "Account Number";
+    document.getElementById("invoiceAccount").textContent = "XXXXXX" + String(transfer.account).slice(-4);
+
+    document.getElementById("labelIfsc").textContent = "IFSC Code";
+    document.getElementById("invoiceIfsc").textContent = transfer.ifsc;
+
+    document.getElementById("labelPurpose").textContent = "Purpose";
+    document.getElementById("invoicePurpose").textContent = transfer.purpose;
+
+    document.getElementById("labelDate").textContent = "Payment Date";
+    document.getElementById("invoiceDate").textContent = transfer.date;
+
+    document.getElementById("labelTime").textContent = "Payment Time";
+    document.getElementById("invoiceTime").textContent = transfer.time;
+
+    document.getElementById("invoiceAmount").textContent = "₹" + Number(transfer.amount).toLocaleString("en-IN");
+    document.getElementById("invoiceTransaction").textContent = transfer.id || transfer.transactionId || "TR-" + Date.now();
+    return;
+  }
+
+  // Fallback if truly no data found
+  document.getElementById("invoiceName").textContent = localStorage.getItem("alaskaUserName") || "Traveler";
+  document.getElementById("invoiceAccount").textContent = "Standard Tour Package";
+  document.getElementById("invoiceIfsc").textContent = "Confirmed";
+  document.getElementById("invoicePurpose").textContent = "Alaska Exploration";
+  document.getElementById("invoiceDate").textContent = new Date().toLocaleDateString("en-IN");
+  document.getElementById("invoiceTime").textContent = new Date().toLocaleTimeString("en-IN");
+  document.getElementById("invoiceAmount").textContent = "₹62,500";
+  document.getElementById("invoiceTransaction").textContent = "BK-" + Date.now();
+})();
+
+function goHome() { location.href = "index.html"; }
 </script>
 
-
 </body>
-
 </html>

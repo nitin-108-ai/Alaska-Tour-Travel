@@ -60,12 +60,35 @@
 
             <h2>Welcome Back!</h2>
 
-            <p class="welcome">
-                Login to continue your journey
+            <p class="welcome" id="portalSubtext">
+                Login to continue your Alaska journey
             </p>
 
+            <!-- Role Selector Tabs -->
+            <div style="display: flex; background: rgba(0, 140, 149, 0.08); padding: 4px; border-radius: 12px; margin-bottom: 18px; border: 1px solid rgba(0, 140, 149, 0.2);">
+                <button type="button" id="tabUser" style="flex: 1; padding: 9px; border: none; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s; background: #008c95; color: #fff; box-shadow: 0 3px 10px rgba(0,140,149,0.3);">
+                    👤 Traveler / User
+                </button>
+                <button type="button" id="tabAdmin" style="flex: 1; padding: 9px; border: none; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s; background: transparent; color: #5a7a82;">
+                    🛡️ Admin Portal
+                </button>
+            </div>
+
+            <!-- Quick Demo Credentials Helper -->
+            <div style="background: #f0fdfa; border: 1px dashed #14b8a6; border-radius: 10px; padding: 8px 12px; margin-bottom: 16px; font-size: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <span style="color: #0f766e; font-weight: 600;">⚡ Quick Demo Login:</span>
+                <div style="display: flex; gap: 6px;">
+                    <button type="button" id="demoAdminBtn" style="background: #0f766e; color: #fff; border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                        🛡️ Admin
+                    </button>
+                    <button type="button" id="demoUserBtn" style="background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                        👤 User
+                    </button>
+                </div>
+            </div>
+
             <!-- Social Login -->
-            <div class="social-login">
+            <div class="social-login" id="socialSection">
 
                 <a href="loginwithgoogle.html" class="social-btn">
                     <img src="google.png" alt="Google">
@@ -79,7 +102,7 @@
 
             </div>
 
-            <div class="divider">
+            <div class="divider" id="socialDivider">
                 <span>OR</span>
             </div>
 
@@ -89,7 +112,7 @@
                 <!-- Email -->
                 <div class="input-group">
 
-                    <label for="email">Email Address</label>
+                    <label for="email" id="emailLabel">Email Address</label>
 
                     <div class="input-wrapper">
                         <span>✉</span>
@@ -111,7 +134,7 @@
                     <div class="password-heading">
                         <label for="password">Password</label>
 
-                        <a href="forget.html">
+                        <a href="forget.html" id="forgotPassLink">
                             Forgot Password?
                         </a>
                     </div>
@@ -151,7 +174,7 @@
             </form>
 
 
-            <p class="signup">
+            <p class="signup" id="signupFooter">
                 Don't have an account?
                 <a href="signin.html">Create Account</a>
             </p>
@@ -164,8 +187,54 @@
     <script>
 const togglePassword = document.getElementById("togglePassword");
 const passwordInput  = document.getElementById("password");
+const emailInput     = document.getElementById("email");
 const msgEl          = document.getElementById("message");
 const loginBtn       = document.querySelector(".login-btn");
+const tabUser        = document.getElementById("tabUser");
+const tabAdmin       = document.getElementById("tabAdmin");
+const demoAdminBtn   = document.getElementById("demoAdminBtn");
+const demoUserBtn    = document.getElementById("demoUserBtn");
+const portalSubtext  = document.getElementById("portalSubtext");
+
+let currentRole = "user";
+
+function selectRole(role) {
+  currentRole = role;
+  if (role === "admin") {
+    tabAdmin.style.background = "#0f766e";
+    tabAdmin.style.color = "#ffffff";
+    tabAdmin.style.boxShadow = "0 3px 10px rgba(15,118,110,0.3)";
+    tabUser.style.background = "transparent";
+    tabUser.style.color = "#5a7a82";
+    tabUser.style.boxShadow = "none";
+    portalSubtext.textContent = "Admin Portal • Access Management Dashboard";
+    loginBtn.innerHTML = "Log In to Admin Dashboard 🛡️";
+  } else {
+    tabUser.style.background = "#008c95";
+    tabUser.style.color = "#ffffff";
+    tabUser.style.boxShadow = "0 3px 10px rgba(0,140,149,0.3)";
+    tabAdmin.style.background = "transparent";
+    tabAdmin.style.color = "#5a7a82";
+    tabAdmin.style.boxShadow = "none";
+    portalSubtext.textContent = "Login to continue your Alaska journey";
+    loginBtn.innerHTML = "Log In <span>✈</span>";
+  }
+}
+
+tabUser.onclick = () => selectRole("user");
+tabAdmin.onclick = () => selectRole("admin");
+
+demoAdminBtn.onclick = () => {
+  selectRole("admin");
+  emailInput.value = "admin@alaska.com";
+  passwordInput.value = "admin123";
+};
+
+demoUserBtn.onclick = () => {
+  selectRole("user");
+  emailInput.value = "grow50065@gmail.com";
+  passwordInput.value = "password123";
+};
 
 // Toggle password visibility
 togglePassword.onclick = () => {
@@ -184,28 +253,37 @@ document.getElementById("loginForm").onsubmit = async (e) => {
   loginBtn.textContent = "Logging in…";
 
   try {
-    const emailVal = document.getElementById("email").value.trim();
+    const emailVal = emailInput.value.trim();
     const d = await API.login(emailVal, passwordInput.value);
 
-    // Persist token + user info for other pages to use
-    localStorage.setItem("alaskaToken",    d.token);
-    localStorage.setItem("alaskaUserName", d.user.name);
+    // Persist token + user info + role
+    const userRole = d.user.role || "user";
+    localStorage.setItem("alaskaToken",     d.token);
+    localStorage.setItem("alaskaUserName",  d.user.name);
     localStorage.setItem("alaskaUserEmail", d.user.email);
+    localStorage.setItem("alaskaUserRole",  userRole);
+    localStorage.setItem("alaskaUserId",    d.user.id);
 
-    msgEl.textContent = "Login successful! Redirecting…";
-    msgEl.className   = "success";
-
-    setTimeout(() => location.href = "index.html", 500);
+    if (userRole === "admin") {
+      msgEl.textContent = "🛡️ Admin verified! Redirecting to Admin Dashboard…";
+      msgEl.className   = "success";
+      setTimeout(() => location.href = "admin.html", 500);
+    } else {
+      msgEl.textContent = "✈️ Login successful! Redirecting to Alaska Travel…";
+      msgEl.className   = "success";
+      setTimeout(() => location.href = "index.html", 500);
+    }
   } catch (err) {
-    msgEl.textContent = err.message || "Login failed. Please try again.";
+    msgEl.textContent = err.message || "Login failed. Please check credentials.";
     msgEl.className   = "error";
 
     // Re-enable button on failure
     loginBtn.disabled    = false;
-    loginBtn.innerHTML   = "Log In <span>✈</span>";
+    loginBtn.innerHTML   = currentRole === "admin" ? "Log In to Admin Dashboard 🛡️" : "Log In <span>✈</span>";
   }
 };
     </script>
 
 </body>
 </html>
+

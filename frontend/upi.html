@@ -308,9 +308,19 @@
       <div class="bd-row"><span class="key">Status</span><span class="val green">✅ Confirmed</span></div>
     </div>
 
-    <a href="index.html" class="btn-home">
-      <i class="fa-solid fa-house"></i> Back to Home
-    </a>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+      <a id="btnSuccessProfile" href="profile.html" class="btn-home" style="background: linear-gradient(135deg, #0879d1, #065ca0);">
+        <i class="fa-solid fa-ticket"></i> View Ticket in Profile
+      </a>
+      <div style="display: flex; gap: 10px;">
+        <a id="btnSuccessInv" href="inv.html" class="btn-home" style="flex: 1; background: #e0f2fe; color: #0284c7;">
+          <i class="fa-solid fa-file-invoice"></i> View Invoice
+        </a>
+        <a href="index.html" class="btn-home" style="flex: 1; background: #f1f5f9; color: #334155;">
+          <i class="fa-solid fa-house"></i> Home
+        </a>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -419,6 +429,11 @@
     document.getElementById("bdClass").textContent = b.flightClass;
     document.getElementById("bdAmt").textContent   = "₹" + Number(b.amount).toLocaleString("en-IN");
     document.getElementById("bdUpi").textContent   = b.upiId;
+
+    const btnProfile = document.getElementById("btnSuccessProfile");
+    if (btnProfile) btnProfile.href = "profile.html?bookingId=" + encodeURIComponent(bookingId);
+    const btnInv = document.getElementById("btnSuccessInv");
+    if (btnInv) btnInv.href = "inv.html?booking=" + encodeURIComponent(bookingId);
   }
 </script>
 </body>

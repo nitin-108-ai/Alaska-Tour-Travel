@@ -11,6 +11,7 @@
     <script src="api.js"></script>
     <script src="profile.js"></script>
 
+    <style>
         * {
             margin: 0;
             padding: 0;
@@ -429,6 +430,11 @@
             </div>
 
 
+            <!-- ERROR MESSAGE BOX -->
+            <div id="transferError" style="display: none; background: #fee2e2; border: 1px solid #fca5a5; color: #b91c1c; padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; margin-bottom: 15px;">
+                <i class="fa-solid fa-triangle-exclamation"></i> <span id="errorText"></span>
+            </div>
+
             <button type="submit" id="transferBtn">
                 Transfer Money
             </button>
@@ -445,10 +451,127 @@
 
 
 <script>
-document.getElementById("transferForm").addEventListener("submit",async function(event){
- event.preventDefault(); const button=document.getElementById("transferBtn");
- const payload={name:document.getElementById("name").value.trim(),account:document.getElementById("account").value.trim(),ifsc:document.getElementById("ifsc").value.trim().toUpperCase(),amount:document.getElementById("amount").value,purpose:document.getElementById("purpose").value};
- try{button.classList.add("loading");button.textContent="Processing Transfer...";const t=await API.transfer(payload);localStorage.setItem("bankTransferData",JSON.stringify(t));location.href="inv.html?transfer="+encodeURIComponent(t.id)}catch(e){if(!API.token()){alert("Please login before making a transfer.");location.href="logintravel.html"}else alert(e.message)}finally{button.classList.remove("loading")}
+// Auto-fill from pending booking or logged-in user
+const pending = JSON.parse(localStorage.getItem("pendingBooking") || "null");
+const storedName = localStorage.getItem("alaskaUserName");
+const nameInput = document.getElementById("name");
+const amountInput = document.getElementById("amount");
+const accountInput = document.getElementById("account");
+const ifscInput = document.getElementById("ifsc");
+
+if (pending && pending.passengerName) {
+  nameInput.value = pending.passengerName;
+} else if (storedName) {
+  nameInput.value = storedName;
+} else {
+  nameInput.value = "Valued Traveler";
+}
+
+if (pending && (pending.totalPrice || pending.price)) {
+  amountInput.value = pending.totalPrice || pending.price;
+} else {
+  amountInput.value = 62500;
+}
+
+if (!accountInput.value) {
+  accountInput.value = "102938475612";
+}
+if (!ifscInput.value) {
+  ifscInput.value = "SBIN0001234";
+}
+
+document.getElementById("transferForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+  const button = document.getElementById("transferBtn");
+  const errBox = document.getElementById("transferError");
+  const errText = document.getElementById("errorText");
+  errBox.style.display = "none";
+
+  // Check login
+  if (!API.token()) {
+    errText.textContent = "Please log in before making a transfer.";
+    errBox.style.display = "block";
+    setTimeout(() => location.href = "logintravel.html", 1500);
+    return;
+  }
+
+  const cleanName = nameInput.value.trim();
+  const cleanAccount = accountInput.value.replace(/[\s-]/g, "").trim();
+  const cleanIfsc = ifscInput.value.replace(/[\s-]/g, "").trim().toUpperCase();
+  const numAmount = Number(amountInput.value);
+
+  if (!cleanName) {
+    errText.textContent = "Please enter account holder name.";
+    errBox.style.display = "block";
+    return;
+  }
+  if (!/^\d{6,22}$/.test(cleanAccount)) {
+    errText.textContent = "Please enter a valid Account Number (6 to 20 digits).";
+    errBox.style.display = "block";
+    return;
+  }
+  if (!/^[A-Z0-9]{4,14}$/.test(cleanIfsc)) {
+    errText.textContent = "Please enter a valid IFSC code (e.g. SBIN0001234).";
+    errBox.style.display = "block";
+    return;
+  }
+  if (isNaN(numAmount) || numAmount <= 0) {
+    errText.textContent = "Please enter a valid transfer amount.";
+    errBox.style.display = "block";
+    return;
+  }
+
+  const payload = {
+    name: cleanName,
+    account: cleanAccount,
+    ifsc: cleanIfsc,
+    amount: numAmount,
+    purpose: document.getElementById("purpose").value
+  };
+
+  try {
+    button.classList.add("loading");
+    button.textContent = "Processing Transfer...";
+    const t = await API.transfer(payload);
+    localStorage.setItem("bankTransferData", JSON.stringify(t));
+
+    // Also link with pendingBooking if any
+    const curPending = JSON.parse(localStorage.getItem("pendingBooking") || "null");
+    if (curPending) {
+      try {
+        const bRes = await API.booking({
+          ...curPending,
+          paymentMethod: "Bank Transfer",
+          transferId: t.id,
+          status: "confirmed"
+        });
+        const all = JSON.parse(localStorage.getItem("alaskaBookings") || "[]");
+        all.unshift({
+          id: bRes.id,
+          bookingId: bRes.id,
+          passenger: curPending.passengerName || localStorage.getItem("alaskaUserName") || "Traveler",
+          from: curPending.from || "Mumbai",
+          to: curPending.to || "Anchorage",
+          date: curPending.travelDate || "15-Sep-2026",
+          flightClass: curPending.flightClass || "Economy",
+          amount: curPending.totalPrice || t.amount,
+          paymentMethod: "Bank Transfer",
+          status: "confirmed",
+          paidAt: new Date().toLocaleString("en-IN")
+        });
+        localStorage.setItem("alaskaBookings", JSON.stringify(all));
+        localStorage.removeItem("pendingBooking");
+      } catch(e) {}
+    }
+
+    location.href = "inv.html?transfer=" + encodeURIComponent(t.id);
+  } catch(e) {
+    errText.textContent = e.message || "Transfer failed. Please try again.";
+    errBox.style.display = "block";
+  } finally {
+    button.classList.remove("loading");
+    button.textContent = "Transfer Money";
+  }
 });
 </script>
 

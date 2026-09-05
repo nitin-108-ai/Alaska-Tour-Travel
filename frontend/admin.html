@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal | Alaska Tour & Travel</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/201/201623.png" type="image/png">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  
+  <script src="api.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #070d18;
+      --bg-card: #0d1726;
+      --bg-card-hover: #122035;
+      --border-color: rgba(0, 242, 254, 0.15);
+      --border-light: rgba(255, 255, 255, 0.08);
+      --primary: #00f2fe;
+      --primary-dark: #00a6a6;
+      --secondary: #4facfe;
+      --accent-green: #10b981;
+      --accent-red: #f43f5e;
+      --accent-amber: #f59e0b;
+      --accent-purple: #8b5cf6;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.25); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: 270px;
+      background: #09121f;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 100;
+      transition: width 0.3s ease;
+    }
+
+    .sidebar-header {
+      padding: 24px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #00f2fe, #4facfe);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #03151f;
+      box-shadow: 0 4px 16px rgba(0, 242, 254, 0.4);
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      background: linear-gradient(135deg, #ffffff, #00f2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--accent-green);
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .sidebar-menu {
+      padding: 20px 14px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow-y: auto;
+    }
+
+    .menu-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 12px 4px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      width: 100%;
+      text-align: left;
+    }
+
+    .nav-btn i {
+      font-size: 16px;
+      width: 20px;
+      color: var(--text-dim);
+      transition: color 0.2s;
+    }
+
+    .nav-btn:hover {
+      background: rgba(0, 242, 254, 0.08);
+      color: #fff;
+    }
+
+    .nav-btn:hover i {
+      color: var(--primary);
+    }
+
+    .nav-btn.active {
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.15));
+      color: #fff;
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      box-shadow: 0 4px 14px rgba(0, 242, 254, 0.15);
+    }
+
+    .nav-btn.active i {
+      color: var(--primary);
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      background: rgba(0, 242, 254, 0.18);
+      color: var(--primary);
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    .sidebar-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .site-link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-light);
+      padding: 9px;
+      border-radius: 8px;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .site-link-btn:hover {
+      background: rgba(0, 242, 254, 0.15);
+      border-color: var(--primary);
+    }
+
+    .admin-profile-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .admin-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10b981, #047857);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .admin-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .admin-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .admin-role {
+      font-size: 11px;
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .btn-logout {
+      background: none;
+      border: none;
+      color: var(--accent-red);
+      font-size: 15px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover {
+      background: rgba(244, 63, 94, 0.15);
+    }
+
+    /* ===== MAIN CONTENT AREA ===== */
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .topbar {
+      padding: 18px 32px;
+      background: rgba(9, 18, 31, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+
+    .topbar-left h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .topbar-left p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .live-clock {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-light);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-refresh {
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      color: var(--primary);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-refresh:hover {
+      background: var(--primary);
+      color: #03151f;
+    }
+
+    .content-area {
+      padding: 30px 32px 60px;
+      flex: 1;
+    }
+
+    /* Tab switching display */
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== KPI CARDS ===== */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 90px;
+      height: 90px;
+      background: radial-gradient(circle, rgba(0, 242, 254, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .kpi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .kpi-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--text-muted);
+    }
+
+    .kpi-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .kpi-icon-users { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .kpi-icon-downloads { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .kpi-icon-bookings { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .kpi-icon-revenue { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+
+    .kpi-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .kpi-footer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .kpi-trend {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .trend-up { color: var(--accent-green); }
+    .trend-down { color: var(--accent-red); }
+
+    /* ===== CHARTS & GRID SECTIONS ===== */
+    .dashboard-two-col {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .panel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title i {
+      color: var(--primary);
+    }
+
+    /* Bar Visualizer */
+    .chart-container {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      height: 180px;
+      padding-top: 20px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 12px;
+    }
+
+    .chart-bar-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .chart-bar-wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      position: relative;
+    }
+
+    .chart-bar {
+      width: 60%;
+      max-width: 38px;
+      background: linear-gradient(180deg, var(--primary) 0%, #006d77 100%);
+      border-radius: 6px 6px 0 0;
+      transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .chart-bar:hover {
+      filter: brightness(1.25);
+    }
+
+    .chart-bar:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      top: -32px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #03151f;
+      border: 1px solid var(--primary);
+      color: #fff;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      z-index: 10;
+      font-weight: 700;
+    }
+
+    .chart-label {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    /* Platform Split & Stats List */
+    .platform-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .platform-row:last-child {
+      border-bottom: none;
+    }
+
+    .platform-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .platform-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .platform-icon.android { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .platform-icon.ios { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .platform-icon.pwa { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+
+    .platform-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .platform-share {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .platform-count {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* ===== TABLES ===== */
+    .table-container {
+      overflow-x: auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    thead th {
+      background: #09121f;
+      padding: 14px 18px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border-bottom: 1px solid var(--border-light);
+      white-space: nowrap;
+    }
+
+    tbody td {
+      padding: 14px 18px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      vertical-align: middle;
+    }
+
+    tbody tr:hover {
+      background: rgba(0, 242, 254, 0.03);
+    }
+
+    /* Status Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-confirmed {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-cancelled {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .badge-pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-admin {
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2));
+      color: #00f2fe;
+      border: 1px solid rgba(0, 242, 254, 0.4);
+    }
+
+    .badge-user {
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    /* Action Buttons */
+    .btn-action {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .btn-action:hover {
+      background: rgba(0, 242, 254, 0.15);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .btn-action.delete:hover {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fb7185;
+      border-color: var(--accent-red);
+    }
+
+    /* Filters Bar */
+    .filters-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .search-input-wrap {
+      position: relative;
+      flex: 1;
+      max-width: 380px;
+    }
+
+    .search-input-wrap i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      padding: 10px 14px 10px 38px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-pill:hover,
+    .filter-pill.active {
+      background: var(--primary);
+      color: #03151f;
+      border-color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* ===== MODAL DIALOGS ===== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #0e1a2c;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      animation: modalPop 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes modalPop {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 18px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+    }
+
+    .modal-close:hover {
+      color: #fff;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      background: #070e1a;
+      border: 1px solid var(--border-light);
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--primary);
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+      color: #03151f;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 242, 254, 0.3);
+    }
+
+    .btn-submit:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn-cancel {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Ticket Detail Box in Modal */
+    .ticket-view {
+      background: #070e1a;
+      border: 1px dashed var(--border-color);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .ticket-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 13px;
+    }
+
+    .ticket-row:last-child {
+      border-bottom: none;
+    }
+
+    .ticket-key {
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+
+    .ticket-val {
+      color: #fff;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    /* Password Reveal Box */
+    .pwd-pill {
+      font-family: monospace;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border-light);
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 70px;
+      }
+      .brand-text, .brand-subtitle, .nav-btn span, .menu-label, .admin-info, .site-link-btn span {
+        display: none;
+      }
+      .dashboard-two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">
+        <i class="fas fa-plane-departure"></i>
+      </div>
+      <div>
+        <div class="brand-title brand-text">ALASKA ADMIN</div>
+        <div class="brand-subtitle">
+          <span class="pulse-dot"></span> LIVE SYSTEM
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-menu">
+      <div class="menu-label">Main Navigation</div>
+
+      <button class="nav-btn active" data-tab="overview">
+        <i class="fas fa-chart-pie"></i>
+        <span>Dashboard Overview</span>
+      </button>
+
+      <button class="nav-btn" data-tab="users">
+        <i class="fas fa-users-gear"></i>
+        <span>User Management</span>
+        <span class="nav-badge" id="badgeUsersCount">0</span>
+      </button>
+
+      <button class="nav-btn" data-tab="bookings">
+        <i class="fas fa-ticket-simple"></i>
+        <span>All Bookings</span>
+        <span class="nav-badge" id="badgeBookingsCount">0</span>
+      </button>
+
+      <button class="nav-btn" data-tab="downloads">
+        <i class="fas fa-mobile-screen-button"></i>
+        <span>App Downloads</span>
+        <span class="nav-badge" id="badgeDownloadsCount">0</span>
+      </button>
+
+      <button class="nav-btn" data-tab="payments">
+        <i class="fas fa-credit-card"></i>
+        <span>Payments &amp; UPI</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <a href="index.html" class="site-link-btn" title="Open user booking homepage">
+        <i class="fas fa-globe"></i>
+        <span>Travel Booking Site</span>
+      </a>
+
+      <div class="admin-profile-card">
+        <div class="admin-avatar" id="adminAvatar">AD</div>
+        <div class="admin-info">
+          <div class="admin-name" id="adminName">Alaska Admin</div>
+          <div class="admin-role">Super Administrator</div>
+        </div>
+        <button class="btn-logout" id="sidebarLogoutBtn" title="Logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN VIEW ================= -->
+  <main class="main-wrapper">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 id="pageHeading">Dashboard Overview</h1>
+        <p id="pageSubheading">Real-time statistics, active users, downloads, and customer bookings</p>
+      </div>
+
+      <div class="topbar-right">
+        <div class="live-clock" id="liveClock">
+          <i class="fa-regular fa-clock"></i>
+          <span>--:--:--</span>
+        </div>
+
+        <button class="btn-refresh" id="btnRefreshData" title="Refresh all data from server">
+          <i class="fas fa-rotate"></i>
+          <span>Refresh</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="content-area">
+
+      <!-- ================= TAB 1: OVERVIEW DASHBOARD ================= -->
+      <section class="tab-pane active" id="tab-overview">
+        <!-- KPI Cards Grid -->
+        <div class="kpi-grid">
+          <!-- Total Revenue -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">Total Revenue</span>
+              <div class="kpi-icon-wrap kpi-icon-revenue">
+                <i class="fas fa-indian-rupee-sign"></i>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiRevenue">₹0</div>
+            <div class="kpi-footer">
+              <span class="kpi-trend trend-up"><i class="fas fa-arrow-trend-up"></i> +24%</span>
+              <span>from all confirmed bookings</span>
+            </div>
+          </div>
+
+          <!-- Total Bookings -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">Total Bookings</span>
+              <div class="kpi-icon-wrap kpi-icon-bookings">
+                <i class="fas fa-calendar-check"></i>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiTotalBookings">0</div>
+            <div class="kpi-footer">
+              <span id="kpiConfirmedBookings" style="color: var(--accent-green); font-weight: 700;">0 Confirmed</span>
+              <span>•</span>
+              <span id="kpiCancelledBookings" style="color: var(--accent-red); font-weight: 700;">0 Cancelled</span>
+            </div>
+          </div>
+
+          <!-- Registered Users -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">Registered Users</span>
+              <div class="kpi-icon-wrap kpi-icon-users">
+                <i class="fas fa-users"></i>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiTotalUsers">0</div>
+            <div class="kpi-footer">
+              <span class="kpi-trend trend-up"><i class="fas fa-user-check"></i> Active</span>
+              <span id="kpiActiveUsersCount">All users engaged</span>
+            </div>
+          </div>
+
+          <!-- App Downloads -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">App Downloads</span>
+              <div class="kpi-icon-wrap kpi-icon-downloads">
+                <i class="fas fa-download"></i>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiAppDownloads">1,482</div>
+            <div class="kpi-footer">
+              <span class="kpi-trend trend-up"><i class="fas fa-arrow-trend-up"></i> +12%</span>
+              <span>Android &amp; iOS installs</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2-Column Analytics Layout -->
+        <div class="dashboard-two-col">
+          <!-- Left: Weekly Booking Activity & Trends -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title">
+                <i class="fas fa-chart-column"></i> Weekly Booking &amp; Revenue Trends
+              </div>
+              <span style="font-size: 12px; color: var(--text-dim); font-weight: 600;">Past 7 Days</span>
+            </div>
+
+            <!-- Simulated Responsive SVG Bar Chart -->
+            <div class="chart-container" id="overviewBarChart">
+              <!-- Dynamically populated -->
+            </div>
+
+            <div style="display: flex; justify-content: space-around; margin-top: 14px; font-size: 12px;">
+              <span style="color: var(--primary); font-weight: 600;"><i class="fas fa-circle" style="font-size: 8px;"></i> Flights Booking</span>
+              <span style="color: #60a5fa; font-weight: 600;"><i class="fas fa-circle" style="font-size: 8px;"></i> Trains Booking</span>
+              <span style="color: #34d399; font-weight: 600;"><i class="fas fa-circle" style="font-size: 8px;"></i> Buses &amp; Tours</span>
+            </div>
+          </div>
+
+          <!-- Right: App Downloads & Device Breakdown -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <div class="panel-title">
+                <i class="fas fa-mobile-screen"></i> App Installation Split
+              </div>
+              <button class="btn-action" id="btnSimulateDownload" title="Simulate a new user download">
+                <i class="fas fa-plus"></i> Simulate
+              </button>
+            </div>
+
+            <div class="platform-row">
+              <div class="platform-info">
+                <div class="platform-icon android"><i class="fab fa-android"></i></div>
+                <div>
+                  <div class="platform-name">Android APK</div>
+                  <div class="platform-share" id="androidShare">62.3% of users</div>
+                </div>
+              </div>
+              <div class="platform-count" id="androidDownloadsCount">924</div>
+            </div>
+
+            <div class="platform-row">
+              <div class="platform-info">
+                <div class="platform-icon ios"><i class="fab fa-apple"></i></div>
+                <div>
+                  <div class="platform-name">iOS App</div>
+                  <div class="platform-share" id="iosShare">28.9% of users</div>
+                </div>
+              </div>
+              <div class="platform-count" id="iosDownloadsCount">428</div>
+            </div>
+
+            <div class="platform-row">
+              <div class="platform-info">
+                <div class="platform-icon pwa"><i class="fas fa-globe"></i></div>
+                <div>
+                  <div class="platform-name">Web App (PWA)</div>
+                  <div class="platform-share" id="pwaShare">8.8% of users</div>
+                </div>
+              </div>
+              <div class="platform-count" id="pwaDownloadsCount">130</div>
+            </div>
+
+            <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-light); font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between;">
+              <span>Daily Active Users (DAU):</span>
+              <strong style="color: var(--accent-green);" id="dauCount">346 users</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Bookings Table -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-title">
+              <i class="fas fa-clock-rotate-left"></i> Recent Bookings by Travelers
+            </div>
+            <button class="btn-action" onclick="switchTab('bookings')">
+              View All Bookings <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Booking ID</th>
+                  <th>Customer Name</th>
+                  <th>Type &amp; Route</th>
+                  <th>Travel Date</th>
+                  <th>Amount</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="overviewRecentBookingsTable">
+                <tr><td colspan="8" style="text-align: center; color: var(--text-dim);">Loading bookings…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= TAB 2: USER MANAGEMENT ================= -->
+      <section class="tab-pane" id="tab-users">
+        <div class="filters-bar">
+          <div class="search-input-wrap">
+            <i class="fas fa-magnifying-glass"></i>
+            <input type="text" class="search-input" id="searchUserInput" placeholder="Search by name, email, or role…">
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button class="btn-submit" id="btnOpenAddUserModal">
+              <i class="fas fa-user-plus"></i> Add New User / Admin
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>User / Traveler</th>
+                <th>Role</th>
+                <th>App Status</th>
+                <th>Bookings Made</th>
+                <th>Password / Credentials</th>
+                <th>Registered Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody">
+              <tr><td colspan="7" style="text-align: center; color: var(--text-dim);">Loading registered users…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+      <!-- ================= TAB 3: ALL BOOKINGS MANAGEMENT ================= -->
+      <section class="tab-pane" id="tab-bookings">
+        <div class="filters-bar">
+          <div class="search-input-wrap">
+            <i class="fas fa-magnifying-glass"></i>
+            <input type="text" class="search-input" id="searchBookingInput" placeholder="Search ID, passenger, route, phone…">
+          </div>
+
+          <div class="filter-pills">
+            <button class="filter-pill active" data-filter="all">All (<span id="pillAllCount">0</span>)</button>
+            <button class="filter-pill" data-filter="confirmed">Confirmed (<span id="pillConfirmedCount">0</span>)</button>
+            <button class="filter-pill" data-filter="cancelled">Cancelled (<span id="pillCancelledCount">0</span>)</button>
+            <button class="filter-pill" data-filter="flight">✈ Flights</button>
+            <button class="filter-pill" data-filter="train">🚆 Trains</button>
+            <button class="filter-pill" data-filter="bus">🚌 Buses</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Customer / User</th>
+                <th>Service &amp; Details</th>
+                <th>Route</th>
+                <th>Travel Date</th>
+                <th>Total Price</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTableBody">
+              <tr><td colspan="9" style="text-align: center; color: var(--text-dim);">Loading bookings…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+      <!-- ================= TAB 4: APP DOWNLOADS & GROWTH ================= -->
+      <section class="tab-pane" id="tab-downloads">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">Total Installs</span>
+              <div class="kpi-icon-wrap kpi-icon-downloads"><i class="fas fa-cloud-arrow-down"></i></div>
+            </div>
+            <div class="kpi-value" id="tabAppDownloadsTotal">1,482</div>
+            <div class="kpi-footer"><span class="trend-up font-bold">100% verified</span> user downloads</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">Android Downloads</span>
+              <div class="kpi-icon-wrap" style="background: rgba(16, 185, 129, 0.15); color: #34d399;"><i class="fab fa-android"></i></div>
+            </div>
+            <div class="kpi-value" id="tabAndroidTotal">924</div>
+            <div class="kpi-footer">APK Downloads &amp; Play Store installs</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">iOS Downloads</span>
+              <div class="kpi-icon-wrap" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;"><i class="fab fa-apple"></i></div>
+            </div>
+            <div class="kpi-value" id="tabIosTotal">428</div>
+            <div class="kpi-footer">Apple TestFlight &amp; iOS devices</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-title">Web PWA Installs</span>
+              <div class="kpi-icon-wrap" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;"><i class="fas fa-desktop"></i></div>
+            </div>
+            <div class="kpi-value" id="tabPwaTotal">130</div>
+            <div class="kpi-footer">Progressive Web App desktop/mobile</div>
+          </div>
+        </div>
+
+        <div class="panel-card" style="margin-bottom: 24px;">
+          <div class="panel-header">
+            <div class="panel-title"><i class="fas fa-download"></i> Live App Download Simulator</div>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+            Simulate or track when visitors click the "Download App" button across marketing landing pages:
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn-submit" onclick="simulateNewDownload('android')">
+              <i class="fab fa-android"></i> Record Android Download
+            </button>
+            <button class="btn-submit" style="background: linear-gradient(135deg, #60a5fa, #3b82f6); color: #fff;" onclick="simulateNewDownload('ios')">
+              <i class="fab fa-apple"></i> Record iOS Download
+            </button>
+            <button class="btn-submit" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #03151f;" onclick="simulateNewDownload('pwa')">
+              <i class="fas fa-laptop"></i> Record PWA Install
+            </button>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-title"><i class="fas fa-chart-line"></i> Daily App Installation History</div>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>New Installs</th>
+                  <th>Primary Source</th>
+                  <th>App Version</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="appHistoryTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================= TAB 5: PAYMENTS & TRANSACTIONS ================= -->
+      <section class="tab-pane" id="tab-payments">
+        <div class="panel-card" style="margin-bottom: 24px;">
+          <div class="panel-header">
+            <div class="panel-title"><i class="fas fa-wallet"></i> Payments &amp; UPI Records</div>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Payment ID</th>
+                  <th>Booking ID</th>
+                  <th>Method</th>
+                  <th>UPI ID / Ref</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="paymentsTableBody">
+                <tr><td colspan="7" style="text-align: center; color: var(--text-dim);">Loading payments…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="panel-card">
+          <div class="panel-header">
+            <div class="panel-title"><i class="fas fa-building-columns"></i> Bank Transfer Transactions</div>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Transfer ID</th>
+                  <th>Account Holder</th>
+                  <th>Account Number</th>
+                  <th>IFSC Code</th>
+                  <th>Amount</th>
+                  <th>Purpose</th>
+                  <th>Date &amp; Time</th>
+                </tr>
+              </thead>
+              <tbody id="transfersTableBody">
+                <tr><td colspan="7" style="text-align: center; color: var(--text-dim);">Loading transfers…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+
+  <!-- ================= MODAL: BOOKING FULL DETAILS ================= -->
+  <div class="modal-overlay" id="bookingDetailModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fas fa-ticket"></i> Booking Ticket &amp; Itinerary</div>
+        <button class="modal-close" onclick="closeModal('bookingDetailModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="bookingDetailModalContent">
+        <!-- Injected via JS -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal('bookingDetailModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL: ADD USER / ADMIN ================= -->
+  <div class="modal-overlay" id="addUserModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fas fa-user-plus"></i> Create New Account</div>
+        <button class="modal-close" onclick="closeModal('addUserModal')">&times;</button>
+      </div>
+      <form id="addUserForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="newUserName">Full Name</label>
+            <input type="text" id="newUserName" class="form-input" placeholder="e.g. John Doe" required>
+          </div>
+          <div class="form-group">
+            <label for="newUserEmail">Email Address</label>
+            <input type="email" id="newUserEmail" class="form-input" placeholder="e.g. john@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="newUserPassword">Password (minimum 6 characters)</label>
+            <input type="password" id="newUserPassword" class="form-input" placeholder="Enter password" minlength="6" required>
+          </div>
+          <div class="form-group">
+            <label for="newUserRole">Role</label>
+            <select id="newUserRole" class="form-select">
+              <option value="user">Traveler / Normal User</option>
+              <option value="admin">System Administrator (Admin)</option>
+            </select>
+          </div>
+          <p id="addUserMsg" style="font-size: 13px; margin-top: 10px;"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" onclick="closeModal('addUserModal')">Cancel</button>
+          <button type="submit" class="btn-submit">Create Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ================= MODAL: RESET PASSWORD ================= -->
+  <div class="modal-overlay" id="resetPasswordModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fas fa-key"></i> Reset User Password</div>
+        <button class="modal-close" onclick="closeModal('resetPasswordModal')">&times;</button>
+      </div>
+      <form id="resetPasswordForm">
+        <input type="hidden" id="resetUserId">
+        <div class="modal-body">
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+            Set a new password for: <strong id="resetUserEmailDisplay" style="color: #fff;"></strong>
+          </p>
+          <div class="form-group">
+            <label for="resetNewPassword">New Password</label>
+            <input type="text" id="resetNewPassword" class="form-input" placeholder="Enter new password" minlength="6" required>
+          </div>
+          <p id="resetPasswordMsg" style="font-size: 13px; margin-top: 10px;"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" onclick="closeModal('resetPasswordModal')">Cancel</button>
+          <button type="submit" class="btn-submit">Update Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    // State
+    let cachedStats = null;
+    let cachedUsers = [];
+    let cachedBookings = [];
+    let currentBookingFilter = 'all';
+
+    // ── AUTH CHECK ──
+    function checkAdminAuth() {
+      const token = localStorage.getItem('alaskaToken');
+      const role = localStorage.getItem('alaskaUserRole');
+
+      if (!token) {
+        alert("Please login as Administrator to access the Admin Panel.");
+        location.href = "logintravel.html";
+        return false;
+      }
+      if (role !== "admin") {
+        alert("Access Denied: Your account does not have Administrator privileges. Redirecting to Travel Home.");
+        location.href = "index.html";
+        return false;
+      }
+
+      // Populate Admin Profile Info
+      const name = localStorage.getItem('alaskaUserName') || 'Alaska Admin';
+      document.getElementById('adminName').textContent = name;
+      const initials = name.trim().split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase() || 'AD';
+      document.getElementById('adminAvatar').textContent = initials;
+      return true;
+    }
+
+    // ── LIVE CLOCK ──
+    function updateLiveClock() {
+      const now = new Date();
+      document.getElementById('liveClock').innerHTML = `
+        <i class="fa-regular fa-clock"></i>
+        <span>${now.toLocaleTimeString('en-IN', { hour12: true })} • ${now.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>`;
+    }
+    setInterval(updateLiveClock, 1000);
+    updateLiveClock();
+
+    // ── TAB SWITCHING ──
+    function switchTab(tabId) {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+      document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.toggle('active', pane.id === `tab-${tabId}`);
+      });
+
+      const titles = {
+        overview: { title: "Dashboard Overview", sub: "Real-time statistics, active users, downloads, and customer bookings" },
+        users: { title: "User & Credentials Management", sub: "Manage registered users, app engagement status, credentials and roles" },
+        bookings: { title: "All Bookings Management", sub: "Monitor, inspect, update status, and manage all flights, trains, and buses" },
+        downloads: { title: "App Downloads & Growth", sub: "Installation analytics, Android/iOS platform distribution, and download logs" },
+        payments: { title: "Payments & Financial Logs", sub: "UPI transactions, bank transfers, and billing history" }
+      };
+
+      if (titles[tabId]) {
+        document.getElementById('pageHeading').textContent = titles[tabId].title;
+        document.getElementById('pageSubheading').textContent = titles[tabId].sub;
+      }
+    }
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    // ── LOAD ALL DATA ──
+    async function loadDashboardData() {
+      try {
+        const [stats, usersData, bookingsData, paymentsData] = await Promise.all([
+          API.getAdminStats(),
+          API.getAdminUsers(),
+          API.getAdminBookings(),
+          API.getAdminPayments()
+        ]);
+
+        cachedStats = stats;
+        cachedUsers = usersData.users || [];
+        cachedBookings = bookingsData.bookings || [];
+
+        renderOverview(stats);
+        renderUsers(cachedUsers);
+        renderBookings(cachedBookings);
+        renderAppStats(stats.appStats);
+        renderPayments(paymentsData);
+
+        // Update badges
+        document.getElementById('badgeUsersCount').textContent = cachedUsers.length;
+        document.getElementById('badgeBookingsCount').textContent = cachedBookings.length;
+        document.getElementById('badgeDownloadsCount').textContent = stats.appStats ? (stats.appStats.totalDownloads || 1482) : 1482;
+
+      } catch (err) {
+        console.error("Failed to load admin data:", err);
+        if (err.message && err.message.toLowerCase().includes("privilege")) {
+          alert("Admin privileges required. Please login with an admin account.");
+          location.href = "logintravel.html";
+        }
+      }
+    }
+
+    // ── RENDER TAB 1: OVERVIEW ──
+    function renderOverview(stats) {
+      document.getElementById('kpiRevenue').textContent = `₹${Number(stats.totalRevenue || 0).toLocaleString('en-IN')}`;
+      document.getElementById('kpiTotalBookings').textContent = stats.totalBookings || 0;
+      document.getElementById('kpiConfirmedBookings').textContent = `${stats.confirmedBookings || 0} Confirmed`;
+      document.getElementById('kpiCancelledBookings').textContent = `${stats.cancelledBookings || 0} Cancelled`;
+      document.getElementById('kpiTotalUsers').textContent = stats.totalUsers || 0;
+      document.getElementById('kpiActiveUsersCount').textContent = `${stats.totalUsers || 0} active travelers`;
+
+      const appStats = stats.appStats || {};
+      const totalDl = appStats.totalDownloads || 1482;
+      document.getElementById('kpiAppDownloads').textContent = Number(totalDl).toLocaleString('en-IN');
+
+      // Platform split
+      const android = appStats.androidDownloads || 924;
+      const ios = appStats.iosDownloads || 428;
+      const pwa = appStats.pwaDownloads || 130;
+      document.getElementById('androidDownloadsCount').textContent = android.toLocaleString('en-IN');
+      document.getElementById('iosDownloadsCount').textContent = ios.toLocaleString('en-IN');
+      document.getElementById('pwaDownloadsCount').textContent = pwa.toLocaleString('en-IN');
+
+      const sum = android + ios + pwa || 1;
+      document.getElementById('androidShare').textContent = `${((android/sum)*100).toFixed(1)}% of users`;
+      document.getElementById('iosShare').textContent = `${((ios/sum)*100).toFixed(1)}% of users`;
+      document.getElementById('pwaShare').textContent = `${((pwa/sum)*100).toFixed(1)}% of users`;
+      document.getElementById('dauCount').textContent = `${appStats.dailyActiveUsers || 346} users`;
+
+      // Render Bar Chart
+      const chartEl = document.getElementById('overviewBarChart');
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Today'];
+      const heights = [45, 60, 55, 80, 70, 95, 88]; // sample trend heights
+      chartEl.innerHTML = days.map((day, idx) => `
+        <div class="chart-bar-group">
+          <div class="chart-bar-wrapper">
+            <div class="chart-bar" style="height: ${heights[idx]}%;" data-tooltip="${heights[idx]} bookings"></div>
+          </div>
+          <span class="chart-label">${day}</span>
+        </div>
+      `).join('');
+
+      // Recent Bookings in Overview
+      const recentTbody = document.getElementById('overviewRecentBookingsTable');
+      const recents = (stats.recentBookings || []).slice(0, 6);
+      if (recents.length === 0) {
+        recentTbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-dim);">No bookings made yet.</td></tr>`;
+        return;
+      }
+      recentTbody.innerHTML = recents.map(b => {
+        const id = b.id || 'BK-';
+        const name = b.passengerName || b.userName || 'Traveler';
+        const route = `${b.from || '—'} → ${b.to || '—'}`;
+        const date = b.travelDate || b.date || '—';
+        const amount = Number(b.totalPrice || b.price || 0);
+        const method = b.paymentMethod || 'UPI';
+        const statusClass = b.status === 'confirmed' ? 'badge-confirmed' : (b.status === 'cancelled' ? 'badge-cancelled' : 'badge-pending');
+        const icon = (b.type === 'train' || b.trainName) ? '🚆' : ((b.type === 'bus' || b.busType) ? '🚌' : '✈️');
+
+        return `
+          <tr>
+            <td style="font-family: monospace; font-weight: 700; color: var(--primary);">${id}</td>
+            <td><strong>${name}</strong></td>
+            <td>${icon} ${route}</td>
+            <td>${date}</td>
+            <td style="color: var(--primary); font-weight: 800;">₹${amount.toLocaleString('en-IN')}</td>
+            <td><span class="pwd-pill">${method}</span></td>
+            <td><span class="badge ${statusClass}">${b.status || 'confirmed'}</span></td>
+            <td>
+              <button class="btn-action" onclick="openBookingDetail('${id}')">
+                <i class="fas fa-eye"></i> Details
+              </button>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    // ── RENDER TAB 2: USERS ──
+    function renderUsers(users) {
+      const tbody = document.getElementById('usersTableBody');
+      if (!users || users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-dim);">No registered users found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = users.map(u => {
+        const initials = (u.name || 'User').trim().split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+        const roleBadge = u.role === 'admin' ? 'badge-admin' : 'badge-user';
+        const dateStr = u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+        const pwdDisplay = u.passwordHint || '••••••••';
+
+        return `
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #00f2fe, #006d77); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: #03151f;">
+                  ${initials}
+                </div>
+                <div>
+                  <div style="font-weight: 700; color: #fff;">${u.name || 'Anonymous'}</div>
+                  <div style="font-size: 12px; color: var(--text-muted);">${u.email}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge ${roleBadge}">${u.role === 'admin' ? '🛡️ ADMIN' : '👤 TRAVELER'}</span></td>
+            <td>
+              <span style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: ${u.appUsed ? 'var(--accent-green)' : 'var(--text-dim)'}; font-weight: 600;">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: ${u.appUsed ? 'var(--accent-green)' : 'var(--text-dim)'};"></span>
+                ${u.appUsed ? 'Active App User' : 'Web Registered'}
+              </span>
+            </td>
+            <td style="font-weight: 700; color: var(--primary); text-align: center;">${u.bookingsCount || 0}</td>
+            <td>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span class="pwd-pill" id="pwd-box-${u.id}">••••••••</span>
+                <button class="btn-action" style="padding: 4px 8px;" onclick="togglePasswordVisibility('${u.id}', '${pwdDisplay.replace(/'/g, "\\'")}')" title="Show / Hide Password">
+                  <i class="fas fa-eye" id="pwd-icon-${u.id}"></i>
+                </button>
+              </div>
+            </td>
+            <td>${dateStr}</td>
+            <td>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn-action" onclick="openResetPasswordModal('${u.id}', '${u.email}')" title="Change / Reset Password">
+                  <i class="fas fa-key"></i> Reset
+                </button>
+                ${u.email !== 'admin@alaska.com' ? `
+                <button class="btn-action delete" onclick="deleteUser('${u.id}', '${u.name}')" title="Delete User">
+                  <i class="fas fa-trash"></i>
+                </button>` : ''}
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    function togglePasswordVisibility(id, realValue) {
+      const box = document.getElementById(`pwd-box-${id}`);
+      const icon = document.getElementById(`pwd-icon-${id}`);
+      if (box.textContent === '••••••••') {
+        box.textContent = realValue;
+        box.style.color = 'var(--primary)';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        box.textContent = '••••••••';
+        box.style.color = 'inherit';
+        icon.className = 'fas fa-eye';
+      }
+    }
+
+    // ── RENDER TAB 3: BOOKINGS ──
+    function renderBookings(bookings) {
+      // Update filter pill counts
+      const confirmed = bookings.filter(b => b.status === 'confirmed').length;
+      const cancelled = bookings.filter(b => b.status === 'cancelled').length;
+      document.getElementById('pillAllCount').textContent = bookings.length;
+      document.getElementById('pillConfirmedCount').textContent = confirmed;
+      document.getElementById('pillCancelledCount').textContent = cancelled;
+
+      // Filter
+      let filtered = [...bookings];
+      if (currentBookingFilter === 'confirmed') filtered = filtered.filter(b => b.status === 'confirmed');
+      else if (currentBookingFilter === 'cancelled') filtered = filtered.filter(b => b.status === 'cancelled');
+      else if (currentBookingFilter === 'flight') filtered = filtered.filter(b => !b.type || b.type === 'flight');
+      else if (currentBookingFilter === 'train') filtered = filtered.filter(b => b.type === 'train' || b.trainName);
+      else if (currentBookingFilter === 'bus') filtered = filtered.filter(b => b.type === 'bus' || b.busType);
+
+      // Search
+      const searchVal = (document.getElementById('searchBookingInput').value || '').trim().toLowerCase();
+      if (searchVal) {
+        filtered = filtered.filter(b =>
+          (b.id || '').toLowerCase().includes(searchVal) ||
+          (b.passengerName || b.userName || '').toLowerCase().includes(searchVal) ||
+          (b.from || '').toLowerCase().includes(searchVal) ||
+          (b.to || '').toLowerCase().includes(searchVal) ||
+          (b.phone || '').toLowerCase().includes(searchVal)
+        );
+      }
+
+      const tbody = document.getElementById('bookingsTableBody');
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; color: var(--text-dim);">No bookings matching this filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(b => {
+        const id = b.id || 'BK-';
+        const name = b.passengerName || b.userName || 'Traveler';
+        const email = b.email || b.userEmail || '—';
+        const route = `${b.from || '—'} → ${b.to || '—'}`;
+        const date = b.travelDate || b.date || '—';
+        const amount = Number(b.totalPrice || b.price || 0);
+        const method = b.paymentMethod || 'UPI';
+        const statusClass = b.status === 'confirmed' ? 'badge-confirmed' : (b.status === 'cancelled' ? 'badge-cancelled' : 'badge-pending');
+        
+        let typeBadge = '✈️ Flight';
+        if (b.type === 'train' || b.trainName) typeBadge = `🚆 ${b.trainNumber || ''} Train`;
+        else if (b.type === 'bus' || b.busType) typeBadge = `🚌 ${b.operator || 'Bus'}`;
+
+        return `
+          <tr>
+            <td style="font-family: monospace; font-weight: 700; color: var(--primary);">${id}</td>
+            <td>
+              <div style="font-weight: 700; color: #fff;">${name}</div>
+              <div style="font-size: 11px; color: var(--text-muted);">${email}</div>
+            </td>
+            <td>
+              <span class="pwd-pill">${typeBadge}</span>
+              <div style="font-size: 11px; color: var(--text-dim); margin-top: 3px;">${b.flightClass || b.class || 'Economy'}</div>
+            </td>
+            <td><strong>${route}</strong></td>
+            <td>${date}</td>
+            <td style="color: var(--primary); font-weight: 800; font-size: 14px;">₹${amount.toLocaleString('en-IN')}</td>
+            <td><span class="pwd-pill">${method}</span></td>
+            <td>
+              <select class="form-select" style="padding: 4px 8px; font-size: 11px; width: auto; font-weight: 700;" onchange="updateBookingStatus('${id}', this.value)">
+                <option value="confirmed" ${b.status === 'confirmed' ? 'selected' : ''}>✅ Confirmed</option>
+                <option value="pending" ${b.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+                <option value="cancelled" ${b.status === 'cancelled' ? 'selected' : ''}>❌ Cancelled</option>
+                <option value="completed" ${b.status === 'completed' ? 'selected' : ''}>🏆 Completed</option>
+              </select>
+            </td>
+            <td>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn-action" onclick="openBookingDetail('${id}')" title="Inspect Ticket Details">
+                  <i class="fas fa-eye"></i> Details
+                </button>
+                <button class="btn-action delete" onclick="deleteBooking('${id}')" title="Delete Booking">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    // Filter pills event listeners
+    document.querySelectorAll('.filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        currentBookingFilter = pill.dataset.filter;
+        renderBookings(cachedBookings);
+      });
+    });
+
+    document.getElementById('searchBookingInput').addEventListener('input', () => {
+      renderBookings(cachedBookings);
+    });
+
+    document.getElementById('searchUserInput').addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const filtered = cachedUsers.filter(u =>
+        (u.name || '').toLowerCase().includes(q) ||
+        (u.email || '').toLowerCase().includes(q) ||
+        (u.role || '').toLowerCase().includes(q)
+      );
+      renderUsers(filtered);
+    });
+
+    // ── RENDER TAB 4: APP STATS & HISTORY ──
+    function renderAppStats(appStats) {
+      if (!appStats) return;
+      const total = appStats.totalDownloads || 1482;
+      document.getElementById('tabAppDownloadsTotal').textContent = total.toLocaleString('en-IN');
+      document.getElementById('tabAndroidTotal').textContent = (appStats.androidDownloads || 924).toLocaleString('en-IN');
+      document.getElementById('tabIosTotal').textContent = (appStats.iosDownloads || 428).toLocaleString('en-IN');
+      document.getElementById('tabPwaTotal').textContent = (appStats.pwaDownloads || 130).toLocaleString('en-IN');
+
+      const tbody = document.getElementById('appHistoryTableBody');
+      const history = appStats.history || [
+        { date: "2026-09-05", downloads: 112 },
+        { date: "2026-09-04", downloads: 95 },
+        { date: "2026-09-03", downloads: 89 },
+        { date: "2026-09-02", downloads: 74 },
+        { date: "2026-09-01", downloads: 68 }
+      ];
+
+      tbody.innerHTML = history.map(h => `
+        <tr>
+          <td><strong>${h.date}</strong></td>
+          <td style="color: var(--primary); font-weight: 800;">+${h.downloads} installs</td>
+          <td><span class="badge badge-confirmed">Google Play &amp; Web</span></td>
+          <td>v2.4.0 (Latest Release)</td>
+          <td><span style="color: var(--accent-green); font-weight: 700;">● Synchronized</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // ── RENDER TAB 5: PAYMENTS ──
+    function renderPayments(data) {
+      const pTbody = document.getElementById('paymentsTableBody');
+      const payments = data.payments || [];
+      if (payments.length === 0) {
+        pTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-dim);">No UPI payments recorded.</td></tr>`;
+      } else {
+        pTbody.innerHTML = [...payments].reverse().map(p => `
+          <tr>
+            <td style="font-family: monospace; font-weight: 700; color: var(--primary);">${p.id}</td>
+            <td style="font-family: monospace;">${p.bookingId || '—'}</td>
+            <td><span class="pwd-pill">${p.method || 'UPI'}</span></td>
+            <td><strong>${p.upiId || 'alaska@okaxis'}</strong></td>
+            <td style="color: var(--accent-green); font-weight: 800;">₹${Number(p.amount || 0).toLocaleString('en-IN')}</td>
+            <td><span class="badge badge-confirmed">${p.status || 'success'}</span></td>
+            <td>${p.createdAt ? new Date(p.createdAt).toLocaleString('en-IN') : '—'}</td>
+          </tr>
+        `).join('');
+      }
+
+      const tTbody = document.getElementById('transfersTableBody');
+      const transfers = data.transfers || [];
+      if (transfers.length === 0) {
+        tTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-dim);">No bank transfers recorded.</td></tr>`;
+      } else {
+        tTbody.innerHTML = [...transfers].reverse().map(t => `
+          <tr>
+            <td style="font-family: monospace; font-weight: 700; color: var(--primary);">${t.id}</td>
+            <td><strong>${t.name}</strong></td>
+            <td style="font-family: monospace;">••••••••${String(t.account).slice(-4)}</td>
+            <td><span class="pwd-pill">${t.ifsc}</span></td>
+            <td style="color: var(--accent-green); font-weight: 800;">₹${Number(t.amount || 0).toLocaleString('en-IN')}</td>
+            <td>${t.purpose || 'Booking Payment'}</td>
+            <td>${t.date} ${t.time || ''}</td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    // ── BOOKING DETAIL MODAL ──
+    function openBookingDetail(id) {
+      const b = cachedBookings.find(x => x.id === id);
+      if (!b) return;
+
+      const modal = document.getElementById('bookingDetailModal');
+      const content = document.getElementById('bookingDetailModalContent');
+
+      content.innerHTML = `
+        <div class="ticket-view">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <div>
+              <span style="font-size: 11px; color: var(--text-muted); text-transform: uppercase;">BOOKING REFERENCE</span>
+              <h3 style="color: var(--primary); font-family: monospace;">${b.id}</h3>
+            </div>
+            <span class="badge ${b.status === 'confirmed' ? 'badge-confirmed' : 'badge-cancelled'}">${b.status}</span>
+          </div>
+
+          <div class="ticket-row">
+            <span class="ticket-key">Passenger Name</span>
+            <span class="ticket-val">${b.passengerName || b.userName || 'N/A'}</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-key">Contact Email</span>
+            <span class="ticket-val">${b.email || b.userEmail || 'N/A'}</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-key">Phone Number</span>
+            <span class="ticket-val">${b.phone || 'N/A'}</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-key">Journey Route</span>
+            <span class="ticket-val" style="color: var(--primary);">${b.from || 'Origin'} → ${b.to || 'Destination'}</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-key">Travel Date</span>
+            <span class="ticket-val">${b.travelDate || b.date || 'N/A'}</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-key">Service / Carrier</span>
+            <span class="ticket-val">${b.airline || b.operator || b.trainName || 'Alaska Tour & Travel'}</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-key">Class / Seat</span>
+            <span class="ticket-val">${b.flightClass || b.class || b.trainClass || 'Standard'}</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-key">Travelers</span>
+            <span class="ticket-val">${b.travelers || 1} Person(s)</span>
+          </div>
+          <div class="ticket-row">
+            <span class="ticket-key">Payment Method</span>
+            <span class="ticket-val">${b.paymentMethod || 'UPI'} ${b.upiId ? `(${b.upiId})` : ''}</span>
+          </div>
+          <div class="ticket-row" style="border-top: 1px dashed var(--border-color); padding-top: 12px; margin-top: 6px;">
+            <span class="ticket-key" style="font-size: 15px; color: #fff;">Grand Total</span>
+            <span class="ticket-val" style="font-size: 18px; color: var(--accent-green);">₹${Number(b.totalPrice || b.price || 0).toLocaleString('en-IN')}</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; justify-content: flex-end;">
+          <button class="btn-action" onclick="printTicketReceipt('${b.id}')"><i class="fas fa-print"></i> Print Ticket</button>
+        </div>
+      `;
+
+      modal.classList.add('open');
+    }
+
+    function printTicketReceipt(id) {
+      window.print();
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('open');
+    }
+
+    // ── UPDATE STATUS ──
+    async function updateBookingStatus(id, newStatus) {
+      try {
+        await API.updateAdminBookingStatus(id, newStatus);
+        const b = cachedBookings.find(x => x.id === id);
+        if (b) b.status = newStatus;
+        renderBookings(cachedBookings);
+      } catch (err) {
+        alert("Failed to update booking status: " + err.message);
+      }
+    }
+
+    // ── DELETE BOOKING ──
+    async function deleteBooking(id) {
+      if (!confirm(`Are you sure you want to delete booking ${id}?`)) return;
+      try {
+        await API.deleteAdminBooking(id);
+        cachedBookings = cachedBookings.filter(x => x.id !== id);
+        renderBookings(cachedBookings);
+        loadDashboardData();
+      } catch (err) {
+        alert("Failed to delete booking: " + err.message);
+      }
+    }
+
+    // ── DELETE USER ──
+    async function deleteUser(id, name) {
+      if (!confirm(`Are you sure you want to delete user "${name}"?`)) return;
+      try {
+        await API.deleteAdminUser(id);
+        cachedUsers = cachedUsers.filter(x => x.id !== id);
+        renderUsers(cachedUsers);
+        loadDashboardData();
+      } catch (err) {
+        alert("Failed to delete user: " + err.message);
+      }
+    }
+
+    // ── SIMULATE APP DOWNLOAD ──
+    async function simulateNewDownload(platform = 'android') {
+      try {
+        const res = await API.recordAppDownload(platform);
+        renderAppStats(res.appStats);
+        document.getElementById('badgeDownloadsCount').textContent = res.appStats.totalDownloads;
+        document.getElementById('kpiAppDownloads').textContent = res.appStats.totalDownloads.toLocaleString('en-IN');
+        alert(`✅ App download recorded for ${platform.toUpperCase()}! Total downloads: ${res.appStats.totalDownloads}`);
+      } catch (err) {
+        alert("Failed to record download: " + err.message);
+      }
+    }
+    document.getElementById('btnSimulateDownload').addEventListener('click', () => simulateNewDownload('android'));
+
+    // ── ADD USER MODAL ──
+    document.getElementById('btnOpenAddUserModal').addEventListener('click', () => {
+      document.getElementById('addUserForm').reset();
+      document.getElementById('addUserMsg').textContent = '';
+      document.getElementById('addUserModal').classList.add('open');
+    });
+
+    document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('addUserMsg');
+      msg.textContent = 'Creating account…';
+      msg.style.color = 'var(--text-muted)';
+
+      try {
+        await API.createAdminUser({
+          name: document.getElementById('newUserName').value.trim(),
+          email: document.getElementById('newUserEmail').value.trim(),
+          password: document.getElementById('newUserPassword').value,
+          role: document.getElementById('newUserRole').value
+        });
+        msg.textContent = 'Account created successfully!';
+        msg.style.color = 'var(--accent-green)';
+        setTimeout(() => {
+          closeModal('addUserModal');
+          loadDashboardData();
+        }, 600);
+      } catch (err) {
+        msg.textContent = err.message || 'Error creating user';
+        msg.style.color = 'var(--accent-red)';
+      }
+    });
+
+    // ── RESET PASSWORD MODAL ──
+    function openResetPasswordModal(userId, userEmail) {
+      document.getElementById('resetUserId').value = userId;
+      document.getElementById('resetUserEmailDisplay').textContent = userEmail;
+      document.getElementById('resetNewPassword').value = '';
+      document.getElementById('resetPasswordMsg').textContent = '';
+      document.getElementById('resetPasswordModal').classList.add('open');
+    }
+
+    document.getElementById('resetPasswordForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const userId = document.getElementById('resetUserId').value;
+      const newPassword = document.getElementById('resetNewPassword').value;
+      const msg = document.getElementById('resetPasswordMsg');
+
+      try {
+        await API.updateAdminUser(userId, { password: newPassword });
+        msg.textContent = 'Password updated successfully!';
+        msg.style.color = 'var(--accent-green)';
+        setTimeout(() => {
+          closeModal('resetPasswordModal');
+          loadDashboardData();
+        }, 600);
+      } catch (err) {
+        msg.textContent = err.message || 'Failed to update password';
+        msg.style.color = 'var(--accent-red)';
+      }
+    });
+
+    // ── LOGOUT ──
+    document.getElementById('sidebarLogoutBtn').addEventListener('click', () => {
+      ['alaskaToken', 'alaskaUserName', 'alaskaUserEmail', 'alaskaUserId', 'alaskaUserRole'].forEach(k => localStorage.removeItem(k));
+      location.href = 'logintravel.html';
+    });
+
+    document.getElementById('btnRefreshData').addEventListener('click', () => {
+      loadDashboardData();
+    });
+
+    // ── INITIALIZE ──
+    if (checkAdminAuth()) {
+      loadDashboardData();
+    }
+  </script>
+
+</body>
+</html>

@@ -348,8 +348,46 @@
 
 
 
-    <!-- PASSENGER DETAILS -->
+    <!-- TRIP SUMMARY CARD -->
+    <section class="card" id="tripSummaryCard" style="background: white; border: 1px solid #e2e8f0; border-radius: 18px; padding: 24px; margin-bottom: 25px; box-shadow: 0 8px 25px rgba(0,0,0,.06);">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px; margin-bottom: 18px; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span id="tripTypeBadge" style="background: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
+            <i class="fa-solid fa-plane" id="tripTypeIcon"></i> <span id="tripTypeName">Flight Booking</span>
+          </span>
+          <strong id="flight" style="font-size: 16px; color: #041a32;">AS101 Alaska Airlines</strong>
+        </div>
+        <div style="font-size: 13px; color: #64748b; font-weight: 600;">
+          Class / Berth: <strong id="class" style="color: #0f172a;">Economy</strong>
+        </div>
+      </div>
 
+      <div style="display: grid; grid-template-columns: 1.5fr 1fr 1.5fr; align-items: center; text-align: center; margin-bottom: 18px;">
+        <div style="text-align: left;">
+          <div style="font-size: 22px; font-weight: 900; color: #041a32;" id="departure">01:15</div>
+          <div style="font-size: 14.5px; font-weight: 700; color: #334155;"><span id="from">Mumbai</span> (<span id="fromCode">BOM</span>)</div>
+          <small id="date" style="color: #64748b; font-size: 12px;">15-Sep-2026</small>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+          <i class="fa-solid fa-arrow-right" style="color: #0879d1; font-size: 18px;"></i>
+          <span style="font-size: 11.5px; font-weight: 700; color: #0879d1;" id="tripStatusTag">Confirmed Journey</span>
+        </div>
+
+        <div style="text-align: right;">
+          <div style="font-size: 22px; font-weight: 900; color: #041a32;" id="arrival">10:35</div>
+          <div style="font-size: 14.5px; font-weight: 700; color: #334155;"><span id="to">Anchorage</span> (<span id="toCode">ANC</span>)</div>
+          <small style="color: #64748b; font-size: 12px;">1 Passenger</small>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid #f1f5f9; padding-top: 14px; display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 13px; color: #64748b; font-weight: 600;">Total Payable Fare:</span>
+        <span id="price" style="font-size: 24px; font-weight: 900; color: #0879d1;">₹68,999</span>
+      </div>
+    </section>
+
+    <!-- PASSENGER DETAILS -->
     <section class="card">
 
         <div class="title">
@@ -503,19 +541,11 @@
 
 
     <!-- BUTTONS -->
-
     <div class="buttons">
-
-        <a
-            href="seacht.html"
-            class="btn back">
-
+        <a href="seacht.html" class="btn back" id="btnBack">
             <i class="fa-solid fa-arrow-left"></i>
-
-            Back to Flights
-
+            <span id="btnBackText">Back to Flights</span>
         </a>
-
 
         <button
             type="button"
@@ -525,96 +555,127 @@
             <span>Continue to Payment</span>
             <i class="fa-solid fa-arrow-right"></i>
         </button>
-
     </div>
-
 
 </div>
 
-
 <script>
-
-    /* GET FLIGHT DETAILS FROM URL OR PENDING BOOKING */
-
+    /* GET FLIGHT/TRAIN/BUS DETAILS FROM URL OR PENDING BOOKING */
     const params = new URLSearchParams(window.location.search);
     const savedBooking = JSON.parse(localStorage.getItem("pendingBooking") || "{}");
+    const bookingType = params.get("type") || savedBooking.type || "flight";
+
+    // Configure Type Badges & Back Button
+    const btnBack = document.getElementById("btnBack");
+    const btnBackText = document.getElementById("btnBackText");
+    const badge = document.getElementById("tripTypeBadge");
+    const icon = document.getElementById("tripTypeIcon");
+    const typeName = document.getElementById("tripTypeName");
+    const statusTag = document.getElementById("tripStatusTag");
+
+    if (bookingType === "train") {
+      btnBack.href = "train.html";
+      btnBackText.textContent = "Back to Trains";
+      badge.style.background = "#fef3c7";
+      badge.style.color = "#b45309";
+      icon.className = "fa-solid fa-train";
+      typeName.textContent = "Indian Railways Ticket";
+      statusTag.textContent = "IRCTC Reserved (CNF)";
+    } else if (bookingType === "bus") {
+      btnBack.href = "bus.html";
+      btnBackText.textContent = "Back to Buses";
+      badge.style.background = "#fee2e2";
+      badge.style.color = "#b91c1c";
+      icon.className = "fa-solid fa-bus";
+      typeName.textContent = "Intercity Bus Ticket";
+      statusTag.textContent = "Confirmed Berth/Seat";
+    } else {
+      btnBack.href = "seacht.html";
+      btnBackText.textContent = "Back to Flights";
+      badge.style.background = "#e0f2fe";
+      badge.style.color = "#0369a1";
+      icon.className = "fa-solid fa-plane";
+      typeName.textContent = "Flight Booking";
+      statusTag.textContent = "Confirmed Journey";
+    }
 
     document.getElementById("from").textContent =
         params.get("from") || savedBooking.from || "Mumbai";
 
     document.getElementById("fromCode").textContent =
-        params.get("fromCode") || savedBooking.fromCode || "BOM";
-
+        params.get("fromCode") || savedBooking.fromCode || (bookingType === "train" ? "MMCT" : "BOM");
 
     document.getElementById("to").textContent =
-        params.get("to") || savedBooking.to || "Anchorage";
+        params.get("to") || savedBooking.to || (bookingType === "train" ? "New Delhi" : "Anchorage");
 
     document.getElementById("toCode").textContent =
-        params.get("toCode") || savedBooking.toCode || "ANC";
-
+        params.get("toCode") || savedBooking.toCode || (bookingType === "train" ? "NDLS" : "ANC");
 
     document.getElementById("date").textContent =
         params.get("date") || savedBooking.travelDate || "15-Sep-2026";
 
-
     document.getElementById("departure").textContent =
-        params.get("departure") || savedBooking.departure || "01:15";
-
+        params.get("departure") || savedBooking.departure || "06:00";
 
     document.getElementById("arrival").textContent =
-        params.get("arrival") || savedBooking.arrival || "10:35";
-
+        params.get("arrival") || savedBooking.arrival || "14:00";
 
     document.getElementById("flight").textContent =
-        params.get("flight") || savedBooking.flight || "AS101";
-
+        params.get("flight") || savedBooking.flight || (bookingType === "train" ? "12951 Tejas Rajdhani" : "AS101 Alaska Airlines");
 
     document.getElementById("class").textContent =
         params.get("class") || savedBooking.flightClass || "Economy";
 
-
     const price =
-        Number(params.get("price")) || Number(savedBooking.totalPrice) || Number(savedBooking.price) || 68999;
-
+        Number(params.get("price")) || Number(savedBooking.totalPrice) || Number(savedBooking.price) || (bookingType === "train" ? 2280 : 68999);
 
     document.getElementById("price").textContent =
         "₹" + price.toLocaleString("en-IN");
 
-
     /* Pre-fill user details if logged in */
-    const storedName  = localStorage.getItem("alaskaUserName");
-    const storedEmail = localStorage.getItem("alaskaUserEmail");
-    const nameInput   = document.querySelector('input[placeholder="Enter full name"]');
-    const emailInput  = document.querySelector('input[placeholder="Enter email address"]');
-    if (storedName && nameInput && !nameInput.value) nameInput.value = storedName;
-    if (storedEmail && emailInput && !emailInput.value) emailInput.value = storedEmail;
+    const storedName  = localStorage.getItem("alaskaUserName") || "";
+    const storedEmail = localStorage.getItem("alaskaUserEmail") || "";
+    const storedPhone = localStorage.getItem("alaskaUserPhone") || "";
+    const firstNameInput = document.querySelector('input[placeholder="Enter first name"]');
+    const lastNameInput  = document.querySelector('input[placeholder="Enter last name"]');
+    const emailInput     = document.querySelector('input[placeholder="Enter email address"]');
+    const phoneInput     = document.querySelector('input[placeholder="Enter mobile number"]');
 
+    if (storedName) {
+      const parts = storedName.split(" ");
+      if (firstNameInput && !firstNameInput.value) firstNameInput.value = parts[0] || "";
+      if (lastNameInput && !lastNameInput.value) lastNameInput.value = parts.slice(1).join(" ") || "";
+    }
+    if (storedEmail && emailInput && !emailInput.value) emailInput.value = storedEmail;
+    if (storedPhone && phoneInput && !phoneInput.value) phoneInput.value = storedPhone;
 
     /* PAYMENT */
-
     async function goPayment() {
       const q = Object.fromEntries(new URLSearchParams(location.search));
 
-      const fullName = document.querySelector('input[placeholder="Enter full name"]')?.value?.trim() || localStorage.getItem("alaskaUserName") || "Traveler";
+      const fName = document.querySelector('input[placeholder="Enter first name"]')?.value?.trim() || "";
+      const lName = document.querySelector('input[placeholder="Enter last name"]')?.value?.trim() || "";
+      const fullName = (fName + " " + lName).trim() || localStorage.getItem("alaskaUserName") || "Traveler";
       const email    = document.querySelector('input[placeholder="Enter email address"]')?.value?.trim() || localStorage.getItem("alaskaUserEmail") || "";
-      const phone    = document.querySelector('input[placeholder="Enter mobile number"]')?.value?.trim() || "";
+      const phone    = document.querySelector('input[placeholder="Enter mobile number"]')?.value?.trim() || localStorage.getItem("alaskaUserPhone") || "";
 
       const saved = JSON.parse(localStorage.getItem("pendingBooking") || "{}");
-      const currentPrice = Number(q.price) || saved.totalPrice || saved.price || 68999;
+      const currentPrice = Number(q.price) || saved.totalPrice || saved.price || price;
 
       const bookingData = {
         ...saved,
         ...q,
-        from: q.from || saved.from || "Mumbai",
-        fromCode: q.fromCode || saved.fromCode || "BOM",
-        to: q.to || saved.to || "Anchorage",
-        toCode: q.toCode || saved.toCode || "ANC",
-        travelDate: q.date || saved.travelDate || "15-Sep-2026",
-        departure: q.departure || saved.departure || "01:15",
-        arrival: q.arrival || saved.arrival || "10:35",
-        flight: q.flight || saved.flight || "AS101",
-        airline: q.airline || saved.airline || "Alaska Airlines",
-        flightClass: q.class || saved.flightClass || "Economy",
+        type: q.type || saved.type || bookingType,
+        from: q.from || saved.from || document.getElementById("from").textContent,
+        fromCode: q.fromCode || saved.fromCode || document.getElementById("fromCode").textContent,
+        to: q.to || saved.to || document.getElementById("to").textContent,
+        toCode: q.toCode || saved.toCode || document.getElementById("toCode").textContent,
+        travelDate: q.date || saved.travelDate || document.getElementById("date").textContent,
+        departure: q.departure || saved.departure || document.getElementById("departure").textContent,
+        arrival: q.arrival || saved.arrival || document.getElementById("arrival").textContent,
+        flight: q.flight || saved.flight || document.getElementById("flight").textContent,
+        airline: q.airline || saved.airline || (bookingType === "train" ? "Indian Railways" : (bookingType === "bus" ? "Intercity Bus" : "Alaska Airlines")),
+        flightClass: q.class || saved.flightClass || document.getElementById("class").textContent,
         passengerName: fullName,
         email: email,
         phone: phone,
