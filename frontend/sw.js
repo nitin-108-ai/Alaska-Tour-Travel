@@ -17,7 +17,7 @@ const PRECACHE_ASSETS = [
   './',
   './index.html',
   './MAIN.html',
-  './MAIN.CSS',
+  './MAIN.css',
   './config.js',
   './api.js',
   './script.js',
