@@ -8,7 +8,7 @@
  * 4. Cache versioning with automatic cleanup of outdated caches.
  */
 
-const CACHE_VERSION = 'alaska-pwa-v1';
+const CACHE_VERSION = 'alaska-pwa-v3';
 const SHELL_CACHE = `alaska-shell-${CACHE_VERSION}`;
 const STATIC_CACHE = `alaska-static-${CACHE_VERSION}`;
 
@@ -67,6 +67,13 @@ self.addEventListener('install', (event) => {
       );
     }).then(() => self.skipWaiting())
   );
+});
+
+// Listen for messages from client (e.g. Tap to Reload / SKIP_WAITING)
+self.addEventListener('message', (event) => {
+  if (event.data && (event.data.type === 'SKIP_WAITING' || event.data.action === 'skipWaiting')) {
+    self.skipWaiting();
+  }
 });
 
 // 2. Activate Event — Clean up old caches

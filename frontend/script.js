@@ -8,13 +8,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelectorAll(".navbar .nav-menu .nav-link");
 
   if (menuOpenButton) {
-    menuOpenButton.addEventListener("click", () => {
+    menuOpenButton.addEventListener("click", (e) => {
+      e.stopPropagation();
       document.body.classList.toggle("show-mobile-menu");
     });
   }
 
   if (menuCloseButton) {
-    menuCloseButton.addEventListener("click", () => {
+    menuCloseButton.addEventListener("click", (e) => {
+      e.stopPropagation();
       document.body.classList.remove("show-mobile-menu");
     });
   }

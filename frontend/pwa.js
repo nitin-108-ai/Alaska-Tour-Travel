@@ -12,8 +12,17 @@
     window.navigator.standalone === true ||
     document.referrer.includes('android-app://');
 
-  // 1. Register Service Worker
+  // 1. Register Service Worker & Handle Updates
+  let refreshing = false;
   if ('serviceWorker' in navigator) {
+    // Reload page when new service worker takes over
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
+    });
+
     window.addEventListener('load', () => {
       // Determine relative service worker path
       const swPath = './sw.js';
@@ -22,16 +31,32 @@
         .then((reg) => {
           console.log('[PWA] Service Worker registered with scope:', reg.scope);
 
-          // Check for worker updates
+          // Case A: A new service worker is already waiting to activate
+          if (reg.waiting && navigator.serviceWorker.controller) {
+            showUpdateNotification(reg.waiting);
+          }
+
+          // Case B: A new service worker has been found during install
           reg.addEventListener('updatefound', () => {
             const newWorker = reg.installing;
             if (newWorker) {
               newWorker.addEventListener('statechange', () => {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                   console.log('[PWA] New update available.');
+                  showUpdateNotification(newWorker);
                 }
               });
             }
+          });
+
+          // Check for service worker updates when app regains focus or visibility
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+              reg.update().catch(() => {});
+            }
+          });
+          window.addEventListener('focus', () => {
+            reg.update().catch(() => {});
           });
         })
         .catch((err) => {
@@ -74,8 +99,8 @@
   // 4. Global Trigger to Install App
   window.installAlaskaApp = async function () {
     if (!deferredInstallPrompt) {
-      // For iOS Safari or unsupported browsers, show helpful install guidance
-      showIosInstallGuide();
+      // For iOS Safari, Desktop or unsupported browsers, show step-by-step guidance
+      showUniversalInstallGuide();
       return;
     }
 
@@ -90,14 +115,15 @@
       deferredInstallPrompt = null;
     } catch (err) {
       console.warn('[PWA] Install prompt error:', err);
+      showUniversalInstallGuide();
     }
   };
 
   // 5. Update existing install buttons on the page
   function updateInstallButtons(available) {
-    const installBtns = document.querySelectorAll('.pwa-install-btn, [data-pwa-install]');
+    const installBtns = document.querySelectorAll('.pwa-install-btn, [data-pwa-install], .btn-hero-download');
     installBtns.forEach((btn) => {
-      if (available && !isStandalone) {
+      if (!isStandalone) {
         btn.style.display = 'inline-flex';
         btn.onclick = window.installAlaskaApp;
       } else {
@@ -171,42 +197,195 @@
     if (banner) banner.remove();
   }
 
-  // 7. iOS Safari Install Guide Modal
-  function showIosInstallGuide() {
-    const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-    if (!isIos) {
-      alert('To install Alaska Tour & Travel:\nClick the Install icon in your browser address bar (top right on Chrome/Edge/Desktop).');
-      return;
+  // 7. Floating "New Update Available - Tap to Reload" Notification
+  function showUpdateNotification(worker) {
+    if (document.getElementById('alaska-pwa-update-banner')) return;
+
+    // Inject required styles and keyframes if not already present
+    if (!document.getElementById('alaska-pwa-update-styles')) {
+      const style = document.createElement('style');
+      style.id = 'alaska-pwa-update-styles';
+      style.textContent = `
+        @keyframes pwaSlideDown {
+          from { transform: translate(-50%, -40px); opacity: 0; }
+          to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        @keyframes pwaSpinSlow {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        #pwa-update-reload-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 18px rgba(56, 239, 219, 0.45);
+        }
+        #pwa-update-reload-btn:active {
+          transform: translateY(0);
+        }
+      `;
+      document.head.appendChild(style);
     }
 
-    let modal = document.getElementById('alaska-ios-guide-modal');
-    if (!modal) {
-      modal = document.createElement('div');
-      modal.id = 'alaska-ios-guide-modal';
-      modal.innerHTML = `
-        <div style="position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);z-index:999999;display:flex;align-items:flex-end;justify-content:center;padding:16px;">
-          <div style="background:#041a32;border:1px solid rgba(19,184,168,0.4);border-radius:24px;width:100%;max-width:420px;padding:26px 20px;color:white;text-align:center;box-shadow:0 -10px 40px rgba(0,0,0,0.5);">
-            <div style="width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#13b8a8,#0879d1);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px;box-shadow:0 4px 15px rgba(19,184,168,0.4);">
-              <i class="fa-solid fa-plane-departure"></i>
-            </div>
-            <h3 style="font-size:18px;font-weight:800;margin-bottom:8px;">Install on iPhone / iPad</h3>
-            <p style="font-size:13px;color:#94b8d7;line-height:1.6;margin-bottom:18px;">
-              1. Tap the <strong>Share</strong> button <i class="fa-solid fa-arrow-up-from-bracket"></i> in Safari toolbar.<br>
-              2. Scroll down and tap <strong>Add to Home Screen</strong> <i class="fa-regular fa-square-plus"></i>.<br>
-              3. Tap <strong>Add</strong> to start using the full-screen app!
-            </p>
-            <button id="close-ios-guide-btn" style="background:#13b8a8;color:white;border:none;padding:10px 24px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;width:100%;">
-              Got it!
-            </button>
-          </div>
+    const banner = document.createElement('div');
+    banner.id = 'alaska-pwa-update-banner';
+    banner.setAttribute('role', 'alert');
+    banner.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1;">
+        <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#38efdb,#0879d1);color:#041a32;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 14px rgba(56,239,219,0.35);flex-shrink:0;">
+          <i class="fa-solid fa-arrows-rotate" style="animation: pwaSpinSlow 4s linear infinite;"></i>
         </div>
-      `;
-      document.body.appendChild(modal);
-      document.getElementById('close-ios-guide-btn').onclick = () => modal.remove();
+        <div style="text-align:left;min-width:0;flex:1;">
+          <strong style="font-size:13.5px;font-weight:800;color:#ffffff;display:block;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+            New Update Available
+          </strong>
+          <span style="font-size:11px;color:#94b8d7;display:block;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+            Tap to reload with latest features &amp; fixes
+          </span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+        <button id="pwa-update-reload-btn" style="background:linear-gradient(135deg,#38efdb,#0879d1);color:#041a32;border:none;padding:9px 16px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 12px rgba(56,239,219,0.3);white-space:nowrap;font-family:inherit;transition:all 0.2s ease;">
+          <i class="fa-solid fa-rotate-right"></i> Tap to Reload
+        </button>
+        <button id="pwa-update-close-btn" style="background:transparent;color:#94a3b8;border:none;padding:6px 8px;font-size:18px;cursor:pointer;line-height:1;transition:color 0.2s;" aria-label="Dismiss">&times;</button>
+      </div>
+    `;
+
+    Object.assign(banner.style, {
+      position: 'fixed',
+      top: '16px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      width: 'calc(100% - 24px)',
+      maxWidth: '520px',
+      background: 'rgba(4, 26, 50, 0.96)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
+      border: '1px solid rgba(56, 239, 219, 0.5)',
+      borderRadius: '16px',
+      padding: '10px 14px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: '12px',
+      zIndex: '100000',
+      boxShadow: '0 12px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 239, 219, 0.2)',
+      animation: 'pwaSlideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1)'
+    });
+
+    document.body.appendChild(banner);
+
+    const reloadBtn = document.getElementById('pwa-update-reload-btn');
+    if (reloadBtn) {
+      reloadBtn.onclick = () => {
+        reloadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating...';
+        reloadBtn.style.pointerEvents = 'none';
+        try {
+          if (worker) {
+            worker.postMessage({ type: 'SKIP_WAITING' });
+          } else if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+          }
+        } catch (e) {}
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
+      };
+    }
+
+    const closeBtn = document.getElementById('pwa-update-close-btn');
+    if (closeBtn) {
+      closeBtn.onclick = () => {
+        banner.remove();
+      };
     }
   }
 
-  // 8. Online / Offline Connectivity Detection
+  // Allow manual testing from console: window.showAlaskaUpdatePrompt()
+  window.showAlaskaUpdatePrompt = () => showUpdateNotification(null);
+
+  // 8. Universal Install Guide Modal (iOS, Android, Desktop)
+  function showUniversalInstallGuide() {
+    const isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+    const isAndroid = /android/.test(window.navigator.userAgent.toLowerCase());
+
+    let modal = document.getElementById('alaska-universal-guide-modal');
+    if (modal) modal.remove();
+
+    let stepsHtml = '';
+    let platformTitle = 'Install Alaska Tour App';
+
+    if (isIos) {
+      platformTitle = 'Install on iPhone / iPad';
+      stepsHtml = `
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;text-align:left;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(56,239,219,0.2);color:#38efdb;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">1</div>
+          <div style="font-size:13px;color:#e2e8f0;line-height:1.5;">Tap the <strong>Share</strong> button <i class="fa-solid fa-arrow-up-from-bracket" style="color:#38efdb;"></i> in your Safari toolbar (at bottom or top).</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;text-align:left;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(56,239,219,0.2);color:#38efdb;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">2</div>
+          <div style="font-size:13px;color:#e2e8f0;line-height:1.5;">Scroll down and tap <strong>Add to Home Screen</strong> <i class="fa-regular fa-square-plus" style="color:#38efdb;"></i>.</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;text-align:left;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(56,239,219,0.2);color:#38efdb;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">3</div>
+          <div style="font-size:13px;color:#e2e8f0;line-height:1.5;">Tap <strong>Add</strong> in the top right corner. App is now on your home screen!</div>
+        </div>
+      `;
+    } else if (isAndroid) {
+      platformTitle = 'Install on Android';
+      stepsHtml = `
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;text-align:left;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(56,239,219,0.2);color:#38efdb;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">1</div>
+          <div style="font-size:13px;color:#e2e8f0;line-height:1.5;">Tap the <strong>3 dots (⋮)</strong> menu in the top right corner of Chrome.</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;text-align:left;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(56,239,219,0.2);color:#38efdb;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">2</div>
+          <div style="font-size:13px;color:#e2e8f0;line-height:1.5;">Select <strong>Install App</strong> or <strong>Add to Home screen</strong>.</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;text-align:left;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(56,239,219,0.2);color:#38efdb;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">3</div>
+          <div style="font-size:13px;color:#e2e8f0;line-height:1.5;">Confirm by tapping <strong>Install</strong>. Done!</div>
+        </div>
+      `;
+    } else {
+      platformTitle = 'Install on Desktop / Laptop';
+      stepsHtml = `
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;text-align:left;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(56,239,219,0.2);color:#38efdb;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">1</div>
+          <div style="font-size:13px;color:#e2e8f0;line-height:1.5;">Look at the right side of your <strong>URL address bar</strong> at the top.</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;text-align:left;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(56,239,219,0.2);color:#38efdb;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">2</div>
+          <div style="font-size:13px;color:#e2e8f0;line-height:1.5;">Click the <strong>Install App icon <i class="fa-solid fa-download" style="color:#38efdb;"></i></strong> or <strong>(+)</strong>.</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;text-align:left;">
+          <div style="width:28px;height:28px;border-radius:50%;background:rgba(56,239,219,0.2);color:#38efdb;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;">3</div>
+          <div style="font-size:13px;color:#e2e8f0;line-height:1.5;">Click <strong>Install</strong> to add Alaska Tour to your Desktop &amp; Start menu!</div>
+        </div>
+      `;
+    }
+
+    modal = document.createElement('div');
+    modal.id = 'alaska-universal-guide-modal';
+    modal.innerHTML = `
+      <div style="position:fixed;inset:0;background:rgba(1,12,20,0.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;">
+        <div style="background:#041a32;border:1.5px solid rgba(56,239,219,0.5);border-radius:24px;width:100%;max-width:440px;padding:28px 24px;color:white;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.6);animation:pwaSlideDown 0.3s ease;">
+          <div style="width:52px;height:52px;border-radius:15px;background:linear-gradient(135deg,#13b8a8,#0879d1);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 16px;box-shadow:0 6px 20px rgba(19,184,168,0.45);color:white;">
+            <i class="fa-solid fa-plane-departure"></i>
+          </div>
+          <h3 style="font-size:19px;font-weight:800;margin-bottom:6px;color:#ffffff;">${platformTitle}</h3>
+          <p style="font-size:12.5px;color:#94b8d7;margin-bottom:20px;">Follow these easy steps to get the full-screen app:</p>
+          ${stepsHtml}
+          <button id="close-guide-btn" style="background:linear-gradient(135deg,#13b8a8,#0879d1);color:white;border:none;padding:12px 24px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;width:100%;box-shadow:0 4px 15px rgba(19,184,168,0.4);">
+            Got It!
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    document.getElementById('close-guide-btn').onclick = () => modal.remove();
+  }
+
+  // 9. Online / Offline Connectivity Detection
   function handleNetworkChange() {
     const isOnline = navigator.onLine;
     let toast = document.getElementById('alaska-offline-toast');
@@ -248,8 +427,11 @@
   window.addEventListener('online', handleNetworkChange);
   window.addEventListener('offline', handleNetworkChange);
 
-  // Check on DOMContentLoaded
+  // Check on DOMContentLoaded: always enable buttons and show bottom banner
   document.addEventListener('DOMContentLoaded', () => {
-    updateInstallButtons(!!deferredInstallPrompt);
+    updateInstallButtons(!isStandalone);
+    if (!isStandalone) {
+      setTimeout(showInstallBanner, 1000);
+    }
   });
 })();

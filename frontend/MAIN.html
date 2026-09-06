@@ -55,7 +55,7 @@
 
       <ul class="nav-menu">
 
-        <li class="drawer-header-item" style="list-style: none; display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <li class="drawer-header-item">
           <div style="display: flex; align-items: center; gap: 10px;">
             <div class="logo-icon" style="width: 36px; height: 36px; font-size: 16px; border-radius: 10px;"><i class="fa-solid fa-plane-departure"></i></div>
             <div class="logo-text">
@@ -71,7 +71,7 @@
         </li>
 
         <li class="nav-item">
-          <a href="#home" class="nav-link">Home</a>
+          <a href="#home" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
         </li>
 
         <li class="nav-item">
@@ -91,15 +91,15 @@
         </li>
 
         <li class="nav-item">
-          <a href="#about" class="nav-link">About</a>
+          <a href="#about" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a>
         </li>
 
         <li class="nav-item">
-          <a href="#reviews" class="nav-link">Reviews</a>
+          <a href="#reviews" class="nav-link"><i class="fa-solid fa-star"></i> Reviews</a>
         </li>
 
         <li class="nav-item">
-          <a href="#contact" class="nav-link">Contact</a>
+          <a href="#contact" class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a>
         </li>
 
         <li class="nav-item">
@@ -107,8 +107,8 @@
         </li>
 
         <li class="nav-item">
-          <button class="pwa-install-btn" data-pwa-install style="display:none;" aria-label="Install Alaska Tour App">
-            <i class="fa-solid fa-download"></i> Install App
+          <button class="pwa-install-btn" data-pwa-install onclick="window.installAlaskaApp()" aria-label="Install Alaska Tour App">
+            <i class="fa-solid fa-download"></i> Download App
           </button>
         </li>
 
@@ -161,6 +161,10 @@
             <a href="bookti.html" class="button contact-us">
               <i class="fa-solid fa-plane"></i> Book Flights
             </a>
+
+            <button type="button" class="button btn-hero-download" onclick="window.installAlaskaApp()" style="background: rgba(3, 21, 31, 0.85); border: 1.5px solid rgba(56, 239, 219, 0.65); color: #38efdb; backdrop-filter: blur(10px); display: inline-flex; align-items: center; gap: 8px; font-weight: 700; border-radius: 30px; padding: 12px 22px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: var(--font-s);">
+              <i class="fa-solid fa-download"></i> Download App
+            </button>
 
           </div>
 
@@ -704,8 +708,69 @@
       </div>
 
     </section>
-
-  </main>
+ 
+     <!-- ================= APP DOWNLOAD SHOWCASE SECTION ================= -->
+     <section class="app-download-section" id="download-app" style="background: linear-gradient(135deg, #021a2b 0%, #063c50 50%, #004d5a 100%); padding: 75px 20px; color: #ffffff; position: relative; overflow: hidden; border-top: 1px solid rgba(56,239,219,0.2); border-bottom: 1px solid rgba(56,239,219,0.2);">
+       <div class="section-content" style="max-width: 1200px; margin: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 40px;">
+         <div style="flex: 1 1 500px; max-width: 600px;">
+           <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(56,239,219,0.15); border: 1px solid rgba(56,239,219,0.4); padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 700; color: #38efdb; margin-bottom: 16px;">
+             <i class="fa-solid fa-mobile-screen-button"></i> Official Mobile &amp; Desktop App
+           </div>
+           <h2 style="font-size: clamp(26px, 4vw, 38px); font-weight: 800; line-height: 1.25; margin-bottom: 16px; color: #ffffff;">
+             Download The <span style="background: linear-gradient(135deg, #38efdb, #0879d1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Alaska Tour App</span>
+           </h2>
+           <p style="font-size: 15px; color: #cbd5e1; line-height: 1.65; margin-bottom: 24px;">
+             Carry Alaska in your pocket! Book tourist packages, train tickets, flights and luxury buses anytime with instant offline confirmation and real-time travel alerts.
+           </p>
+           <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px;">
+             <div style="display: flex; align-items: center; gap: 12px;">
+               <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(56,239,219,0.2); color: #38efdb; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-solid fa-bolt"></i></div>
+               <span style="font-size: 14px; font-weight: 600; color: #f1f5f9;">Instant 1-Tap Booking &amp; Digital E-Tickets</span>
+             </div>
+             <div style="display: flex; align-items: center; gap: 12px;">
+               <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(56,239,219,0.2); color: #38efdb; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-solid fa-wifi"></i></div>
+               <span style="font-size: 14px; font-weight: 600; color: #f1f5f9;">Works 100% Offline with Service Worker PWA</span>
+             </div>
+             <div style="display: flex; align-items: center; gap: 12px;">
+               <div style="width: 32px; height: 32px; border-radius: 50%; background: rgba(56,239,219,0.2); color: #38efdb; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-solid fa-shield-halved"></i></div>
+               <span style="font-size: 14px; font-weight: 600; color: #f1f5f9;">Secure UPI, Card &amp; Wallet Payment Gateways</span>
+             </div>
+           </div>
+           <div style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center;">
+             <button onclick="window.installAlaskaApp()" class="button" style="background: linear-gradient(135deg, #13b8a8, #0879d1); color: #ffffff; border: none; padding: 14px 28px; border-radius: 30px; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 8px 24px rgba(19,184,168,0.4); transition: transform 0.2s;">
+               <i class="fa-solid fa-download"></i> Download / Install App Free
+             </button>
+             <span style="font-size: 12.5px; color: #94b8d7; display: inline-flex; align-items: center; gap: 6px;">
+               <i class="fa-brands fa-android" style="font-size: 16px; color: #a4c639;"></i>
+               <i class="fa-brands fa-apple" style="font-size: 16px; color: #ffffff;"></i>
+               <i class="fa-brands fa-windows" style="font-size: 15px; color: #00a4ef;"></i>
+               Supported on All Devices
+             </span>
+           </div>
+         </div>
+         <div style="flex: 1 1 320px; max-width: 420px; display: flex; justify-content: center;">
+           <div style="background: rgba(4, 26, 50, 0.75); border: 1.5px solid rgba(56,239,219,0.4); border-radius: 28px; padding: 30px 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(12px); text-align: center; width: 100%;">
+             <div style="width: 72px; height: 72px; border-radius: 20px; background: linear-gradient(135deg, #13b8a8, #0879d1); margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 34px; color: white; box-shadow: 0 8px 25px rgba(19,184,168,0.45);">
+               <i class="fa-solid fa-plane-departure"></i>
+             </div>
+             <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 6px;">Alaska Tour &amp; Travel</h3>
+             <p style="font-size: 13px; color: #94b8d7; margin-bottom: 20px;">Progressive Web App • Version 2.0</p>
+             <div style="background: rgba(255,255,255,0.06); border-radius: 16px; padding: 14px; margin-bottom: 22px; display: flex; justify-content: space-around;">
+               <div><strong style="display:block; font-size: 16px; color: #38efdb;">4.9 ★</strong><span style="font-size: 11px; color: #94a3b8;">Rating</span></div>
+               <div style="border-right: 1px solid rgba(255,255,255,0.1);"></div>
+               <div><strong style="display:block; font-size: 16px; color: #38efdb;">1.4k+</strong><span style="font-size: 11px; color: #94a3b8;">Downloads</span></div>
+               <div style="border-right: 1px solid rgba(255,255,255,0.1);"></div>
+               <div><strong style="display:block; font-size: 16px; color: #38efdb;">0 MB</strong><span style="font-size: 11px; color: #94a3b8;">No Lag</span></div>
+             </div>
+             <button onclick="window.installAlaskaApp()" style="width: 100%; background: linear-gradient(135deg, #38efdb, #0879d1); color: #041a32; border: none; padding: 13px 20px; border-radius: 14px; font-size: 14px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 15px rgba(56,239,219,0.35);">
+               <i class="fa-solid fa-cloud-arrow-down"></i> Get App Now
+             </button>
+           </div>
+         </div>
+       </div>
+     </section>
+ 
+   </main>
 
 
   <!-- ================= FOOTER ================= -->

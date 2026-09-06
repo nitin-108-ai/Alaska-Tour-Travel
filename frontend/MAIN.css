@@ -171,15 +171,12 @@ header:hover {
 
 header .navbar {
   max-width: var(--max-width);
-
   margin: auto;
-
   display: flex;
-
   align-items: center;
   justify-content: space-between;
-
-  padding: 18px 25px;
+  padding: 12px 25px;
+  gap: 15px;
 }
 
 
@@ -189,22 +186,23 @@ header .navbar {
 
 .navbar .nav-logo,
 .navbar .logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 12px;
   text-decoration: none;
   color: white;
+  flex-shrink: 0;
 }
 
 .logo-icon {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 12px;
   background: linear-gradient(135deg, #13b8a8, #0879d1);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 19px;
   color: #ffffff;
   box-shadow: 0 4px 12px rgba(19, 184, 168, 0.4);
   flex-shrink: 0;
@@ -216,16 +214,16 @@ header .navbar {
 }
 
 .logo-text strong {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 900;
   letter-spacing: 0.8px;
   display: block;
   color: #ffffff;
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .logo-text span {
-  font-size: 10px;
+  font-size: 9.5px;
   color: #94b8d7;
   letter-spacing: 1.5px;
   display: block;
@@ -236,61 +234,106 @@ header .navbar {
   display: none;
 }
 
+/* Hide mobile drawer header on desktop screen (PREVENTS 2ND LOGO IN NAVBAR) */
+.drawer-header-item {
+  display: none !important;
+}
+
 
 /* =====================================================
-   NAV MENU
+   NAV MENU (DESKTOP)
 ===================================================== */
 
 .navbar .nav-menu {
   display: flex;
-
   align-items: center;
+  gap: 3px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-wrap: nowrap;
+}
 
-  gap: 5px;
+.navbar .nav-menu .nav-item {
+  display: inline-flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar .nav-menu .nav-link {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 11px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13.5px;
+  font-weight: 600;
+  border-radius: 20px;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  line-height: 1;
+}
 
-  padding: 10px 17px;
-
-  color: rgba(255,255,255,.82);
-
-  font-size: var(--font-n);
-
-  font-weight: 500;
-
-  border-radius: 30px;
-
-  transition: .3s ease;
+.navbar .nav-menu .nav-link i {
+  font-size: 13px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #38efdb;
 }
 
 .navbar .nav-menu .nav-link::after {
   content: "";
-
   position: absolute;
-
   left: 50%;
-  bottom: 3px;
-
+  bottom: 2px;
   width: 0;
   height: 2px;
-
   background: var(--teal-light);
-
   transition: .3s ease;
 }
 
 .navbar .nav-menu .nav-link:hover {
-  color: var(--aqua);
-
-  transform: translateY(-2px);
+  color: #38efdb;
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
 }
 
 .navbar .nav-menu .nav-link:hover::after {
   width: 50%;
-
   left: 25%;
+}
+
+/* Download App button in Navbar */
+.navbar .nav-menu .pwa-install-btn {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: linear-gradient(135deg, rgba(19, 184, 168, 0.25), rgba(8, 121, 209, 0.3));
+  border: 1.5px solid rgba(56, 239, 219, 0.5);
+  color: #38efdb;
+  border-radius: 50px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+  font-family: inherit;
+  margin-left: 4px;
+}
+
+.navbar .nav-menu .pwa-install-btn:hover {
+  background: linear-gradient(135deg, #13b8a8, #0879d1);
+  color: #ffffff;
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(56, 239, 219, 0.4);
 }
 
 .navbar :where(
@@ -1273,6 +1316,15 @@ textarea.form-input {
     background: rgba(1, 12, 20, 0.72);
     z-index: 9990;
     animation: menuFadeIn 0.25s ease forwards;
+    cursor: pointer;
+  }
+
+  /* When mobile drawer is open, keep header and drawer ABOVE the backdrop overlay so they stay sharp & unblurred */
+  body.show-mobile-menu header {
+    z-index: 10005 !important;
+    background: transparent !important;
+    border-bottom-color: transparent !important;
+    pointer-events: none !important;
   }
 
   @keyframes menuFadeIn {
@@ -1312,6 +1364,16 @@ textarea.form-input {
     border-color: #13b8a8;
     color: #38efdb;
     transform: scale(1.05);
+  }
+
+  .drawer-header-item {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .navbar .nav-menu #menu-close-button {
@@ -1365,6 +1427,8 @@ textarea.form-input {
 
   body.show-mobile-menu .nav-menu {
     left: 0 !important;
+    z-index: 10010 !important;
+    pointer-events: auto !important;
   }
 
   .navbar .nav-menu .nav-item {
